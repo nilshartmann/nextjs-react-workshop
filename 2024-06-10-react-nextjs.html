@@ -1,0 +1,991 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+
+    <title>React/Next.js Workshop</title>
+
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta
+      name="apple-mobile-web-app-status-bar-style"
+      content="black-translucent"
+    />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui"
+    />
+    <link rel="stylesheet" href="slides/revealjs/reveal.js/dist/reset.css" />
+    <link rel="stylesheet" href="slides/revealjs/reveal.js/dist/reveal.css" />
+    <link
+      rel="stylesheet"
+      href="slides/revealjs/reveal.js/dist/theme/solarized.css"
+    />
+
+    <!-- Theme used for syntax hislides/ghlighted code -->
+    <link
+      rel="stylesheet"
+      href="slides/revealjs/highlight-js-github-theme.css"
+    />
+    <link rel="stylesheet" href="slides/revealjs/styles.css" />
+  </head>
+
+  <body>
+    <div class="reveal">
+      <!-- Any section element inside of this container is displayed as a slide -->
+      <div class="slides">
+        <section data-state="title">
+          <h2 class="title" style="font-size: 7rem">
+            <b>React/Next.js Workshop</b>
+          </h2>
+
+          <h4>
+            <span class="transparent-bg">
+              <a href="https://nilshartmann.net" target="_blank"
+                >Nils Hartmann</a
+              >
+              |
+              <a href="https://twitter.com/nilshartmann" target="_blank"
+                >@nilshartmann</a
+              >
+            </span>
+          </h4>
+          <p style="margin-top: 4rem"></p>
+          <div>
+            <h3><span class="transparent-bg">Repository</span></h3>
+            <p>
+              <span class="transparent-bg"
+                >Remote:
+                <a href="https://github.com/nilshartmann/nextjs-react-workshop"
+                  >https://github.com/nilshartmann/nextjs-react-workshop</a
+                ></span
+              >
+            </p>
+          </div>
+          <p style="margin-top: 4rem"></p>
+          <div>
+            <h3><span class="transparent-bg">Slides</span></h3>
+            <p>
+              <span class="transparent-bg"
+                >Remote:
+                <a
+                  href="https://nilshartmann.github.io/nextjs-react-workshop/2024-06-10-react-nextjs.html"
+                  >https://nilshartmann.github.io/nextjs-react-workshop/2024-06-10-react-nextjs.html</a
+                ></span
+              >
+            </p>
+          </div>
+        </section>
+        <section>
+          <h2>Nils Hartmann</h2>
+          <p>
+            <a href="https://nilshartmann.net" target="_blank"
+              >https://nilshartmann.net</a
+            >
+            /
+            <a href="https://twitter.com/nilshartmann" target="_blank"
+              >@nilshartmann</a
+            >
+          </p>
+          <p>
+            <em
+              >Freiberuflicher Software-Entwickler, Berater und Trainer aus
+              Hamburg</em
+            >
+          </p>
+
+          <div style="display: flex; justify-content: center">
+            <div>
+              <p>Java</p>
+              <p>JavaScript, TypeScript</p>
+              <p>React</p>
+              <p>Single-Page-Applications</p>
+              <p>GraphQL</p>
+              <p style="margin-top: 20px">
+                <a href="https://nilshartmann.net/workshops"
+                  >Schulungen und Workshops</a
+                >
+              </p>
+            </div>
+            <div style="margin-left: 15px">
+              <a href="https://reactbuch.de"
+                ><img
+                  style="max-height: 450px"
+                  src="slides/images/react-buch-v2.jpg"
+                /><br />https://reactbuch.de</a
+              >
+              <br />
+            </div>
+          </div>
+        </section>
+
+        <!-- ============================================================================= -->
+        <section>
+          <h2>Formales</h2>
+          <p class="fragment">Bitte schaltet Euer Video ein 🙏</p>
+          <p class="fragment">
+            <b>Jederzeit:</b> Fragen und Diskussionen! Bringt euch gerne ein.
+          </p>
+          <p class="fragment">Motto: Es gibt keine dummen Fragen!</p>
+          <p class="fragment">
+            Bemerkbar machen per Audio, "Hand heben" oder Chat
+          </p>
+          <p class="fragment">
+            <img width="50%" src="slides/images/zoom-reaktionen.png" />
+          </p>
+        </section>
+        <section data-markdown>
+          <textarea data-template>
+---
+### Formales: Zeitplan
+* Montag und Dienstag, 10. und 11. Juni
+* jeweils 09.00 Uhr bis ca. 16.30 Uhr
+  * 12.00 bis 13.00 Uhr Mittagspause 🍝
+  * Kurze Pausen zwischendurch ☕️
+
+* Ich zeige viel direkt im Editor, aber ihr könnt die Slides natürlich als Referenz benutzen
+* Wir machen Übungen, so dass ihr selbst programmieren und ausprobieren könnt
+---
+## Agenda
+<!-- .slide: class="no-fragment xleft" -->
+**_"Vertiefung in React"_**
+* [Context API](#/t-context)
+* [Testen mit Jest (Einführung)](#/t-test-jest)
+* [Testen von React Komponenten und Hooks](#/t-testen-react)
+* [Error Boundaries](#/t-error-boundaries)
+* [Die Bibliothek "Zustand" für globalen Zustand (Basics: Stores, Actions, Change Detection)](#/t-zustand)
+  * [Testen von Anwendungen mit Zustand](#/t-zustand-test)
+* [Renderverhalten von React und Immutable Data](#/t-immutability)
+* [Immutability mit Immer](#/t-immer)
+* [Zustand Bibliothek: Middleware und Slices](#/t-zustand-2)
+* **"State of the Art"-Themen und künftige Features**
+  * [Arbeiten mit Suspense für asynchrone und serverseitige Daten](#/t-async-data)
+  * [Suspense](#/t-suspense)
+  * Ausblick: Fullstack-Anwendungen am Beispiel Next.js
+
+---
+### Kurze Vorstellung
+* Stellt euch doch bitte kurz vor...
+  * Was sind eure Kenntnisse/Schwerpunkte?
+    * Frontend? Backend? React? Next.js? Java? Spring? ...
+  * Besondere Wünsche, Themen oder Fragen für die Schulung?
+    * vielleicht etwas, was euch in eurer täglichen Arbeit nervt
+    * oder was ihr schon immer mal fragen oder besprechen wollte?
+---
+### Kurze Vorstellung #2
+* Architektur eurer Anwendung(en)
+          </textarea>
+        </section>
+
+        <section>
+          <h3>Seiteneffekte</h3>
+          <ul>
+            <li>
+              Als <b>Side effect</b> bzw. <b>Seiteneffekt</b> (könnte im
+              deutschen auch mit "Nebenwirkung" übersetzt werden) wird in React
+              Code bezeichnet, der Dinge außerhalb der umschließenden
+              Komponenten-Funktion verändert.
+            </li>
+            <li>
+              Beispiele sind: Manipulation des nativen DOM (z.B. Fenster-Titel
+              setzen), einen Timer starten oder einen Server-Aufruf durchführen
+            </li>
+            <li>
+              Seiteneffekte sind in der <b>Renderphase</b> einer Komponente
+              verboten! 🚨
+            </li>
+          </ul>
+        </section>
+
+        <section>
+          <h3>useEffekt-Hook</h3>
+          <p>
+            <em
+              >Mit useEffekt kann eine Funktion registriert werden, die nach dem
+              Rendern der Komponente ausgeführt wird</em
+            >
+          </p>
+          <p>
+            Diese <b>Effekt-Callback</b>-Funktion wird beim <em>commit</em> der
+            Komponente ausgeführt
+          </p>
+
+          <div>
+            <pre><code class="javascript"  >
+            function App(props) {
+              React.useEffect(
+                () => console.log("I will run on EACH commit")
+              );
+            }
+          </code></pre>
+          </div>
+          <div>
+            2. Parameter (leeres Array) gibt an, dass die Funktion nur einmal
+            ausgeführt werden soll
+            <pre><code class="javascript"  >
+              function App(props) {
+                React.useEffect(
+                  () => console.log("I will run only on 1st commit"),
+                  []
+                );
+              }
+            </code></pre>
+          </div>
+        </section>
+
+        <section>
+          <h3>useEffect Hook</h3>
+
+          <p>Zwei Parameter:</p>
+          <ol>
+            <li>
+              Callback-Funktion, die aufgerufen wenn entsprechendes Ereignis
+              eintritt (z.B. initiales Rendern abgeschlossen)
+            </li>
+            <li>
+              Ein Array mit Abhängigkeiten:
+              <ul>
+                <li>
+                  Wenn kein Array angegeben wird, wird der Effekt nach jedem
+                  Rendern ausgeführt (achtung! Endlosschleife möglich)
+                </li>
+                <li>
+                  Wenn ein leeres Array angegeben wird, wird der Effekt nur nach
+                  dem 1. Rendern ausgeführt
+                </li>
+                <li>
+                  Wenn Werte angegeben werden, wird der Effekt ausgeführt, wenn
+                  sich mind 1 Wert verändert hat
+                </li>
+                <li>
+                  <b>Wichtig!</b> <em>Alle</em> Werte im Dependency-Array
+                  angeben, die darin verwendet werden (Werte aus Props, State,
+                  ...)
+                </li>
+              </ul>
+            </li>
+          </ol>
+        </section>
+        <section data-markdown>
+          <textarea data-template>
+### useEffect Hook: Clean-up Funktion
+
+* Um auf das Entfernen der Komponente aus dem DOM zu reagieren (z.B Resourcen
+freigeben), kann die Callback-Funktion als Rückgabe eine "Clean-Up"-Funktion zurückliefern:
+  * ```javascript
+    function HelloEffect() {
+      React.useEffect(
+        () => {
+          console.log("Ich bin gemounted worden");
+          return () => console.log("Ich bin entfernt worden")
+        },
+        [])
+      );
+    }
+  ```
+* Die Clean-Up-Funktion wird immer ausgeführt, wenn die Komponente aus dem DOM entfernt wird
+              und bevor der Effekt erneut ausgeführt wird.
+* Mit der Clean-up-Funktion kann also immer die letzte Ausführung des Effekt-Callbacks "aufgeräumt" werden
+  * ```javascript
+    function PostEditor() {
+      const [title, setTitle] = useState("");
+
+      React.useEffect(
+        () => {
+          let currentTitle = title;
+          console.log("Title: ", currentTitle);
+          return () => console.log("Title war beim Commit:", currentTitle)
+        },
+        [ title ])
+      );
+    }
+    ```
+
+</textarea
+          >
+        </section>
+
+        <section>
+          <h3>Beispiel: Aktualisieren des Browsertitels</h3>
+
+          <div>
+            <p>
+              Der eingegebene Post-Titel soll auch in der Titelzeile des
+              Browsers erscheinen.
+            </p>
+            <pre><code class="javascript"  >
+                function PostEditor() {
+                  const [title, setTitle] = React.useState("");
+                  const [body, setBody] = React.useState("");
+
+                  React.useEffect(() => {
+                    // Aktuellen Titel merken
+                    const currentTitle = window.document.title;
+                    window.document.title = `New Post ${title}`;
+
+                    // Nach dem Unmount bzw. erneuten Ausführung des Effekts
+                    // Titel wieder auf ursprünglichen Wert zurücksetzen
+                    return () => window.document.title = currentTitle;
+
+
+                  }, [title]);
+
+                  return <div>...</div>
+
+                }
+
+                </code></pre>
+          </div>
+        </section>
+
+        <section data-markdown="">
+          <textarea data-template>
+### React Strict Mode
+
+* React kann in einem [Strict Mode](https://react.dev/reference/react/StrictMode) ausgeführt werden
+* Dann wird so getan, als ob jede Komponente zweimal gerendert wird
+* Dadurch sollen Resource Leaks auffallen
+* Per default ist der Strict Mode in Next.js eingeschaltet, aber man kann [ihn ausschalten](https://nextjs.org/docs/app/api-reference/next-config-js/reactStrictMode)
+  * Im unserem Workspace ist der Strict Mode *aus*geschaltet
+  </textarea
+          >
+        </section>
+
+        <section data-markdown>
+          <textarea data-template>
+### Übung: useEffect
+
+* Verwende useEffect, um den Browser Tab-Titel zu setzen
+* Kopiere dir den Code aus `10_effect/20_uebung/00_initial` in dein `app`-Verzeichnis
+  * Die URL ist: http://localhost:3000/editor
+* Implementiere die fehlende Funktionalität in `app/editor/page.tsx`
+  * Dort findest Du TODOs
+* Optionale Aufgabe nur machen, wenn noch Zeit ist.
+* Wenn du fertig bist, bitte in Zoom die ✋ heben.
+          </textarea>
+        </section>
+
+        <!-- ============================================================================== -->
+        <!-- ====                                                                      ==== -->
+        <!-- ====            C O N T E X T                                             ==== -->
+        <!-- ====                                                                      ==== -->
+        <!-- ============================================================================== -->
+        <section id="t-context">
+          <h3>Hintergrund: Daten und State</h3>
+          <ul>
+            <li>Serverseitige <b>Daten</b> und clientseitiger <b>State</b></li>
+            <li>Arten von State: <b>lokal</b> und <b>global</b></li>
+            <li>Überblick: 👉 Daten und State</li>
+          </ul>
+        </section>
+        <section>
+          <h3>Hintergrund: Globaler Zustand</h3>
+          <ul>
+            <li>
+              Man kann Zustand in <b>lokalen Zustand</b> und
+              <b>globalen Zustand</b> einteilen
+            </li>
+            <li>
+              <b>Lokaler Zustand</b> ist Zustand, der "mehr oder weniger" einer
+              Komponente zur Verfügung steht
+            </li>
+            <li>
+              <b>Globaler Zustand</b> hingegen ist für die ganze Anwendung oder
+              große Teile davon zuständig
+            </li>
+            <li>Die Übgergänge sind fließend, es gibt keine fixe Definition</li>
+            <li>
+              Beispiele für globalen Zustand: angemeldeter Benutzer, Theme
+            </li>
+          </ul>
+        </section>
+        <section>
+          <h2>React Context API</h2>
+          <p>Kein Statemanagement, aber häufig zusammen erwähnt</p>
+          <p>"Dependency Injection"</p>
+          <p>Überblick: 👉 Anwendungshierachie mit State und Props (Miro)</p>
+        </section>
+
+        <!-- ============================================================================= -->
+
+        <section>
+          <h2>Im Detail: Context API</h2>
+          <p>Beispiel: <code>context_app/workspace</code></p>
+          <p>
+            In <code>Container.tsx</code> Anzeige der Border einschalten (<code
+              >hideBorder = false</code
+            >)
+          </p>
+          <p><code>CounterApp</code> rendern!</p>
+          <p>
+            In <code>Container.tsx</code> Anzeige der Renderings einschalten
+            (<code>showRenderings = true</code>)
+          </p>
+          <p>
+            (Material in
+            <code>context-example/material/CounterContext.txt</code>)
+          </p>
+        </section>
+
+        <section>
+          <h2>Context...</h2>
+          <p>
+            <em
+              >erlaubt das Durchreichen von Informationen ohne explizites
+              angeben als Properties</em
+            >
+          </p>
+
+          <ul>
+            <li>funktioniert nur innerhalb einer Hierarchie-Ebene</li>
+            <li>funktioniert nur in <b>Client Komponenten</b></li>
+            <li>
+              es können beliebg viele (fachliche) Context definiert werden
+            </li>
+            <li>besteht aus <code>Provider</code> und <code>Consumer</code></li>
+            <li>
+              <a
+                href="https://react.dev/learn/passing-data-deeply-with-context"
+                target="_blank"
+                >Doku</a
+              >
+            </li>
+          </ul>
+        </section>
+
+        <section>
+          <h2>Context Factory</h2>
+          <ul>
+            <li>
+              <em>erzeugt ein Objekt, mit <b>zwei Komponenten</b></em>
+            </li>
+            <li>
+              <code>Provider</code>, stellt Objekt mit Key-Value-Paaren zur
+              Verfügung (der Context-"Value")
+            </li>
+            <li>
+              <code>Consumer</code> wird in eigener Komponente verwendet, um auf
+              einen Context zuzugreifen ("versteckt" durch useContext Hook)
+            </li>
+            <li>
+              <pre><code class="line-numbers" data-leftpad>
+import react from "React";
+
+const AuthContext = React.createContext();
+
+// erzeugt:
+// AuthContext.Provider 
+// AuthContext.Consumer (mit Hooks API überflüssig)
+
+export AuthContext;
+                      </code></pre>
+            </li>
+          </ul>
+        </section>
+
+        <section data-markdown>
+          <textarea data-template>
+## Context Factory mit TypeScript
+
+* Der `createContext` kann ein Typ-Parameter übergeben werden, der den Context-Wert beschreibt
+* `createContext` benötigt dann einen Default-Wert, der diesem Typen entspricht
+  * Der Default-Wert wird in der Anwendung in der Regel nicht verwendet
+  * Wird nur verwendet, wenn (fälschlich) auf den Kontext zugegriffen wird, ohne dass es einen Provider
+    gibt
+* ```typescript
+  type IAuthContext = { 
+    username: string | null;
+    onLogin(newUser: string): void;
+    onLogout(): void;
+  }
+
+  const AuthContext = React.createContext<IAuthContext>({
+    // Dummy-Implementierung vom Default Context
+    username: null,
+    onLogin() {},
+    onLogout() {}
+  });
+
+  export AuthContext;
+  ```
+
+          </textarea>
+        </section>
+
+        <section data-markdown>
+          <textarea data-template>
+## Context Provider
+
+* _Eine React-Komponente, die einen Context zur Verfügung stellt_
+  * wird innerhalb einer eigenen Komponente eingebunden und zurückgeliefert
+  * Nimmt ein Objekt ("Context") mit beliebigen Werten entgegen (`value`-Property)
+  * Woher die Werte kommen (State, Props, anderer Kontext, ...) spielt keine Rolle!
+  * Alle Einträge des Objektes sind für die Konsumenten verfügbar
+* ```typescript
+  const AuthContext = React.createContext&lt;IAuthContext>(/*...*/); // wie gesehen
+
+  type AuthProviderProps = {
+    children: React.ReactElement
+  }
+
+  export function AuthProvider(props: AuthProviderProps) {
+      const [ currentUser, setCurrentUser ] = React.useState(null);
+
+      const contextValue: IAuthContext = {
+        // the current user
+        currentUser,
+
+        // function to set new user
+        function onLogin(name) { setCurrentUser(name) },
+        function onLogout() { setCurrentUser(null) }
+      };
+
+      return &lt;AuthContext.Provider value={contextValue}>
+        {props.children}
+      &lt;/AuthContext.Provider>;
+  }             
+  ```
+  </textarea
+          >
+        </section>
+
+        <section>
+          <h2>useContext-Hook</h2>
+          <p><em>Zugriff auf die Werte aus dem Context</em></p>
+          <p>
+            In allen Komponenten unterhalb der Provider Komponente, kann mit
+            <code>useContext</code> auf den Kontext zugegriffen werden
+          </p>
+
+          <pre><code class="javascript">
+import { AuthContext } from "auth-context";
+
+function UserBadge() {
+  const { currentUser } = React.useContext(AuthContext);
+
+  return currentUser  ? &lt;h1>Welcome, {currentUser}&lt;h1> : null;
+}            
+          </code></pre>
+
+          <p>Aufrufen einer Funktion aus dem Context</p>
+          <p>Ändert im Context den Zustand der Provider-Komponente</p>
+          <p>
+            Alle Konsumer werden neu gerendert und können den neuen Wert
+            verwenden
+          </p>
+          <pre><code class="javascript">
+function UserBadge() {
+  const { currentUser, logout } = React.useContext(AuthContext);
+
+  return currentUser  ? 
+    &lt;>&lt;h1>Welcome, {currentUser}&lt;h1>&lt;button onClick={logut}>Logout&lt;/button>&lt;/> 
+    : null;
+}                
+          </code></pre>
+        </section>
+        <section data-markdown>
+          <textarea data-template>
+## Neu in React 19
+
+* `Context.Provider` -> `Context` (?)
+* Zugriff auf den Context mit `use`-Hook
+  * `context authContext = use(AuthContext)`
+          </textarea>
+        </section>
+
+        <section data-markdown>
+          <textarea data-template>
+## Zugriff mit Custom Hook
+
+* Übliches Pattern: für den Zugriff auf den Context wird ein eigener Hook zur Verfügung gestellt
+* ```typescript
+  export function useAuthContext(): IAuthContext {
+    const authContext = useContext(AuthContext);
+
+    return authContext;
+  }            
+  ```
+* ```typescript
+  import { useAuthContext } from "auth-context";
+  
+  export default function UserBadge() {
+    const authContext = useAuthContext();
+  }
+  ```  
+
+  * "Versteckt" den Context (Implementierungsdetail!) vor der Anwendung
+  * Sieht aus wie fachliche API
+  * Kann (vergleichsweise einfach) gemockt werden
+---
+###  Zugriff mit Custom Hook in TypeScript
+* Beim Erzeugen des Context muss man (in TypeScript) einen Default Context angeben:
+* ```typescript
+  const defaultContext: IAuthContext = {
+      // Dummy-Implementierung vom Default Context
+      username: null, onLogin() {}
+  }
+  const AuthContext = React.createContext<IAuthContext>(defaultContext);
+  ```
+* Das ist nicht immer (sinnvoll) möglich, so dass man auch `ContextType | null` verwenden könnte:
+* ```typescript
+  const AuthContext = React.createContext<IAuthContext | null>(null);
+  ```
+* Nun liefert `useContext` aber immer auch `null` zurück, so dass die Verwendung jedes Mal überprüft werden muss:
+* ```typescript
+  function UserBadge() {
+    const { username } = useContext(AuthContext); // ERR: Property 'username' does not exist on type 'IAuthContext | null'
+  }
+  ```
+ 
+* Mit dem Custom Hook kann eine Plausibilitätsprüfung durchgeführt werden und ggf. ein sprechender Fehler erzeugt werden:
+* ```typescript
+  
+  export function useAuthContext(): IAuthContext {
+    const authContext = useContext(AuthContext);
+
+    if (authContext === null) {
+      throw new Error("AuthContext not correctly initialized. Please wrap your application in a AuthContextProvider component");
+    }
+
+    return authContext;
+  }            
+  ```  
+
+---
+### Ein "halbglobaler" Context
+<!-- .slide: class="left" -->
+* Ein Formular hat eine beliebige Menge von Feldern und Button
+* Kann man da mit Context was machen? 🤔
+
+* ```typescript
+  
+    type FormState = Record<string, string>;
+
+    function PersonForm() {
+      const [formState, setFormState] = React.useState<FormState>({});
+
+      function onClearForm() {
+        setFormState({});
+      }
+
+      function onFieldChange(fieldname: string, value: string) {
+        setFormState({
+          ...formState,
+          [fieldname]: value
+        });
+      }
+
+      return (
+        <Container title="PersonForm">
+          <FieldSet>
+            <Input name="firstname" formState={formState} onFieldChange={onFieldChange} />
+            <Input name="lastname" formState={formState} onFieldChange={onFieldChange} />
+          </FieldSet>
+          <ClearButton onClearForm={onClearForm} />
+        </Container>
+      );
+    }
+
+  ```
+
+---
+## Übung: Ein Notification Context
+
+* *Baue einen Kontext, der eine globale Notification anzeigt*
+* <!-- .element: class="demo" -->Ergebnis zeigen
+* Schritte:
+  * In `20_context/workspace` bitte Abhängigkeiten installieren und Next.js starten:
+  * ```bash
+    cd 20_context/workspace
+
+    pnpm install
+    pnpm dev
+    ```
+* In `NotificationContext.tsx` soll ein Context implementiert werden, der Informationen
+            über die anzuzeigene Notification enthält
+* In `NotificationApp.tsx` sind React-Komponenten implementiert. Diese sollen den Context dann nutzen
+* Wo ziehst du die Trennung zwischen Client- und Server-Komponente mit `use client`?
+* Nähere Informationen findest Du direkt in beiden Dateien
+* Du solltest mit der Implementierung des `NotificationContext` anfangen
+* Mögliche Lösung findest Du in `material/02_solution`
+* Wenn Du fertig bist, bitte "Hand heben" in Zoom 🙋️
+
+---
+### Renderverhalten von Context
+
+* Lasst uns mal überlegen, ob es sinnvoll ist, für die Verwendung unseres `NotificationContext` mehrere Hooks zu bauen:
+  * zum Beispiel zum Setzen des Context
+  * zum Beispiel zum Zugriff nur auf die übersetzte Message
+  * ...oder auch nur auf die Information, ob überhaupt etwas gesetzt ist
+* hilft uns das beim Optimieren des Renderings? 🤔
+* was für einen Vor- oder Nachteil hätte dieser Ansatz darüberhinaus? 🤔
+---
+### Renderverhalten von Context
+
+* Bei jeglicher Änderung des Contexts werden immer alle Konsumenten neu gerendert
+  * unabhängig davon, ob diese sich für den Teil interessieren, der sich geändert hat
+  * das können wir nicht vermeiden (evtl. in einer kommenden React Version)
+* Aus diesem Grund sollte man den Context nicht unbedingt verwenden, wenn
+  * darin Daten enthalten sind die sich häufig bzw. schnell ändern (Inhalt eines Eingabefeldes z.B.)
+  * und von diesen Änderungen sehr viele Komponenten betroffen sind (direkt oder indirekt)
+
+---
+### Renderverhalten von React
+* <!-- .element: class="demo" -->In CounterContextProvider "Container" um children setzen
+* <!-- .element: class="demo" -->Wann wird gerendert, wenn wir z.B. den lokalen App-State verändern 🤔
+* <!-- .element: class="demo" -->Hello World-Beispiel:
+  * Zwei Server-Komponenten: Hello- und GoodbyeMessage
+  * Client-Komponente "Greeter" mit boolean State; zeigt entweder Hello- oder Goodbye an
+  * Was passiert, wenn wir die Komponenten direkt in Greeter rendern?
+  * Was passiert, wenn wir die aus unserer page-Komponente direkt übergeben?
+  * Was passiert, wenn wir HelloMessage in page.tsx und in Greeter rendern?
+  * 💡 Eine Komponente kann theoretisch Server- und Client-Komponente sein
+* <!-- .element: class="demo" -->"50_global": Context in einer App mit Server- und Client-Komponenten
+* <!-- .element: class="demo" -->"50_global": Provider hier im Layout
+
+---
+### Renderverhalten von React
+* Der "Lebenszyklus" einer Komponente hängt an der verwendenden Komponente
+* Man kann "fertig" gerenderte Komponenten an andere Komponenten per Property übergeben
+  * Die werden von der Komponente dann "nur" eingefügt, aber der Lebensyzklus ist davon unabhängig
+* Fertig gerenderte **Server-Komponenten** können an **Client-Komponenten** übergeben werden
+
+          </textarea>
+        </section>
+
+        <section data-markdown>
+          <textarea data-template>
+## Error Boundaries
+<!-- .slide: id="t-error-boundaries" -->
+* 🤔Was passiert, wenn wir in unserer App vergessen, den `NotificationContextProvider` einzubinden? 🤔
+* <!-- .element: class="demo" -->Ausprobieren (NotificationApp.tsx)
+* <!-- .element: class="demo" -->Error Boundary (React): NotificationApp_mitErrorBoundary.tsx
+* <!-- .element: class="demo" -->Error Boundary (Next.js): error.tsx
+---
+## Error Boundaries
+
+* Wenn beim **Rendern** etwas schiefgeht, verwirft React "zur Sicherheit" den ganzen Komponenten-Tree
+  * (damit nicht z.B. inkonsistente oder fehlerhafte Daten angezeigt werden)
+* Das ist nicht besonders benutzerfreundlich
+* In einem Event-Handler haben wir dieses Problem nicht: dort können wir z.B. mit try/catch arbeiten
+  * oder der Event-Handler wird einfach abgebrochen und die "alte" UI bleibt weiterhin sichtbar
+* Beim Rendern können wir aber kein try/catch drumherum legen
+* Deswegen gibt es "spezielle" Komponenten: **Error Boundaries**
+---
+### Error Boundaries
+* Error Boundary-Komponenten kann man überall in seiner Komponenten-Hierarchie einziehen
+* Render-Fehler, die unterhalb auftreten, werden dann der Error Boundary-Komponente übergeben
+  * Diese kann dann z.B. eine Fehler-Komponente darstellen
+  * Dieses Verhalten ähnelt try-catch.
+  * Auch try-catch-Blöcke in "normalem" Code könnt ihr ja auf jeder Ebene des Call-Stacks einziehen
+* Ein Beispiel:
+* ```typescript
+  function MyApp() {
+    return (
+      <Layout>
+        <Header />
+        <MyErrorBoundary>
+            <Main>
+              <BlogPost />
+            </Main>
+            <NewsletterForm />
+        </MyErrorBoundary>
+      </Layout>
+    )
+  }
+  ```
+* Wenn es hier zum Fehler **während des Renderns** kommt:
+  * innerhalb von `Layout` oder `Header`: weiße Seite, Fehlermeldung auf der Console
+  * innerhalb von `Main`, `BlogPost` oder `NewsletterForm`: Error Boundary wird angezeigt, `Layout` und `Header`-Komponente bleiben unverändert (gerendert)
+---
+### Fehlerbehandlung in Next.js
+
+- In Next.js könnt ihr Fehler auf Routen-Ebene mit einer [`error.tsx` Datei behandeln](https://nextjs.org/docs/app/building-your-application/routing/error-handling)
+- Diese Datei muss eine **Client Komponente** exportieren
+- Die Komponente wird von Next.js als Error Boundary-Komponente um eure komplette Route gelegt
+- Die Komponente bekommt zwei Properties übergeben: `error` und `reset`
+  - `error` ist das `Error`-Objekt, das den Fehler ausgelöst hat
+  - `reset` ist eine Callback-Funktion, die ihr verwenden könnt, um den Fehler zu verwerfen
+- Wenn eine Route _keine_ `error.tsx`-Datei hat, sucht Next.js in den oberen Verzeichnissen, bis eine Komponente gefunden wird
+  - sonst wird Default-Fehler angezeigt
+
+---
+### Error Boundaries
+* Behandlung der Fehler auf Routen-Ebene ist möglicherweise zu grob granular
+* Ihr könnt auch einzelne Komponenten mit eigenen Error Boundaries umschliessen
+* Eine Error Boundary-Komponente ist eine Art `catch`-Block für die Renderphase von Komponente
+* Technisch handelt es sich dabei um eine fast "normale" React-Komponente
+* Diese muss allerdings noch mit der (alten) React JavaScript Klassen API gebaut werden
+* Diese Klasse muss dann die [getDerivedStateFromError](https://react.dev/reference/react/Component#static-getderivedstatefromerror) Callback-Funktion implementieren
+* Einfacher ist es, eine fertige Error Boundary-Komponente zu verwenden: [react-error-boundary](https://github.com/bvaughn/react-error-boundary)
+---
+### Error Boundary mit `react-error-boundary`
+* Die Error Boundary-Komponente aus der Bibliothek heißt - Überraschung! - `ErrorBoundary`
+* Die ist sehr flexibel zu konfigurieren
+* Man muss ihr mit dem Property [FallbackComponent eine Komponente übergeben](https://github.com/bvaughn/react-error-boundary?tab=readme-ov-file#errorboundary-with-fallbackcomponent-prop), die im Falle eines Fehlers gerendert werden soll
+  * (das ist euer "try-Block")
+* Diese Komponente bekommt dann als Property u.a. den Fehler übergeben:
+* ```typescript
+  import { FallbackProps } from "react-error-boundary";
+
+  function AppErrorMessage( { error }: FallbackProps) {
+
+    console.error("Something bad happend:", error);
+    return <h1>Something bad happend !</h1>;
+  }
+  ```
+* ```typescript
+  import { ErrorBoundary } from "react-error-boundary";
+  function MyApp() {
+    return (
+      <Layout>
+        <Header />
+        <ErrorBoundary fallback={AppErrorMessage}>
+            <Main>
+              <BlogPost />
+            </Main>
+            <NewsletterForm />
+        </ErrorBoundary>
+      </Layout>
+    )
+  }
+
+  ```
+---
+### react-error-boundary
+* Der `FallbackComponent`-Komponente wird überdies eine Funktion `resetErrorBoundary` übergeben
+* Die könnt ihr aufrufen, dann wird erneut versucht, den Komponenten-Tree unterhalb der `ErrorBoundary`-Komponente zu rendern
+* Das macht Sinn wenn es Grund zur Annahme gibt, der Fehler verschwinde später (z.B. Netzwerkverbindung ist wieder in Ordnung)
+* ```typescript
+  import { FallbackProps } from "react-error-boundary";
+
+  function AppErrorMessage( { error, resetErrorBoundary }: FallbackProps) {
+
+    console.error("Something bad happend:", error);
+    return (
+      <div>
+        <h1>Something bad happend !</h1>
+        <button onClick={ () => resetErrorBoundary() }>Try again!</button>
+      </div>
+    );
+  }
+  ```
+* Wenn ihr eine Möglichkeit habt, einen fehlerhaften Zustand zu reparieren, könnt ihr an der `ErrorBoundary`-Komponente eine `onReset`-Funktion angeben
+* Diese wird dann aufgerufen, wenn ihr `resetErrorBoundary` in der Fallback-Komponente aufruft
+---
+### react-error-boundary
+
+* Normalerweise werden Error Boundary-Komponenten von React nur dargestellt, wenn ein Fehler **beim Rendern** auftritt
+* Die `ErrorBoundary`-Komponente von `react-error-boundary` könnt ihr aber auch manuell rendern lassen, wenn z.B. in einem Event ein Fehler auftritt.
+  * So könnt ihr eure Fehlerbehandlung dann auf alle Arten von Fehlern in eurer Anwendung anwenden
+* Um die `ErrorBoundary`-Komponente anzuzeigen, verwendet ihr den `useErrorBoundary`-Hook:
+* ```typescript
+  import { useErrorBoundary } from "react-error-boundary";
+
+  function PostEditor() {
+    const { showBoundary } = useErrorBoundary();
+
+    async function saveBlogPost() {
+      try {
+        await fetch("...");
+      } catch (e) {
+        showBoundary("Could not save blog post");
+      }
+    }
+    return ...;
+  }
+  ```
+* Genau wie bei Error Boundaries, die beim Rendern aktiv werden, wir hier auch die nächsthöhere `ErrorBoundary`-Komponente angezeigt
+
+---
+### Übung: Error Boundaries
+- Kopiere `20_error_boundary/00_initial/app` in deine Anwendung
+- Wenn Du `http://localhost:3000/a/b/counter` aufrufst, bekommst du eine Counter-Komponente angezeigt
+- Diese sollst du mit einem Error Boundary umschliessen, so dass nicht die ganze Seite durch eine Fehler-Komponente ersetzt wird
+- Siehe dazu TODOs in `counter/Counter.tsx`
+- Mögliche Lösung: `20_error_boundary/02_error_boundary`
+- Wenn Du fertig bist, bitte die Hand in Zoom heben ✋
+
+
+---
+### Ausblick: Fehler protokollieren
+* <!-- .element: class="demo" --> `20_error_boundary/03_log_error`
+* Ihr könnt die Error Boundaries nutzen, um die Fehler auf dem Server zu protokollieren
+* Zum Zugriff auf dem Server könnt ihr eine Server Action nehmen
+  * oder einen eigenen HTTP-Endpunkt (Next.js API Route z.B.)
+* Das ist in jedem Fall ein Seiteneffekt, d.h. mit `useEffect` ummanteln!
+* Achtung! Dabei sicherstellen, dass es bei Fehlern beim Protokollieren nicht zu Folge-Fehlern kommt...
+* Aufpassen, welche Informationen ihr an das Backend schickt (nicht, dass da z.B. ein Passwort im Fehlertext vorkommt)
+  * (Das gilt auch für Fehler, die das Backend an den Client schickt!)
+  * Immer nur so wenig wie möglich Informationen über die Leitung schicken
+
+  </textarea
+          >
+        </section>
+
+        <section data-markdown="">
+          <textarea data-template>
+## Performance Tuning
+### Renderverhalten in React (Client) Komponenten
+---
+### Renderverhalten
+* Wenn eine Komponente ihren State ändert, werden alle Kind-Komponenten auch neu gerendert
+* Das **kann** zu Performance-Problemen in großen Hierarchien führen
+  * Wenn man kein Problem hat, muss man nichts tun
+* <!-- .element: class="demo" --> 99_memo
+---
+### Renderverhalten
+* Damit React (memo, useCallback etc.) feststellen kann, ob sich etwas verändert hat, müssen Objekte **immutable** sein
+* Das bedeutet, dass ihr Objekte und Arrays nicht direkt verändert, sondern kopiert und dann verändert
+
+---
+### Performance Tuning
+* Mit `useCallback` und `useMemo` könnt ihr in einer Komponente verhindern, dass Daten bzw. Funktionen mit jedem Rendern neu erzeugt werden
+  * Ihre Referenzen bleiben dann stabil und evtl. spart ihr Performance
+* Mit `memo` könnt ihr eine Komponente "memoisieren".
+  * Sie wird dann nur neugerendert, wenn sich mindestens ein Property verändert hat
+  * Wichtig: die Properties werden mit [Object.is](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/is) verglichen
+  * (u.a.) deswegen nie Objekte direkt verändern
+---
+### Ausblick: React Compiler
+* Das React-Team arbeitet an einem [Compiler](https://react.dev/learn/react-compiler), der uns viel arbeit abehmen wird
+* Dieser wird das Memoisieren von Daten, Funktionen und Komponenten für euch automatisch in den Code schreiben
+* Der Compiler ist zzt. noch in arbeit, man geht aber davon aus, dass er dieses Jahr noch erscheinen wird
+* In Next.js 15 RC ist der [Compiler als experimantal Flag](https://nextjs.org/blog/next-15-rc#react-compiler-experimental) bereits verfügbar
+<!-- .element: class="demo" --> Demo
+  </textarea
+          >
+        </section>
+
+        <!-- ============================================================================= -->
+        <section>
+          <h2>Geschafft! 😊</h2>
+          <h3>Vielen Dank für Eure Teilnahme!</h3>
+          <h3>Viel Spaß und Erfolg mit React!</h3>
+          <p>Wenn ihr noch Fragen habt, könnt ihr mich erreichen:</p>
+          <p>
+            Mail:
+            <a href="mailto:nils@nilshartmann.net">nils@nilshartmann.net</a>
+          </p>
+          <p>
+            Web:
+            <a href="https://nilshartmann.net" target="_blank"
+              >https://nilshartmann.net</a
+            >
+          </p>
+          <p>
+            Twitter:
+            <a href="https://twitter.com/nilshartmann" target="_blank"
+              >@nilshartmann</a
+            >
+          </p>
+        </section>
+      </div>
+    </div>
+
+    <script src="slides/revealjs/reveal.js/dist/reveal.js"></script>
+    <script src="slides/revealjs/reveal.js/plugin/notes/notes.js"></script>
+    <script src="slides/revealjs/reveal.js/plugin/markdown/markdown.js"></script>
+    <script src="slides/revealjs/reveal.js/plugin/highlight/highlight.js"></script>
+    <script src="slides/revealjs/config.js"></script>
+  </body>
+</html>

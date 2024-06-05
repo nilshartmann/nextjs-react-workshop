@@ -1,0 +1,72 @@
+import React, { ReactNode, useContext, useState, createContext } from "react";
+import Container from "./Container";
+
+type ICounterContext = {
+  value: number;
+  increase(): void;
+};
+
+type ICounterSetterContext = {
+  increase(): void;
+};
+
+const CounterContext = createContext<ICounterContext | null>(null);
+const CounterSetterContext = createContext<ICounterSetterContext | null>(null);
+
+type CounterContextProviderProps = { children?: ReactNode };
+
+export default function CounterContextProvider({ children }: CounterContextProviderProps) {
+  const [c, setC] = useState(0);
+
+  const increase = React.useCallback(() => setC(c => c + 1), []);
+
+  return (
+    <Container title="CounterContextProvider">
+      <CounterContext.Provider
+        value={{
+          increase,
+          value: c
+        }}
+      >
+        <CounterSetterContextProvider increase={increase}>{children}</CounterSetterContextProvider>
+      </CounterContext.Provider>
+    </Container>
+  );
+}
+
+type CounterSetterContextProviderProps = {
+  children?: React.ReactNode;
+  increase: () => void;
+};
+const CounterSetterContextProvider = React.memo(function CounterSetterContextProvider({
+  children,
+  increase
+}: CounterSetterContextProviderProps) {
+  return (
+    <Container title="CounterSetterContextProvider">
+      <CounterSetterContext.Provider value={{ increase }}>{children}</CounterSetterContext.Provider>
+    </Container>
+  );
+});
+
+export function useCounterContext(): ICounterContext {
+  const ctx = useContext(CounterContext);
+  if (ctx == null) {
+    throw new Error(
+      "Invalid usage of CounterContext. Please make sure, you have CounterContextProvider enabled."
+    );
+  }
+
+  return ctx;
+}
+
+export function useCounterSetterContext(): ICounterSetterContext {
+  const ctx = useContext(CounterSetterContext);
+  if (ctx == null) {
+    throw new Error(
+      "Invalid usage of CounterSetterContext. Please make sure, you have CounterSetterContextProvider enabled."
+    );
+  }
+
+  return ctx;
+}
