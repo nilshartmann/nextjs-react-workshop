@@ -135,7 +135,6 @@
         </section>
         <section data-markdown>
           <textarea data-template>
----
 ### Formales: Zeitplan
 * Montag und Dienstag, 10. und 11. Juni
 * jeweils 09.00 Uhr bis ca. 16.30 Uhr
@@ -176,6 +175,8 @@
           </textarea>
         </section>
 
+        <section data-markdown="slides/grundlagen-rsc.md"></section>
+
         <section>
           <h3>Seiteneffekte</h3>
           <ul>
@@ -207,6 +208,10 @@
           <p>
             Diese <b>Effekt-Callback</b>-Funktion wird beim <em>commit</em> der
             Komponente ausgeführt
+          </p>
+          <p>
+            Wie alle anderen Hooks, ist <code>useEffect</code> nur in
+            Client-Komponenten erlaubt.
           </p>
 
           <div>
@@ -950,7 +955,7 @@ function UserBadge() {
 * Das React-Team arbeitet an einem [Compiler](https://react.dev/learn/react-compiler), der uns viel arbeit abehmen wird
 * Dieser wird das Memoisieren von Daten, Funktionen und Komponenten für euch automatisch in den Code schreiben
 * Der Compiler ist zzt. noch in arbeit, man geht aber davon aus, dass er dieses Jahr noch erscheinen wird
-* In Next.js 15 RC ist der [Compiler als experimantal Flag](https://nextjs.org/blog/next-15-rc#react-compiler-experimental) bereits verfügbar
+* In Next.js 15 RC ist der [Compiler mit einem "experimental" Flag](https://nextjs.org/blog/next-15-rc#react-compiler-experimental) bereits verfügbar
 <!-- .element: class="demo" --> Demo
   </textarea
           >
