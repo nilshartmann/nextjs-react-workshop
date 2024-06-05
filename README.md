@@ -17,7 +17,7 @@ Auf deinem Computer benötigst Du folgende Software:
 - Einen Node Package Manager, am besten pnpm
 - Eine Entwicklungsumgebung, mit der du JavaScript bzw. TypeScript entwickeln kannst (z.B. Visual Studio Code, WebStorm oder IntelliJ).
 
-### Voraussetzungen für die Next.js-Anwendung
+### Voraussetzungen für die Arbeit mit Next.js und Node.js
 
 Wir verwenden die [Version 15-RC von Next.js](https://nextjs.org/blog/next-15-rc).
 
@@ -27,7 +27,9 @@ Dein Laptop muss mit dem Package Manager in der Lage sein, npm Packages runterzu
 
 Die Next.js-Anwendung läuft auf Port `3000`. Dieser Port muss also bei dir frei sein.
 
-## Installation
+Für das "Backend", das eine HTTP API zur Verfügung stellt, muss der Port `7000` frei sein.
+
+## Installation des Frontends
 
 ### (Optional) Schritt 1: Installation von pnpm
 
@@ -69,6 +71,30 @@ Next.js hat ein sehr aggressives Caching eingebaut. Deswegen kann es manchmal se
 - Das Verzeichnis `workspace/.next` löschen und Next.js neustarten
 
 Dieses Verhalten wird sich übrigens in [Next.js 15 ändern](https://nextjs.org/blog/next-15-rc#caching-updates), denn dort ist das Caching nicht mehr an allen Stellen per Default eingeschaltet.
+
+## Installation des Backends
+
+Das "Backend" ist eine einfache Node.js/Express-Anwendung, die einige HTTP Endpunkte zur Verfügung stellt. Bitte installiere auch hier die Abhängigkeiten:
+
+### Schritt 1: Installation der npm-Packages
+
+Das Backend befindet sich Verzeichnis `backend`. In diesem Verzeichnis auf der Kommandozeile bitte folgenden Befehl ausführen:
+
+```
+pnpm install
+```
+
+(Alternative npm oder yarn verwenden)
+
+### Schritt 2: Starten des Backends
+
+Die Backend-Anwendung kannst du im `backend`-Verzeichnis starten, in dem Du dort das `dev`-Script ausführst:
+
+```
+pnpm dev
+```
+
+Das Backend läuft nun auf Port 7000. Zum Testen kannst du einmal `http://localhost:7000/posts` aufrufen (per Webbrowser oder curl etc.). Dort sollte eine Antwort im JSON-Format zurückkommen.
 
 ## Fragen, Kommentare, Feedback
 
