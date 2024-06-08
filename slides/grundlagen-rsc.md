@@ -40,6 +40,10 @@
 
 ---
 
+## Beispiel: Blog-Anwendung
+
+---
+
 ## "Fullstack Architektur-Vision"
 
 - **React Server Components (RSC)**
