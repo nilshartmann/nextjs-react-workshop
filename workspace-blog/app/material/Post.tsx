@@ -1,6 +1,6 @@
 import { marked } from "marked"; // 36 K (gzipped: 11 K)
 
-import { INewBlogPost } from "@/app/types.ts";
+import { INewBlogPost } from "@/app/shared/types.ts";
 import { dateTimeString } from "@/app/components/date-formatter.ts";
 
 type IBlogPost = {

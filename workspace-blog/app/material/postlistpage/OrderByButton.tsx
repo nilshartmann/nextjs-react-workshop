@@ -1,6 +1,6 @@
 "use client";
 import { useSearchParams } from "next/navigation";
-import { OrderBy } from "@/app/types";
+import { OrderBy } from "@/app/shared/types.ts";
 import AppLink from "@/app/components/AppLink.tsx";
 
 type OrderByButtonProps = {

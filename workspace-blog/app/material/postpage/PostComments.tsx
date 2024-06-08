@@ -1,5 +1,5 @@
-import { componentLog } from "@/app/component-log.ts";
-import { IGetCommentsResponse } from "@/app/types.ts";
+import { componentLog } from "@/app/shared/component-log.ts";
+import { IGetCommentsResponse } from "@/app/shared/types.ts";
 
 type PostCommentsProps = {
   commentsResponse: Promise<IGetCommentsResponse>;

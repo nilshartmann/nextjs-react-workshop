@@ -1,27 +1,27 @@
 import PageHeader from "@/app/components/PageHeader";
 import ButtonBar from "@/app/components/ButtonBar";
-import PostList from "@/app/posts/PostList";
-import OrderByButton from "@/app/posts/OrderByButton";
-import { OrderBy } from "@/app/types";
-import { componentLog } from "@/app/component-log";
+import PostList from "@/app/material/postlistpage/PostList.tsx";
+import OrderByButton from "@/app/material/postlistpage/OrderByButton.tsx";
+import { OrderBy } from "@/app/shared/types.ts";
+import { componentLog } from "@/app/shared/component-log.ts";
+import PostListOrderButtons from "@/app/material/postlistpage/PostListOrderButtons.tsx";
+import { fetchPosts } from "@/app/shared/blog-fetch.ts";
 type PostListPageProps = {
   searchParams: {
-    order_by: "date_asc" | "date_desc";
+    order_by: "asc" | "desc";
   };
 };
 
-export default function PostListPage({ searchParams }: PostListPageProps) {
+export default async function PostListPage({
+  searchParams,
+}: PostListPageProps) {
   componentLog("PostListPage", { searchParams });
-  const orderBy = searchParams.order_by as OrderBy;
+  const orderBy = searchParams.order_by;
+  const postsPromise = fetchPosts(orderBy);
   return (
-    <div className={"Page"}>
-      <div className={"Main"}>
-        <ButtonBar>
-          <OrderByButton orderBy={"desc"} />
-          <OrderByButton orderBy={"asc"} />
-        </ButtonBar>
-        <PostList orderBy={orderBy} />
-      </div>
-    </div>
+    <>
+      <PostListOrderButtons />
+      <PostList postsPromise={postsPromise} />
+    </>
   );
 }

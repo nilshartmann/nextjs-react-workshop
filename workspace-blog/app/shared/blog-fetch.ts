@@ -1,4 +1,4 @@
-import { componentLog } from "@/app/component-log";
+import { componentLog } from "@/app/shared/component-log.ts";
 import {
   GetCommentsResponse,
   GetPostResponse,
@@ -7,14 +7,14 @@ import {
   IGetPostResponse,
   IGetPostsResponse,
   OrderBy,
-} from "@/app/types.ts";
-import { apiUrl } from "@/app/api-url.ts";
+} from "@/app/shared/types.ts";
+import { apiUrl } from "@/app/shared/api-url.ts";
 import {
   delayPostComments,
   delayPostList,
   delayPostPage,
   delaySavePost,
-} from "@/app/demo-config.ts";
+} from "@/app/shared/demo-config.ts";
 
 export async function fetchPost(postId: string): Promise<IGetPostResponse> {
   const response = await blogFetch(

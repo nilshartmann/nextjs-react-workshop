@@ -1,8 +1,8 @@
 import LoadingIndicator from "@/app/components/LoadingIndicator.tsx";
 import { Suspense } from "react";
-import Post from "@/app/posts/[postId]/Post.tsx";
-import PostComments from "@/app/posts/[postId]/PostComments.tsx";
-import { fetchComments, fetchPost } from "@/app/blog-fetch.ts";
+import Post from "@/app/material/Post.tsx";
+import PostComments from "@/app/material/postpage/PostComments.tsx";
+import { fetchComments, fetchPost } from "@/app/shared/blog-fetch.ts";
 
 type PostPageParams = {
   postId: string;
@@ -11,6 +11,9 @@ type PostPageProps = {
   params: PostPageParams;
 };
 export default async function PostPage({ params }: PostPageProps) {
+  // todo: mit fetchPost das Post laden
+  // todo #2: mit fetchComments die Kommentare laden
+
   const postPromise = fetchPost(params.postId);
   const comments = fetchComments(params.postId);
 

@@ -1,6 +1,6 @@
-import { dateTimeString } from "@/app/components/date-formatter";
-import AppLink from "@/app/components/AppLink";
-import { IBlogPostSchema } from "@/app/types.ts";
+import { dateTimeString } from "@/app/components/date-formatter.ts";
+import AppLink from "@/app/components/AppLink.tsx";
+import { IBlogPostSchema } from "@/app/shared/types.ts";
 
 function postAbstract({ body }: IBlogPostSchema) {
   return body.length > 150 ? body.substring(0, 150) + "..." : body;
