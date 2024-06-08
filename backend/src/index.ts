@@ -7,6 +7,8 @@ let posts = createPostsData();
 let comments = createCommentsData();
 let users = createUserData();
 
+let requestCounter = 0;
+
 type SortableByDate = {
   date: string;
 };
@@ -50,6 +52,13 @@ app.use((req, res, next) => {
   res.header("Access-Control-Allow-Credentials", "true");
 
   res.header("x-backend-started-at", new Date().toISOString());
+
+  const meta: Record<string, string | number | Date> = {};
+  ++requestCounter;
+  meta.path = req.path;
+  meta.requestId = `${requestCounter}`;
+  meta.receivedAt = new Date();
+  res.locals.meta = meta;
 
   next();
 });
@@ -99,7 +108,7 @@ app.get("/posts/:postId", (req: Request, res: Response) => {
     });
   }
 
-  return res.status(200).json(post);
+  return res.status(200).json({ data: post, meta: res.locals.meta });
 });
 
 app.get("/posts/:postId/comments", (req: Request, res: Response) => {
@@ -112,7 +121,7 @@ app.get("/posts/:postId/comments", (req: Request, res: Response) => {
   }
 
   const commentsForPost = comments.filter((c) => c.postId === postId);
-  return res.json(commentsForPost);
+  return res.json({ data: commentsForPost, meta: res.locals.meta });
 });
 
 app.post("/posts/:postId/like", (req, res) => {
@@ -126,19 +135,21 @@ app.post("/posts/:postId/like", (req, res) => {
       .json({ error: `Post '${req.params.postId}' not found` });
   }
 
-  if (post.id === "P9") {
-    // simluation: error in processing
-    return res.status(200).json({
-      postId: post.id,
-      likes: "nobody likes me",
-    });
-  }
+  // if (post.id === "P9") {
+  //   // simluation: error in processing
+  //   return res.status(200).json({
+  //     postId: post.id,
+  //     likes: "nobody likes me",
+  //   });
+  // }
 
   post.likes = post.likes + 1;
-
   res.status(200).json({
-    postId: post.id,
-    likes: post.likes,
+    data: {
+      postId: post.id,
+      likes: post.likes,
+    },
+    meta: res.locals.meta,
   });
 });
 
@@ -191,7 +202,7 @@ app.get("/posts", (req, res) => {
     result.sort(orderByDateNewestFirst);
   }
 
-  res.status(200).json(result);
+  res.status(200).json({ data: result, meta: res.locals.meta });
 });
 
 app.post("/posts/:postId/comments", (req, res) => {
@@ -245,7 +256,7 @@ app.post("/posts", (req, res) => {
   }
 
   const newPost = {
-    user_id: "",
+    userId: "",
     title: post.title,
     teaser:
       post.body.length > 120 ? post.body.substring(0, 120) + "..." : post.body,

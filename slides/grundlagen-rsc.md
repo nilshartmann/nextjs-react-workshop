@@ -1,12 +1,42 @@
 ### Grundlagen und Wiederholung
 
-## React (Server) Components
+---
+
+### Single-Page-Anwendungen mit React.js
+
+- React war (ist?) eine Bibliothek zur Entwicklung rein clientseitigen Webanwendungen (Single-Page-Anwendungen)
+- Single-Page-Anwendungen werden in JavaScript geschrieben und laufen vollständig **im Browser**
+
+  - Die UI-Logik wird also ausschliesslich im Client umgesetzt und ausgeführt
+
+- Die Kommunikation mit dem Backend erfolgt in der Regel über **HTTP APIs** (z.B. REST oder GraphQL)
 
 ---
 
-## "Fullstack Architektur-Vision"
+### Serverseitiges Rendern mit React (SSR)
 
-- [https://react.dev/learn/start-a-new-react-project#which-features-make-up-the-react-teams-full-stack-architecture-vision](https://react.dev/learn/start-a-new-react-project#which-features-make-up-the-react-teams-full-stack-architecture-vision)
+- SSR bedeutet das beim **ersten Zugriff** auf eure Anwendung die abgefragte Seite auf dem Server gerendert und fertig **als HTML** zum Browser geschickt wird.
+- Der Browser kann die Seite also **sofort anzeigen**
+- Dann lädt der Browser aber auch den vollständigen JavaScript-Code euer Anwendung
+- Alle weiteren Interaktionen erfolgen dann über JavaScript (wie bei SPAs üblich)
+
+---
+
+### React und Next.js
+
+- Seit ca. einem Jahr (Anfang 2023) empfiehlt React nun aber ein "Fullstack-Framework"
+- <img src="/slides/images/fullstack-framework.png" style="width:100%">
+
+---
+
+### Fullstack Anwendungen
+
+- Bei Fullstack-Anwendungen werden Teile der UI-Logik in den Server geschoben
+- Für React-basierte Ansätze bedeutet das:
+  - Ihr schreibt weiterhin "eine" Anwendung (mit React/Next.js) in JavaScript
+  - Aber: Teile eurer Komponenten werden jetzt **zur Laufzeit** auf dem **Server** gerendert
+  - Die Anwendung läuft also nicht mehr vollständig im Browser, man braucht einen JS-fähigen Server
+- Warum sollte man das tun? 🤔 Warum empfiehlt React diesen Ansatz? 🤔 Inwiefern ist eine Fullstack-Anwendung besser als Single-Page-Anwendung? 🤔 Gibt es Nachteile? 🤔
 
 ---
 
@@ -14,12 +44,15 @@
 
 - **React Server Components (RSC)**
 
-  - Komponenten, die auf dem Server, Client und im Build gerendert werden können
+  - Komponenten, die auf dem Server oder zur Buildzeit gerendert werden können
   - Data Fetching "integriert"
 
 - **Suspense**
+
   - Platzhalter für "langsame" Teile einer Seite
   - Mit Streaming können diese Teile einer Seite "nachgeliefert" werden, sobald sie gerendert sind
+
+- [https://react.dev/learn/start-a-new-react-project#which-features-make-up-the-react-teams-full-stack-architecture-vision](https://react.dev/learn/start-a-new-react-project#which-features-make-up-the-react-teams-full-stack-architecture-vision)
 
 ---
 
@@ -29,29 +62,18 @@
 
 ---
 
-### React Server Components
-
-- **Idee:** Komponenten werden **nicht** im **Client** ausgeführt
-- Sie stehen auf dem Client nur **fertig gerendert** zur Verfügung
-- Der Server schickt lediglich _eine Repräsentation der UI_, aber _keinen JavaScript-Code_
-- Das Format ist (im Gegensatz zu SSR) **nicht HTML**
-- Kann aber mit SSR kombiniert werden
-- React bzw. JavaScript muss also im Client laufen
-
----
-
 ### Arten von Komponenten
 
-- **Client-Komponenten** (wie bisher)
+- **Client-Komponenten**
 
 - Werden auf dem **Client** gerendert
 - oder auf dem **Server** 🙄
 
-- Wie bisher:
+- "Klassische" und ursprüngliche Komponente, mit denen man React-Anwendungen baut:
   - JavaScript-Code wird vollständig zum Client gesendet
   - Der JavaScript-Code wird auf dem Client ausgeführt
   - Die Komponenten können interaktiv sein
-    - Event-Listener etc.
+    - Zum Beispiel auf Button-Klick oder Eingaben reagieren
 
 ---
 
@@ -62,9 +84,12 @@
 - werden auf dem **Server** gerendert
 - oder im **Build** 🙄
 
-- liefern UI (!) zum React-Client zurück (kein JavaScript-Code)
-- Werden im Client nicht "ausgeführt"
-- ...und können folglich nicht interaktiv sein (nur ohne JS)
+- Der Server schickt dafür lediglich _eine Repräsentation der UI_, aber _keinen JavaScript-Code_
+  - Die "Repräsentation" wird von React im Client in die Anwendung eingebaut
+  - React (bzw. Next.js) muss also im Client laufen
+  - **Server Komponenten** bedeutet _nicht_, das man gar kein JavaScript im Browser hat.
+- Komponenten werden **nicht** im **Client** ausgeführt
+  - ...und können folglich nicht interaktiv sein (nur ohne JS)
 
 ---
 
@@ -73,9 +98,11 @@
 - Die Komponenten gemischt werden:
 - Server-Komponenten können Client-Komponenten einbinden
   - (umgekehrt geht es nicht)
-- Dann wird alles bis zur ersten Client-Komponente gerendert an den Client gesendet
-  - (Mit SSR auch die Client-Komponenten)
-- <!-- .element: class="demo" --> Hello-React-Client-und-Server-World
+- Dann wird alles bis zur ersten Client-Komponente gerendert und an den Client gesendet
+
+<!-- .element: class="demo" -->Eine "Message"-Komponente
+<!-- .element: class="demo" -->Eine Server-Komponente (Route), die die Message-Komponente rendert
+<!-- .element: class="demo" -->Eine zweite Route mit einer Client-Komponente, die ebenfalls die Message-Komponente rendert
 
 ---
 
@@ -288,6 +315,7 @@
 
 - Ob ihr Zod in eurer Anwendung einsetzt, bleibt natürlich euch überlassen
 - In der Beispiel-Anwendung wird Zod verwendet, um Daten, die von der Backend API gelesen wurden zu validieren
+<!-- .element: class="todo" -->Übung: Zod
 
 ---
 

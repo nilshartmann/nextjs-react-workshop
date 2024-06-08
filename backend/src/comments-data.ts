@@ -47,7 +47,7 @@ export function createCommentsData() {
       username: "Nancy",
     },
     {
-      postId: 1,
+      postId: "P1",
       id: "9",
       comment:
         "Iterative approaches to corporate strategy foster collaborative thinking to further the overall value proposition",

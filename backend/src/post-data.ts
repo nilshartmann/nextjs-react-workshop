@@ -2,7 +2,7 @@ export function createPostsData() {
   const posts = [
     {
       id: "P7",
-      user_id: "U5",
+      userId: "U5",
       title: "Keep calm and learn React!",
       date: "2021-01-10T14:03:04.529Z",
       teaser:
@@ -12,11 +12,11 @@ export function createPostsData() {
         "\n" +
         "Naff off ridiculous golly gosh Bob's your uncle darling it's spitting, ear hole bowler hat getting on my wick plum pudding supper black pudding, get away with ya completely starkers a comely wench fork out.",
       tags: "Routing,React,Bootstrap,URL",
-      likes: 3
+      likes: 3,
     },
     {
       id: "P8",
-      user_id: "U1",
+      userId: "U1",
       title: "Increasing React developer experience",
       date: "2020-04-17T10:07:04.529Z",
       teaser:
@@ -31,11 +31,11 @@ export function createPostsData() {
         "\n" +
         "Rub butt on table. Lick butt.",
       tags: "JavaScript,WebDev",
-      likes: 12
+      likes: 12,
     },
     {
       id: "P9",
-      user_id: "U2",
+      userId: "U2",
       title: "Using Redux with care",
       date: "2020-04-02T10:07:04.529Z",
       teaser:
@@ -47,11 +47,11 @@ export function createPostsData() {
         "\n" +
         "Nam liber tempor cum soluta nobis eleifend option congue nihil imperdiet doming id quod mazim placerat facer possim assum. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.",
       tags: "React,Best Practice,Marzipan",
-      likes: 6
+      likes: 6,
     },
     {
       id: "P4",
-      user_id: "U3",
+      userId: "U3",
       title: "Do's and don'ts with React",
       date: "2020-01-07T03:15:03.529Z",
       teaser:
@@ -63,11 +63,11 @@ export function createPostsData() {
         "\n" +
         "Danish sweet roll chocolate bar pie cheesecake. Bear claw halvah powder candy chocolate cake chocolate bar sugar plum tootsie roll I love. Chocolate tiramisu candy canes cheesecake.",
       tags: "React,Best Practice,Marzipan",
-      likes: 9
+      likes: 9,
     },
     {
       id: "P2",
-      user_id: "U2",
+      userId: "U2",
       title: "My Story on JavaScript",
       date: "2020-01-04T16:12:03.529Z",
       teaser:
@@ -81,11 +81,11 @@ export function createPostsData() {
         "\n" +
         "Lucio fulci tremor est dark vivos magna. Expansis creepy arm yof darkness ulnis witchcraft missing carnem armis Kirkman Moore and Adlard caeruleum in locis. Romero morbo Congress amarus in auras. Nihil horum sagittis tincidunt, zombie slack-jawed gelida survival portenta.",
       tags: "JavaScript,WebDev",
-      likes: 4
+      likes: 4,
     },
     {
       id: "P1",
-      user_id: "U1",
+      userId: "U1",
       title: "Routing Solutions for React",
       date: "2020-01-03T10:07:04.529Z",
       teaser:
@@ -103,11 +103,11 @@ export function createPostsData() {
         "\n" +
         "I bet you’re still using Bootstrap too…",
       tags: "Routing,React,Bootstrap,URL",
-      likes: 1
+      likes: 1,
     },
     {
       id: "P6",
-      user_id: "U5",
+      userId: "U5",
       title: "Styling your Components",
       date: "2019-12-11T07:43:04.529Z",
       teaser:
@@ -119,11 +119,11 @@ export function createPostsData() {
         "\n" +
         "Now that we know who you are, I know who I am. I'm not a mistake! It all makes sense! In a comic, you know how you can tell who the arch-villain's going to be? He's the exact opposite of the hero. And most times they're friends, like you and me! I should've known way back when... You know why, David? Because of the kids. They called me Mr Glass.",
       tags: "React,CSS",
-      likes: 3
+      likes: 3,
     },
     {
       id: "P5",
-      user_id: "U4",
+      userId: "U4",
       title: "Something to remember when learning new tech",
       date: "2019-12-09T16:13:04.529Z",
       teaser: "It's not always easy, but don't give up too early",
@@ -136,11 +136,11 @@ export function createPostsData() {
         "\n" +
         "Celery quandong swiss chard chicory earthnut pea potato. Salsify taro catsear garlic gram celery bitterleaf wattle seed collard greens nori. Grape wattle seed kombu beetroot horseradish carrot squash brussels sprout chard.",
       tags: "JavaScript,WebDev",
-      likes: 2
+      likes: 2,
     },
     {
       id: "P3",
-      user_id: "U7",
+      userId: "U7",
       title: "Handling complex state",
       date: "2019-11-30T05:18:22.529Z",
       teaser:
@@ -152,11 +152,11 @@ export function createPostsData() {
         "\n" +
         "Tail sed cillum, esse non elit pork belly pork loin eiusmod. Ut boudin rump, kielbasa aliqua alcatra kevin. Sausage excepteur ut occaecat labore. Drumstick cillum nostrud pork belly. Ground round ullamco pork chuck. Eu nulla pork chop aute andouille kevin duis ut kielbasa.Does your lorem ipsum text long for something a little meatier? Give our generator a try… it’s tasty!",
       tags: "React,State,Redux,Context",
-      likes: 1
+      likes: 1,
     },
     {
       id: "P10",
-      user_id: "U2",
+      userId: "U2",
       title: "Understanding State",
       date: "2019-04-18T15:05:04.529Z",
       teaser:
@@ -170,7 +170,7 @@ export function createPostsData() {
         "\n" +
         "»Es ist ein eigentümlicher Apparat«, sagte der Offizier zu dem Forschungsreisenden und überblickte mit einem gewissermaßen bewundernden Blick den ihm doch wohlbekannten Apparat.",
       tags: "State,Redux,WebDev",
-      likes: 12
+      likes: 12,
     },
   ];
 
