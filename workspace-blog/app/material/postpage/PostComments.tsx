@@ -2,14 +2,14 @@ import { componentLog } from "@/app/shared/component-log.ts";
 import { IGetCommentsResponse } from "@/app/shared/types.ts";
 
 type PostCommentsProps = {
-  commentsResponse: Promise<IGetCommentsResponse>;
+  commentsPromise: Promise<IGetCommentsResponse>;
 };
 
 export default async function PostComments({
-  commentsResponse,
+  commentsPromise,
 }: PostCommentsProps) {
   componentLog("PostComments");
-  const { data: comments, meta } = await commentsResponse;
+  const { data: comments } = await commentsPromise;
   return (
     <div className={"Container"}>
       <h1>Comments</h1>

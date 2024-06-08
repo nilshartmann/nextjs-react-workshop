@@ -3,6 +3,8 @@ import { Suspense } from "react";
 import Post from "@/app/material/Post.tsx";
 import PostComments from "@/app/material/postpage/PostComments.tsx";
 import { fetchComments, fetchPost } from "@/app/shared/blog-fetch.ts";
+import PostPageContent from "@/app/posts/[postId]/PostPageContent.tsx";
+import { notFound } from "next/navigation";
 
 type PostPageParams = {
   postId: string;
@@ -14,23 +16,11 @@ export default async function PostPage({ params }: PostPageProps) {
   // todo: mit fetchPost das Post laden
   // todo #2: mit fetchComments die Kommentare laden
 
-  const postPromise = fetchPost(params.postId);
-  const comments = fetchComments(params.postId);
+  const post = await fetchPost(params.postId);
 
-  const post = await postPromise;
+  if (!post) {
+    notFound();
+  }
 
-  return (
-    <>
-      <Post post={post.data} />
-
-      <Suspense
-        fallback={<LoadingIndicator>Loading Comments...</LoadingIndicator>}
-      >
-        <PostComments commentsResponse={comments} />
-      </Suspense>
-    </>
-  );
+  return <PostPageContent post={post} />;
 }
-
-//
-// {/**/}

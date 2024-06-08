@@ -133,9 +133,9 @@
 
 - React Server Componentens können asynchron sein!
 
-- <!-- .element: class="demo" -->recipes/page.tsx anlegen
+- <!-- .element: class="demo" -->posts/page.tsx anlegen
 
-- <!-- .element: class="demo" -->DB-Zugriff mit `fetchRecipes`
+- <!-- .element: class="demo" -->DB-Zugriff mit `fetchPosts`
 - <!-- .element: class="demo" -->weiterhin eine statische Komponente bislang! Build! console.log!
 
 ---
@@ -148,13 +148,13 @@
 - Innerhalb der RSC könnt ihr dann mit Promises arbeiten und mit `await` auf diese warten
 - Ihr könnt z.B. `fetch`-Aufrufe machen, Datenbank-Zugriffe oder die Node.JS API verwenden, um Dateien von der Festplatte zu lesen
 - ```tsx
-  export default async function RecipeList() {
+  export default async function PostsList() {
     // Dieser Fetch-Call wird im Next.js-Backend (!) ausgeführt!
-    const response = await fetch("http://localhost:8100/api/recipes");
+    const response = await fetch("http://localhost:7000/posts");
     const recipes = await response.json();
 
     // ...
-    return <RecipeList recipes={recipes} />;
+    return <PostList recipes={recipes} />;
   }
   ```
 
@@ -162,8 +162,8 @@
 
 ### Überbrücken der Wartezeit
 
-- Was passiert, wenn wir die `RecipeList` (`/recipes`) aufrufen und der `fetch`-Call "lange" dauert? 🤔
-- Was passiert, wenn wir die `/recipes`-Route zweimal hintereinander aufrufen? 🤔
+- Was passiert, wenn wir die `PostList` (`/posts`) aufrufen und der `fetch`-Call "lange" dauert? 🤔
+- Was passiert, wenn wir die `/posts`-Route zweimal hintereinander aufrufen? 🤔
 
 ---
 
@@ -325,15 +325,15 @@
 
 ### Übung: Asynchrone Server Komponenten
 
-- **Baue die Komponente für die Rezept Übersicht (`/recipes`)**
-- Du musst deine bestehende Komponente (`/app/recipes/page.tsx`) nun erweitern:
+- **Baue die Komponente für die Blog-Post-Liste (`/posts`)**
+- Du musst deine bestehende Komponente (`/app/posts/page.tsx`) nun erweitern:
   - sie soll asynchron sein
-  - Die Funktion zum Laden der Rezepte ist schon fertig: `fetchRecipes`
-  - Die geladenen Rezepte kannst Du mit der ferigen Komponente `RecipeCard` rendern
+  - Die Funktion zum Laden der Blogposts ist schon fertig: `fetchPosts`
+  - Die geladenen Rezepte kannst Du mit der fertigen Komponente `PostList` rendern
 - Baue eine `loading`-Komponente, die angezeigt wird, während die Daten geladen werden
-  - Gib darin einfach "irgendwas" aus oder verwende die fertige Komponente `GlobalLodingIndicator`
+  - Gib darin einfach "irgendwas" aus oder verwende die fertige Komponente `LoadingIndicator`
   - Um die Komponente zu testen, kannst Du das Laden der Daten künstlich verzögern:
-    - gehe dazu in `demo-config.ts` und setze `slowDown_GetRecipeList` z.B. auf `1600` (Verzögerung von 1,6 Sekunden)
+    - gehe dazu in `demo-config.ts` und setze `delayPostList` z.B. auf `1600` (Verzögerung von 1,6 Sekunden)
 - Du findest Ausgangsmaterial mit weiteren Hinweisen in `schritte/20_async_rsc/ausgang`
 - Eine Lösung findest Du in `schritte/20_async_rsc/fertig`
 
@@ -360,20 +360,20 @@
 
 ### Mehr zu Next.js Routen
 
-- Ein Pfad in eckigen Klammern (`/recipes/[recipeId]`) definiert einen Platzhalter. Der Wert für das Segment in der URL wird der Komponente dann zur Laufzeit als Property an die Routen-Komponente übergeben
+- Ein Pfad in eckigen Klammern (`/posts/[postId]`) definiert einen Platzhalter. Der Wert für das Segment in der URL wird der Komponente dann zur Laufzeit als Property an die Routen-Komponente übergeben
 - Die Properties, die eine Routen-Komponente bekommt, sind von Next.js vorgegeben
 - Die Werte für die variablen Segmente werden als Objekt mit dem Namen `params` übergeben
-- Darin enthalten ist der Wert für jedes variable Segment(`[recipeId]`) ohne die eckigen Klammern (`recipeId`):
+- Darin enthalten ist der Wert für jedes variable Segment(`[postId]`) ohne die eckigen Klammern (`postId`):
 - ```typescript
-  // /app/recipes/[recipeId]/page.tsx
+  // /app/posts/[postId]/page.tsx
 
-  type RecipePageProps = {
-    params: { recipeId: string };
+  type PostPageProps = {
+    params: { postId: string };
   };
 
-  export default function RecipePage({ params }: RecipePageProps) {
-    // params.recipeId enthält den Wert aus der URL (R1, R2, ...)
-    const recipeId = params.recipeId;
+  export default function PostPage({ params }: PostPageProps) {
+    // params.postId enthält den Wert aus der URL (R1, R2, ...)
+    const postId = params.postId;
 
     // ...
   }
@@ -387,25 +387,25 @@
 - Das ist zum Beispiel nützlich, wenn Daten geladen wurden, die es nicht gibt
 - `notFound` bricht die Ausführung der Komponenten-Funktion ab, man braucht kein `return` hinzuschreiben
 - ```tsx
-  // /app/recipes/[recipeId]/page.tsx
+  // /app/posts/[postId]/page.tsx
   import { notFound } from "next/navigation";
-  export default async function RecipePage({ params }: RecipePageProps) {
-    const recipeId = params.recipeId;
+  export default async function RecipePage({ params }: PostPageProps) {
+    const postId = params.postId;
 
-    const recipe = await fetchRecipe(postId);
-    if (!recipe) {
+    const post = await fetchPost(postId);
+    if (!post) {
       notFound(); // kein return notwendig
     }
 
-    return <Receipe recipe={recipe} />;
+    return <Post post={post} />;
   }
   ```
 
 - In der Datei `not-found.tsx` kannst Du dann per `export default` eine Komponente exportieren, die im Fehlerfall angezeigt wird
 - ```tsx
-  // /app/recipes/[recipeId]/not-found.tsx
-  export default function RecipeNotFound() {
-    return <div>Recipe not found :-(</div>;
+  // /app/posts/[postId]/not-found.tsx
+  export default function PostNotFound() {
+    return <div>Post not found :-(</div>;
   }
   ```
 
@@ -424,15 +424,15 @@
 
 ### Übung: eine dynamische Route
 
-- **Implementiere die Route zur Einzeldarstellung eines Rezepts**
-- Das Verzeichnis ist `app/recipes/[recipeId]`
-- Lies in der Komponente die `recipeId` aus dem `params`-Objekt das als `props` an die Komponente übergeben wird
-- Dann kannst du die fertige Funktion `fetchRecipe` verwenden, um das Rezept zu laden
-  - Wenn diese Funktion `null` zurückgibt, wurde das Rezept nicht gefunden, dann verwende `notFound()` um die Fehler-Komponente zu rendern
-  - Wenn diese Funktion ein Rezept zurückliefert, kannst Du das an die fertige `RecipePageContent`-Komponente übergeben
-- Was passiert, wenn ein Rezept nicht gefunden wurde? Testen kannst du das, in dem Du z.B. `/recipes/123` aufrufst
+- **Implementiere die Route zur Einzeldarstellung eines Blog-Posts**
+- Das Verzeichnis ist `app/posts/[postId]`
+- Lies in der Komponente die `postId` aus dem `params`-Objekt das als `props` an die Komponente übergeben wird
+- Dann kannst du die fertige Funktion `fetchPost` verwenden, um das Rezept zu laden
+  - Wenn diese Funktion `null` zurückgibt, wurde der Blog-Post nicht gefunden, dann verwende `notFound()` um die (Default) Fehler-Komponente zu rendern
+  - Wenn diese Funktion ein Post zurückliefert, kannst Du das an die fertige `Post`-Komponente übergeben
+- Was passiert, wenn ein Rezept nicht gefunden wurde? Testen kannst du das, in dem Du z.B. `/posts/123` aufrufst
 - Eine Lösung findest Du in `schritte/30_dynamic_segments`
-- **Optional**: baue eine `not-found`-Komponente, die einen Fehler anzeigt, wenn ein Rezept nicht gefunden wurde
+- **Optional**: baue eine `not-found`-Komponente, die einen Fehler anzeigt, wenn ein Post nicht gefunden wurde
 
 ---
 
@@ -445,15 +445,15 @@
 - ```tsx
   async function loadData(...) {}
 
-  async function RecipeList() {
-    const posts = await loadRecipes();
+  async function PostList() {
+    const posts = await loadPosts();
 
     return <>...</>;
   }
 
-  function RecipeListPage() {
+  function PostListPage() {
     return <Suspense> fallback={"Please wait"}>
-      <RecipeList />
+      <PostList />
     </Suspense>
   }
   ```
@@ -480,7 +480,7 @@
     ```
 
   // page.tsx
-  export default async function RecipeListPage() {
+  export default async function PostListPage() {
   const data = await loadData();
   return <>...</>;
   }
@@ -513,12 +513,12 @@
 
 ### Wasserfall-Requests
 
-- Die `RecipePage`-Komponente benötigt Daten aus zwei Quellen: Das Rezept und dessen Bewertungen
+- Die `PostPage`-Route benötigt Daten aus zwei Quellen: Den Blog-Post und dessen Kommentare
 - Die Antwortzeit der beiden Requests dafür kann bei jedem Aufruf unterschiedlich lang sein
 - In einer klassischen React-Architektur könnte es zu einem "Request-Wasserfall" kommen:
-  - RecipePage lädt die Rezept-Daten (`fetchRecipe`). So lange wird der Platzhalter angezeigt
-  - Dann wird die `ReceipePageContent`-Komponente gerendert
-  - Diese verwendet die `FeedbackList`-Komponente ein. Diese lädt nun (ebenfalls) per `fetch` ihre Daten und stellt sich dar.
+  - PostPage lädt die Post-Daten (`fetchPost`). So lange wird der Platzhalter angezeigt.
+  - Dann wird die `PostPageContent`-Komponente gerendert
+  - Diese lädt nun (ebenfalls) per `fetch` die Kommentare und stellt sich dar.
   - Die beiden Requests starten also nicht zeitgleich, und die Dauer, bis die Daten vollständig angezeigt werden können, setzt sich aus der Dauer der **beiden** Requests zusammen
 - Kennt ihr das Problem? Meint ihr das ist ein Problem? Was könnte man dagegen tun 🤔
 
@@ -528,8 +528,8 @@
 
 - Mit `Suspense` können wir grundsätzlich priorisieren, was uns wichtig(er) ist:
   1. Die Seite wird erst dargestellt, wenn **alle** Daten geladen sind
-  2. Sobald "irgendwelche" Daten (Rezept **oder** Feedback) geladen wurden, diese Daten sofort anzeigen.
-  3. Auf die **Rezepte warten**, und die Seite erst dann darstellen. Falls Bewertungen "schneller" sind, die Bewertungen nicht vorab anzeigen.
+  2. Sobald "irgendwelche" Daten (Blog-Post **oder** Kommentare) geladen wurden, diese Daten sofort anzeigen.
+  3. Auf den **Blog-Post warten**, und die Seite erst dann darstellen. Falls Kommentare "schneller" sind, die Kommentare nicht vorab anzeigen.
 - <!-- .element: class="demo" --> Die ersten beiden Beispiel durchgehen
 - <!-- .element: class="demo" --> Wie können wir das dritte Umsetzen? 🤔
 
@@ -539,26 +539,26 @@
 
 - Mit `Suspense` können wir grundsätzlich priorisieren, was uns wichtig(er) ist:
   1. Die Seite wird erst dargestellt, wenn **alle** Daten geladen sind
-  2. Sobald "irgendwelche" Daten (Rezept **oder** Feedback) geladen wurden, diese Daten sofort anzeigen.
-  3. Auf die **Rezepte warten**, und die Seite erst dann darstellen. Falls Bewertungen "schneller" sind, die Bewertungen nicht vorab anzeigen.
+  2. Sobald "irgendwelche" Daten (Blog-Post **oder** Kommentare) geladen wurden, diese Daten sofort anzeigen.
+  3. Auf den **Blog-Post warten**, und die Seite erst dann darstellen. Falls Kommentare "schneller" sind, die Kommentare nicht vorab anzeigen.
 - Für 1. setzen wir ein `Suspense` um die ganze Seite (z.B. in dem wir `loading.tsx` verwenden)
 - Für 2. setzen wir jeweils ein `Suspense` um die **Komponente**, in der die Daten geladen werden
 - Für 3. starten wir beide Requests sofort parallel beim Rendern der Page-Komponente
-  - Diese wartet dann auf den Rezept-Request (`await fetchRecipe`)
-  - Das Promise für den Bewertungen-Request wird an die `FeedbackList`-Komponente gegeben
-  - In der `FeedbackList`-Komponente wird auf die Daten gewartet (`await fetchFeedback`)
-  - Um die `FeedbackList`-Komponente herum wird eine `Suspense`-Komponente gelegt.
+  - Diese wartet dann auf den Blog-Post-Request (`await fetchPost`)
+  - Das Promise für den Kommentare-Request wird an die `PostComments`-Komponente gegeben
+  - In der `PostComments`-Komponente wird auf die Daten gewartet (`await fetchComments`)
+  - Um die `PostComments`-Komponente herum wird eine `Suspense`-Komponente gelegt.
 
 ---
 
 ### Übung: Suspense und Streaming
 
-- **Lade die Bewertungen zu einem Rezept**
-- Die Route `/app/recipe/[recipeId]/page.tsx` verwendet die `RecipePageContent`-Komponente um das Rezept darzustellen
-- In der `RecipePageContent`-Komponente musst du nun noch die Bewertungen laden (`fetchFeedback`) und mit der `FeedbackListLoader`-Komponente anzeigen
-  - (Die `fetchFeedback`-Funktion und die `FeedbackListLoader`-Komponente sind bereits fertig)
+- **Lade die Kommentare zu einem Blog-Post**
+- Die Route `/app/posts/[postId]/page.tsx` verwendet die `PostPageContent`-Komponente um den Blog-Post darzustellen
+- In der `PostPageContent`-Komponente musst du nun noch die Bewertungen laden (`fetchComments`) und mit der `PostComments`-Komponente anzeigen
+  - (Die `fetchComments`-Funktion und die `PostComments`-Komponente sind bereits fertig)
 - Überlege dir, an welchen Stellen es aus deiner Sicht fachlich Sinn macht auf Daten zu warten und setze die `Suspense`-Komponente entsprechend
-  - Du kannst die beiden Requests künstlich langsam machen, in dem Du in `demo-config.ts` bei `slowDown_GetRecipe` und `slowDown_GetFeedbacks` einen Timeout (in ms) einstellst.
+  - Du kannst die beiden Requests künstlich langsam machen, in dem Du in `demo-config.ts` bei `delayPostPage` und `delayPostComments` einen Timeout (in ms) einstellst.
 - Falls du bei der vorherigen Übung nicht fertig geworden bist, kopiere die fertigen Dateien aus `30_dynamic_segments` in deinen Workspace-Ordner.
 - Lösung in `schritte/40_suspense`
 
@@ -571,7 +571,7 @@
 ### Konsequenzen
 
 - React Server Component können keine Hooks verwenden und auch sonst nicht interaktiv sein
-- `useState` oder `useEffect` zum Beispiel gehen beide nicht
+- `useState` oder `useEffect` zum Beispiel gehen beide nicht und auch Next.js Hooks wie `useRouter` oder `usePathname`
 - Für alle Stellen, an denen wir Interaktivität benötigen, müssen wir **Client Components** bauen
 - Das sind Komponenten, die sich wie bisherige "klassische" React-Komponenten verhalten:
   - Ihr JavaScript-Code wird bei Bedarf zum Client geschickt
@@ -590,7 +590,7 @@
 
 ### Konsequenzen
 
-<img src="slides%2Fimages%2Freact-anwendung.png" style="max-height:900px;float:left"/>
+<img src="/slides/images/react-anwendung.png" style="max-height:900px;float:left"/>
 
 - **Eine "normale" React-Anwendung im Browser**:
 - State befindet sich oben
@@ -602,7 +602,7 @@
 
 ### Konsequenzen
 
-<img src="slides%2Fimages%2Ffullstack-anwendung.png" style="max-height:900px;float:left"/>
+<img src="/slides/images/fullstack-anwendung.png" style="max-height:900px;float:left"/>
 
 - **Komponenten auf dem Server**:
 - Auf dem Server gibt es keinen State!
@@ -615,7 +615,7 @@
 
 ### Konsequenzen
 
-<img src="slides%2Fimages%2Finteraktives-muss-auf-den-client.png" style="max-height:900px;float:left"/>
+<img src="/slides/images/interaktives-muss-auf-den-client.png" style="max-height:900px;float:left"/>
 
 - Bestimmte Teile **müssen** auf den Client
   - alles was mit Interaktion zu tun hat
@@ -654,18 +654,17 @@
 
   import { useSearchParams } from "next/navigation";
 
-  export default function OrderByButton({ orderBy, children }) {
+  export default function OrderByButton({ orderBy, label }) {
     const searchParams = useSearchParams();
 
     const currentOrderBy = searchParams.get("orderBy");
-    const currentPage = searchParams.get("page");
 
     const newParams = new URLSearchParams(searchParams);
     newParams.set("order_by", orderBy);
 
-    const href = `/recipes?${newParams.toString()}`;
+    const href = `/posts?${newParams.toString()}`;
 
-    return <Link href={href}>{children}</Link>;
+    return <Link href={href}>{label}</Link>;
   }
   ```
 
@@ -680,23 +679,21 @@
   - Routen-Komponenten (`page.tsx`) in Next.js können sich die Search-Parameter als Property `searchParams` übergeben lassen
     - (`params` für Segmente im Pfad, `searchParams` für die Query-Parameter hinter dem `?` in der URL)
 - ```tsx
-  type RecipeListPageProps = {
+  type PostListPageProps = {
     searchParams: {
-      page?: string;
-      orderBy?: "likes" | "time";
+      orderBy?: "asc" | "desc";
     };
   };
 
-  export default async function RecipeListPage({
+  export default async function PostListPage({
     searchParams,
-  }: RecipeListPageProps) {
-    // 'page' in Zahl konvertieren, 0 als Default
+  }: PostListPageProps) {
     const page = parseInt(searchParams.page || "0");
     const orderBy = searchParams.orderBy;
 
-    const result = fetchRecipes(page, orderBy);
+    const result = fetchPosts(orderBy);
 
-    return <ReipceList recipes={result.content} />;
+    return <PostList posts={result} />;
   }
   ```
 
@@ -736,6 +733,7 @@
 ### Übung: Interaktionen
 
 - **Implementiere den Order-Button**
+- <!-- .element: class="todo" -->Übung machen oder nicht?
 - Die Rezept-Liste (`/app/recipes/page.tsx`) soll sortierbar und paginierbar gemacht werden
 - In der Datei `schritte/50_client/ausgang/app/recipes/page.tsx` findest Du dafür TODOs
   - Du kannst entweder deine eigene `page.tsx`-Datei erweitern, oder du kopierst dir die "ausgang"-Datei in deinen Workspace
@@ -795,6 +793,8 @@
   - Wenn du `fetch` in deinem Code verwendest, werden die GET-Requests von Next.js gecached!
 - Das kann man alles ausschalten, aber es ist am Anfang gewöhnungsbedürftig
   - Deswegen auch das `dev:clean`-Script in der `package.json`
+- **Mit Next.js Version 15 [ändert sich das Caching-Verhalten](https://nextjs.org/blog/next-15-rc#caching-updates)**
+  - Eventuell wird es dadurch besser verständlich, da man es an mehr Stellen explizit einschalten muss
 
 * Meiner Erfahrung nach ist das nicht trivial zu verstehen und scheint auch noch Bugs zu haben
 * Es gibt eine [ausführlichen Dokumentation](https://nextjs.org/docs/app/building-your-application/caching), welche Caches es gibt und wie die jeweils funktionieren
@@ -807,18 +807,16 @@
 - Man kann die einzelen Cachings ausschalten, bzw. revalidieren lassen
 - Bei `fetch`-Requests kann man ein Next.js-proprietäres Property angeben:
 - ```typescript
-  fetch("https://recipify.de/api/recipes", {
+  fetch("http://localhost:7000/posts", {
     // Next-proprietäre Erweiterung der fetch-API:
-    next: {
-      // Nach einer Minute Cache verwerfen
-      revalidate: 60,
-    },
+    // ab Next.js 15 ist 'no-store' der Default
+    cache: "force-cache", // oder:  'no-store'
   });
   ```
 - Einem `fetch`-Request können außerdem **Tags** zugeordnet werden
 - Diese kann man verwenden, um den Cache-Eintrag per API als veraltet zu markieren
 - ```typescript
-  const r = await fetch(`https://recipify.de/api/recipes`, {
+  const r = await fetch(`http://localhost:7000/posts`, {
     next: {
       tags: ["recipes"],
     },
@@ -862,8 +860,6 @@
   - Client-seitig kann man mit [`Router.refresh`](https://nextjs.org/docs/app/api-reference/functions/use-router#userouter) die aktuelle Route - unabhängig vom Cache - aktualsieren lassen. Next.js rendert die Route dann auf dem Server neu und liefert aktualisierte UI
 - Möglichkeit 2:
   - Invalidieren des Caches mit `revalidatePath` bzw. `revalidateTags`
-- Möglichkeit 3:
-  - `noStore()` verwenden, damit wird eine Route vom Caching ausgenommen
 
 ---
 
