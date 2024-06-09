@@ -73,10 +73,6 @@
 
 ---
 
-## Next.js vs React
-
-## <!-- .element: class="todo" --> hierher kopieren !!!!!!!!!!!!!!!!!!
-
 ## Zero-Bundle-Size
 
 # React Server Components
@@ -240,9 +236,8 @@
 
 ---
 
-### Übung: Vorbereitung
+### Übung: Klonen des Repositories und Vorbereitung
 
-- **Klonen des Repositories**
 - Bitte klonen: https://github.com/nilshartmann/nextjs-react-workshop
 - In der [README.md-Datei](https://github.com/nilshartmann/nextjs-react-workshop/blob/main/README.md) findet ihr Hinweise zur Installation des Workspaces
 - Bitte erstmal nur die Schritte 1.x ("Backend") und 2.x (Blog-Example-Workspace) durchführen
@@ -280,25 +275,25 @@
 
 1. Baue die "Landing Page" für die Root-Route (`/`) im `app`-Verzeichnis
 
-- Die Seite muss nicht hübsch sein
-- heute gilt: wir machen Bauhaus-Style, "form follows function" 😉
-- Die Komponente soll einen Link auf `/posts` rendern
+   - Die Seite muss nicht hübsch sein
+   - heute gilt: wir machen Bauhaus-Style, "form follows function" 😉
+   - Die Komponente soll einen Link auf `/posts` rendern
 
 1. Lege die Komponente für die Route `/posts` an
 
-- Es reicht, wenn diese Komponente erstmal nur "Hello World" ausgibt.
-- In welches Verzeichnis muss die `page.tsx`-Datei für diese Route?
+   - Es reicht, wenn diese Komponente erstmal nur "Hello World" ausgibt.
+   - In welches Verzeichnis muss die `page.tsx`-Datei für diese Route?
 
 1. Wenn deine neuen Routen funktionieren:
 
-- Füge ein `console.log`-Statement in deine Komponenten hinzu, das beim Rendern die aktuelle Uhrzeit ausgibt
-- wo und wann wird das Log-Statement ausgegeben?
+   - Füge ein `console.log`-Statement in deine Komponenten hinzu, das beim Rendern die aktuelle Uhrzeit ausgibt
+   - wo und wann wird das Log-Statement ausgegeben?
 
 1. Kannst Du eine `layout`-Komponente bauen, die für Routen innerhalb `/posts` gilt, aber nicht für die Root-Route (`/`)
 
-- Du kannst dir selbst ein einfaches Layout ausdenken, oder diese Komponente verwenden: `BlogPageLayout`
+   - Du kannst dir selbst ein einfaches Layout ausdenken, oder diese Komponente verwenden: `BlogPageLayout`
 
-- Mögliche Lösung findest Du in `schritte/10_routen_und_links`
+   - Mögliche Lösung findest Du in `schritte/10_routen_und_links`
 
 ---
 
@@ -781,6 +776,8 @@
 ---
 
 ### Übung: Zod
+
+<!-- .slide: data-state="exkurs" -->
 
 - **Beschreibe ein Objekt-Schema mit Zod**
 - In `workspace-blog/exkurs/zod/zod-user.test.ts` findest Du ein `User`-TypeScript-Objekt

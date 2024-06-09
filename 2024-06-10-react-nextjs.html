@@ -167,20 +167,15 @@
 ---
 ## Agenda
 <!-- .slide: class="no-fragment xleft" -->
-**_"Vertiefung in React"_**
+* **React und Next.js**
+  * Server Components
+  * Arbeiten mit Daten (APIs, asynchroner Code)
+  * Fehlerhandling
+  * Server Actions
+* **React Vertiefung**
+* [Seiteneffekte mit useEffect](#/t-use-effect)
 * [Context API](#/t-context)
-* [Testen mit Jest (Einführung)](#/t-test-jest)
-* [Testen von React Komponenten und Hooks](#/t-testen-react)
-* [Error Boundaries](#/t-error-boundaries)
-* [Die Bibliothek "Zustand" für globalen Zustand (Basics: Stores, Actions, Change Detection)](#/t-zustand)
-  * [Testen von Anwendungen mit Zustand](#/t-zustand-test)
-* [Renderverhalten von React und Immutable Data](#/t-immutability)
-* [Immutability mit Immer](#/t-immer)
-* [Zustand Bibliothek: Middleware und Slices](#/t-zustand-2)
-* **"State of the Art"-Themen und künftige Features**
-  * [Arbeiten mit Suspense für asynchrone und serverseitige Daten](#/t-async-data)
-  * [Suspense](#/t-suspense)
-  * Ausblick: Fullstack-Anwendungen am Beispiel Next.js
+* [Render Performance optimieren](#/t-performance)
 
 
 
@@ -192,7 +187,7 @@
           <h1>React Details</h1>
         </section>
 
-        <section>
+        <section id="t-use-effect">
           <h3>Seiteneffekte</h3>
           <ul>
             <li>
@@ -775,7 +770,6 @@ function UserBadge() {
         <section data-markdown>
           <textarea data-template>
 ## Error Boundaries
-<!-- .slide: id="t-error-boundaries" -->
 * 🤔Was passiert, wenn wir in unserer App vergessen, den `NotificationContextProvider` einzubinden? 🤔
 * <!-- .element: class="demo" -->Ausprobieren (NotificationApp.tsx)
 * <!-- .element: class="demo" -->Error Boundary (React): NotificationApp_mitErrorBoundary.tsx
@@ -942,7 +936,7 @@ function UserBadge() {
           >
         </section>
 
-        <section data-markdown="">
+        <section data-markdown="" id="t-performance">
           <textarea data-template>
 ## Performance Tuning
 ### Renderverhalten in React (Client) Komponenten
