@@ -21,7 +21,9 @@ import {
   failPostRequestForId,
 } from "@/app/shared/demo-config.ts";
 
-export async function fetchPost(postId: string): Promise<IGetPostResponse> {
+export async function fetchPost(
+  postId: string,
+): Promise<IGetPostResponse | null> {
   const shouldFail = failPostRequestForId
     ? postId === failPostRequestForId
       ? true
@@ -36,6 +38,11 @@ export async function fetchPost(postId: string): Promise<IGetPostResponse> {
       },
     },
   );
+
+  if (response.status === 404) {
+    return null;
+  }
+
   const data = await response.json();
 
   const posts = GetPostResponse.parse(data);

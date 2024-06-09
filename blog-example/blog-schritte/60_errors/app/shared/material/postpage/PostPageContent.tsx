@@ -16,9 +16,18 @@ export default function PostPageContent({ post }: PostPageContentProps) {
   //       - übergib das Promise an die (fertige) 'PostComments'-Komponente
   //       - verwende die Suspense-Komponente, um ein Fallback darzustellen,
   //         während die Kommentare geladen werden
+  const commentsPromise = fetchComments(post.data.id);
   return (
     <>
       <Post post={post.data} />
+
+      <ErrorBoundary FallbackComponent={CommentsErrorBoundary}>
+        <Suspense
+          fallback={<LoadingIndicator>Loading Comments...</LoadingIndicator>}
+        >
+          <PostComments commentsPromise={commentsPromise} />
+        </Suspense>
+      </ErrorBoundary>
     </>
   );
 }

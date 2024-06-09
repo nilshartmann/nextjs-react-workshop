@@ -246,8 +246,19 @@
 - Bitte klonen: https://github.com/nilshartmann/nextjs-react-workshop
 - In der [README.md-Datei](https://github.com/nilshartmann/nextjs-react-workshop/blob/main/README.md) findet ihr Hinweise zur Installation des Workspaces
 - Bitte erstmal nur die Schritte 1.x ("Backend") und 2.x (Blog-Example-Workspace) durchführen
-- **Arbeitsverzeichnis**: Wir arbeiten zunächst ausschliesslich im Verzeichnis `blog-example/workspace-blog`
-- ⚠️ Bitte **nur** das `blog-example/workspace-blog`-Verzeichnis in der IDE oder im Editor öffnen
+- **Arbeitsverzeichnis**: Wir arbeiten zunächst ausschliesslich im Verzeichnis `blog-example/blog-workspace`
+- ⚠️ Bitte **nur** das `blog-example/blog-workspace`-Verzeichnis in der IDE oder im Editor öffnen
+
+---
+
+### Der Workspace
+
+- `blog-worksace`: Next.js-Anwendung, in der wir Übungen machen
+- `blog-schritte`: Hier findet ihr die Lösungen zu den Übungen
+- `blog-app`: die fertige Anwendung
+- ⚠️ Die Ordnerstruktur in `app` folgt nicht Best-Practices!
+  - Die Struktur ist "optimiert" für unseren Workshop mit Übungen
+  - Faustregel: alles was unter `material` ist, wäre in einer echten Anwendungen eher direkt unter `app/posts/...`
 
 ---
 
@@ -305,6 +316,8 @@
 - Server Components können die Server-Infrastruktur nutzen (DB, Filesystem)
 
 - 👉 Server-Komponenten können dazu _asynchron_ sein
+
+- 🤔 Promise API und async/await-API in JavaScript?
 
 ---
 
@@ -384,14 +397,15 @@
 
 - **Baue die Komponente für die Blog-Post-Liste (`/posts`)**
 - Du musst deine bestehende Komponente (`/app/posts/page.tsx`) nun erweitern:
-  - sie soll asynchron sein
-  - Die Funktion zum Laden der Blogposts ist schon fertig: `fetchPosts`
-  - Die geladenen Rezepte kannst Du mit der fertigen Komponente `PostList` rendern
+  - (Falls du in der vorherigen Übung nicht fertig geworden bist, kopiere dir `schritte/10_routen_und_links` in dein Workspace)
+- Die Funktion zum Laden der Blogposts ist schon fertig: `fetchPosts`
+- Die geladenen Rezepte kannst Du mit der fast fertigen Komponente `PostList` rendern
+- Du kannst entweder in `page.tsx` oder `PostList` auf das Promise "warten"
+  - Welche Komponente nimmst du? Warum?
 - Baue eine `loading`-Komponente, die angezeigt wird, während die Daten geladen werden
   - Gib darin einfach "irgendwas" aus oder verwende die fertige Komponente `LoadingIndicator`
   - Um die Komponente zu testen, kannst Du das Laden der Daten künstlich verzögern:
     - gehe dazu in `demo-config.ts` und setze `delayPostList` z.B. auf `1600` (Verzögerung von 1,6 Sekunden)
-- Du findest Ausgangsmaterial mit weiteren Hinweisen in `schritte/20_async_rsc/ausgang`
 - Eine Lösung findest Du in `schritte/20_async_rsc/fertig`
 
 ---
@@ -491,12 +505,13 @@
 ### Übung: eine dynamische Route
 
 - **Implementiere die Route zur Einzeldarstellung eines Blog-Posts**
-- Das Verzeichnis ist `app/posts/[postId]`
-- Lies in der Komponente die `postId` aus dem `params`-Objekt das als `props` an die Komponente übergeben wird
-- Dann kannst du die fertige Funktion `fetchPost` verwenden, um das Rezept zu laden
+- Die Route muss in der Datei `app/posts/[postId]/page.tsx` liegen
+- Definier den TypeScript-Typen für die Properties. Es muss darin ein `params`-Objekt mit dem `postId`-Eintrag geben.
+- Lies in der Komponente die `postId` aus dem `params`-Objekt, das als `props` an die Komponente übergeben wird
+- Dann kannst du die fertige Funktion `fetchPost` verwenden, um den Post zu laden
   - Wenn diese Funktion `null` zurückgibt, wurde der Blog-Post nicht gefunden, dann verwende `notFound()` um die (Default) Fehler-Komponente zu rendern
-  - Wenn diese Funktion ein Post zurückliefert, kannst Du das an die fertige `Post`-Komponente übergeben
-- Was passiert, wenn ein Rezept nicht gefunden wurde? Testen kannst du das, in dem Du z.B. `/posts/123` aufrufst
+  - Wenn diese Funktion einen Post zurückliefert, kannst du das an die fertige `PostPageContent`-Komponente übergeben
+- Was passiert, wenn ein Post nicht gefunden wurde? Testen kannst du das, in dem Du z.B. `/posts/123` aufrufst
 - Eine Lösung findest Du in `schritte/30_dynamic_segments`
 - **Optional**: baue eine `not-found`-Komponente, die einen Fehler anzeigt, wenn ein Post nicht gefunden wurde
 
@@ -772,8 +787,8 @@
 - Schreibe dafür das Pendant in zod
 - In der Datei findest du TODOs mit Hinweisen
 - In der Datei befinden sich einige Tests. Diese sollten "grün" sein, wenn du das Objekt korrekt beschrieben hast
-- Zum Ausführen der Tests kannst Du `pnpm test` verwenden
-- Mögliche Lösung findest Du in `workspace-blog/schritte/xx_zod/`
+- Zum Ausführen der Tests kannst Du `pnpm test` (oder `npm test`) im Verzeichnis `workspace-blog` verwenden
+- Mögliche Lösung findest Du in `workspace-blog/schritte/50_zod/`
 
 ---
 
@@ -975,13 +990,17 @@
 
 ### Übung: Error Boundaries
 
-<!-- .element: class="todo" -->Übung anpassen
-
-- Kopiere `20_error_boundary/00_initial/app` in deine Anwendung
-- Wenn Du `http://localhost:3000/a/b/counter` aufrufst, bekommst du eine Counter-Komponente angezeigt
-- Diese sollst du mit einem Error Boundary umschliessen, so dass nicht die ganze Seite durch eine Fehler-Komponente ersetzt wird
-- Siehe dazu TODOs in `counter/Counter.tsx`
-- Mögliche Lösung: `20_error_boundary/02_error_boundary`
+- **Implementiere die Fehlerbehandlung beim Lesen eines Blog Posts**
+- Teil 1: Wenn beim Lesen eines Blog-Posts ein Fehler auftritt, soll eine Fehlermeldung dargestellt werden
+  - Schreibe dafür eine `error.tsx`-Datei
+  - Kannst du dort die Fehlermeldung ausgeben?
+  - Um einen Fehler zu simulieren, trage in `demo-config.ts` in der Konstante `failPostRequestForId` die Id eines Blog-Posts ein. Wenn du diesen dann in der Einzeldarstellung aufrufst, wird künstlich ein Validierungsfehler erzeugt
+- Teil 2: (optional): Fehlerbehandlung für das Lesen der Kommentare
+  - Simuliere einen Fehler beim Laden der Kommentare. Trage dazu in `demo-config.ts` in der Konstante `failCommentsPostRequestForId` die Id eines Blog-Posts ein. Wenn du diesen in der Einzeldarstellung aufrufst, wird beim Laden der Kommentare ein Fehler ausgelöst (`failPostRequestForId` auf Leerstring zurücksetzen!)
+  - Wo wird der Fehler angezeigt?
+  - Kannst du eine ErrorBoundary-Komponente bauen, die dazu führt, dass es zwar eine Fehlermeldung gibt ("Fehler beim Laden der Kommentare"), aber die restliche Seite (insb. der Blog-Post) trotzdem dargestellt wird?
+- Falls Du bei der letzten Übung nicht fertig geworden bist, kopiere dir den Stand aus `schritte/40_suspense`.
+- Eine Lösung findest Du in `60_errors`
 - Wenn Du fertig bist, bitte die Hand in Zoom heben ✋
 
 ---
@@ -1168,17 +1187,16 @@
 ### Übung: Interaktionen
 
 - **Implementiere den Order-Button**
-- <!-- .element: class="todo" -->Übung machen oder nicht?
-- Die Rezept-Liste (`/app/recipes/page.tsx`) soll sortierbar und paginierbar gemacht werden
-- In der Datei `schritte/50_client/ausgang/app/recipes/page.tsx` findest Du dafür TODOs
-  - Du kannst entweder deine eigene `page.tsx`-Datei erweitern, oder du kopierst dir die "ausgang"-Datei in deinen Workspace
-- Es gibt bereits eine fertige Pagination-Komponente (`RecipeListPaginationBar`) diese kannst Du verwenden, um das Paginieren zu testen
-  - Für die Verwendung siehe `schritte/50_client/ausgang/app/recipes/page.tsx`
-- Implementiere dann den `OrderButton` fertig.
-  - In `app/components/recipelistpage/OrderButton.tsx` findest Du dazu todos
+- Die Blog-Liste (`/app/posts/page.tsx`) soll sortierbar gemacht werden
+- In der Datei `/app/posts/page.tsx`:
+  - Du musst den TypeScript-Typen für die Properties mit den `searchParams` definieren (`searchParams` muss ein optionales Property `order_by` enthalten, dass entweder String `asc` oder `desc` ist)
+  - Übergib den aktuellen `order_by` an die `fetchPosts`-Funktion
+  - Füge die fertige `PostListOrderButtons` ein (oberhalb von `<PostList ... />`)
+- In `OrderByButton.tsx`:
+  - dort musst Du die Button-Logik zum Aktualisieren der SearchParams vervollständigen
+  - TODOs findest du in der Datei
   - An die aktuellen Search-Parameter kommst Du mit dem Next.js Hook [`useSearchParams`](https://nextjs.org/docs/app/api-reference/functions/use-search-params)
-- Analysier doch mal mit Hilfe von `console.log` bzw. der Ausgabe auf der Konsole des `backend`-Prozesses, wann neu gerendert wird
-- Lösung in `schritte/50_client/fertig`
+- Lösung in `schritte/70_search_params/fertig`
 
 [//]: # "---"
 [//]: #
@@ -1463,13 +1481,13 @@
 
 ### Übung: Server Actions
 
-- **Baue eine Server Action zum "liken" eines Rezeptes**
-- Implementiere die Logik zum Hochzählen in der Server Action Funktion `increaseLikes` in `recipe-actions.ts`
-  - Die Funktion zum Speichern der Likes (`saveLike`) ist bereits fertig. Du übergibst dieser Funktion nur die Rezept-Id (`recipeId`), die Likes werden dann Backend-seitig hochgezählt
-  - Weitere Todos findest Du in `recipe-actions.ts`
-- Ergänze dann die Komponente in `LikesWidget.tsx`. Hier musst Du nun deinen neue Server-Action-Funktion aufrufen.
+- **Baue eine Server Action zum "liken" eines Blog-Posts**
+- Implementiere die Logik zum Hochzählen in der Server Action Funktion `increaseLikes` in `like-actions.ts`
+  - Die Funktion zum Speichern der Likes (`saveLike`) ist bereits fertig. Du übergibst dieser Funktion nur die Blog-Id (`blogId`), die Likes werden dann Backend-seitig hochgezählt
+  - Weitere Todos findest Du in `like-action.ts`
+- Ergänze dann die Komponente in `LikeButton.tsx`. Hier musst Du nun deine neue Server-Action-Funktion aufrufen.
   - Auch in dieser Datei findest du Todos
-- Fertige Lösung in: `schritte/60_actions`
+- Fertige Lösung in: `schritte/80_server_actions`
 - **Optional**: Kannst Du die Ausführung der Server Action mit einer Transition ummanteln?
 
 ---

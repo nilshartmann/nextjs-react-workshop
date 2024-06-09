@@ -1,65 +1,103 @@
 "use client";
 
-import { saveNewBlogPost } from "@/app/shared/material/add/editor-actions.ts";
-import AppLink from "@/app/shared/components/AppLink.tsx";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
+import Message from "@/app/shared/components/Message.tsx";
 import Post from "@/app/shared/material/Post.tsx";
-
-const PostEditorSchema = z.object({
-  title: z.string().min(1).max(25),
-  body: z.string().min(10),
-});
-
-type IPostEditorSchema = z.infer<typeof PostEditorSchema>;
+import { useState, useTransition } from "react";
+import { useRouter } from "next/navigation";
+import LoadingIndicator from "@/app/shared/components/LoadingIndicator.tsx";
+import { saveNewBlogPost } from "@/app/shared/material/add/editor-actions.ts";
 
 export default function PostEditor() {
-  // Diskussion, wie react-hook-form mit useActionState und anderen neuen Hooks aus React 19 arbeiten könnte:
-  //  - https://github.com/orgs/react-hook-form/discussions/11832
-  const {
-    register,
-    handleSubmit,
-    formState: { errors, isSubmitting, isValid },
-    watch,
-  } = useForm<IPostEditorSchema>({
-    resolver: zodResolver(PostEditorSchema),
-    mode: "onChange",
-    defaultValues: {
-      title: "",
-      body: "",
-    },
-  });
+  // VARIANTE NUR MIT JS LAUFFÄHIG
+  //
+  //  - was geht:
+  //    - Ausfüllen
+  //    - cancel
+  //    - Client-seitige Validierung (nur mit Browser-Mitteln, d.h. kein Styling, kein Realtime)
+  //    - Redirect nach erfolgreichem Speichern
+  //    - clear
+  //    - Zeichenzähler / Real-time Validierung / Real-time enablement
+  //    - Disablen des Submit-Buttons während Submit
+  //    - Vorschau Blog Post
+  //    - Keine Fehlermeldung, wenn Speichern nicht funktioniert
+  //      - Können wir die Fehlermeldung wieder entfernen, sobald sich eine Eingabe geändert hat? 🤔
 
-  const currentData = watch();
+  const router = useRouter();
+
+  const [pending, startTransition] = useTransition();
+
+  const [title, setTitle] = useState("");
+  const [body, setBody] = useState("");
+  const [error, setError] = useState("");
+
+  const clearDisabled = (!title && !body) || pending;
+  const saveButtonDisabled = !title || !body || pending;
+
+  const handleClear = () => {
+    setTitle("");
+    setBody("");
+  };
+
+  const handleCancel = () => {
+    router.push("/");
+  };
+
+  const handleSave = () => {
+    startTransition(async () => {
+      // 'saveNewBlogPost' kann hier CLIENT oder SERVER Action sein
+      const result = await saveNewBlogPost(title, body);
+      if (result?.error) {
+        setError(result.error);
+        return;
+      }
+
+      router.push("/posts");
+    });
+  };
 
   return (
-    <form onSubmit={handleSubmit((d) => saveNewBlogPost(d))}>
+    <div>
       <div className={"Container"}>
         <h1>Add Post</h1>
         <label>
           Title
-          <input {...register("title")} disabled={isSubmitting} />
+          <input
+            value={title}
+            onChange={(e) => setTitle(e.currentTarget.value)}
+          />
         </label>
-        {errors.title && <p>Please fill title correctly</p>}
+        {title ? (
+          <Message type="info" msg="Title correctly filled" />
+        ) : (
+          <Message type="error" msg="Please enter a title" />
+        )}
 
         <label>
           Body
-          <textarea {...register("body")} disabled={isSubmitting} />
+          <textarea
+            value={body}
+            onChange={(e) => setBody(e.currentTarget.value)}
+          />
         </label>
-        {errors.body && <p>Please fill body correctly</p>}
+        {body ? (
+          <Message type="info" msg="Body correctly filled" />
+        ) : (
+          <Message msg="Please enter a body" />
+        )}
 
-        <AppLink className={"Button"} href={"/posts"}>
-          Cancel
-        </AppLink>
-        <button type={"submit"} disabled={isSubmitting || !isValid}>
-          Save
+        <button disabled={clearDisabled} onClick={handleClear}>
+          Clear
         </button>
+        <button onClick={handleCancel}>Cancel</button>
+        <button disabled={saveButtonDisabled} onClick={handleSave}>
+          {pending ? <LoadingIndicator secondary /> : "Save Post"}
+        </button>
+        {!!error && <Message msg={error} type={"error"} />}
       </div>
       <div className={"Container PostEditorPreview"}>
         <h2>Preview: Your new Post</h2>
-        <Post post={currentData} />
+        <Post post={{ title, body }} />
       </div>
-    </form>
+    </div>
   );
 }

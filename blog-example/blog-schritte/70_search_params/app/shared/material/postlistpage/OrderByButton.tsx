@@ -16,9 +16,15 @@ export default function OrderByButton({ orderBy }: OrderByButtonProps) {
   //  - erzeuge ein neues URLSearchParams Objekt. (https://developer.mozilla.org/en-US/docs/Web/API/URLSearchParams)
   //  - Wenn das 'orderBy'-Property gesetzt ist, setze das entsprechende Search Property
   //  - erzeuge das Link-Ziel ('href'). Der Pfad ist "/posts?" gefolgt von den Search Parametern
+  const currentParams = useSearchParams();
+  const currentOrderBy = currentParams.get("order_by") || "desc";
 
-  const currentOrderBy = "";
-  const href = ``;
+  const searchParams = new URLSearchParams();
+  if (orderBy) {
+    searchParams.set("order_by", orderBy);
+  }
+
+  const href = `/posts?${searchParams.toString()}`;
 
   const label = `Order by date ${orderBy === "desc" ? "Desc" : "Asc"}`;
   const checked = orderBy === (currentOrderBy || undefined);

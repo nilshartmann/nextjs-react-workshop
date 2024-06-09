@@ -8,7 +8,7 @@ import PostListOrderButtons from "@/app/shared/material/postlistpage/PostListOrd
 import { fetchPosts } from "@/app/shared/blog-fetch.ts";
 type PostListPageProps = {
   searchParams: {
-    order_by: "asc" | "desc";
+    order_by?: "asc" | "desc";
   };
 };
 
