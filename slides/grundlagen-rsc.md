@@ -1476,6 +1476,30 @@
 
 ## Formulare
 
+---
+
+### Formulare mit React: Controlled vs. Uncontrolled Components
+
+- <!-- .element: class="demo" --> PostEditor-Formular
+- Bei Input-Elementen in einem Formular unterscheidet React zwischen **controlled** und **uncontrolled** components
+  - Bei **controlled** Components hält die React-Componente im State die Daten, die z.B. im Eingabefeld stehen sollen.
+    - React synchronisiert die in den DOM und informiert uns bei Änderungen, so dass wir unseren State aktualisieren können.
+  - Bei **uncontrolled** steht der Inhalt nur im DOM
+    - Wir können z.B. `onBlur` beim Verlassen des Feldes darauf zugreifen
+- Lange Zeit war die Empfehlung, **controlled** Components
+  - Das hat sich im letzten Jahr geändert
+
+---
+
+### Probleme mit Controlled Components
+
+- Man braucht JavaScript, damit das funktioniert
+- Man muss sich um die Synchronisierung kümmern (State <-> UI)
+
+---
+
+### Progressive Enhancement
+
 - Mit Next.js (bzw. künftigen React APIs) soll es möglich sein, Formulare so zu bauen, dass man sie auch ausfüllen und absenden kann, wenn kein JavaScript im Browser läuft (**Progressive enhancement**)
 - Wofür könnte das relevant sein? 🤔
 - Welche Einschränkungen könnte es dabei geben? 🤔
@@ -1490,15 +1514,43 @@
   - Damit das Formular abgesendet werden kann, muss es einen `submit`-Button geben
 - In "regulärem" HTML wird der Form-Inhalt dann an den in der `action` angegebenen Endpunkt geschickt
 - Der Payload ist ein `FormData`-Objekt
-- Mit Next.js (bzw. React) können wir als `action` eine Server-Action-Funktion angeben
-- Die angegebene Server Action muss als Parameter ein `FormData`-Objekt entgegennehmen
--
+- Mit Next.js (bzw. React) können wir als `action` eine (Server-)Action-Funktion angeben
+- Die angegebene (Server-)Action muss als Parameter ein `FormData`-Objekt entgegennehmen
+
+---
+
+### Formulare: Actions
+
+- Beispiel: Mit Server Action
 - ```tsx
   export function FeedbackForm() {
     async function saveForm(data: FormData) {
       "use server";
       // AUF DEM SERVER: Formular speichern
       const title = data.get("title");
+      // In DB speichern, Backend Service aufrufen
+    }
+
+    return (
+      <form action={saveForm}>
+        <input name="title" />
+        <input name="body" />
+      </form>
+    );
+  }
+  ```
+
+- Beispiel: Mit Client Action
+- ```tsx
+  export function FeedbackForm() {
+    async function saveForm(data: FormData) {
+      const title = data.get("title");
+      const body = data.get("body");
+
+      fetch("http://blog-api.de", {
+        method: "POST",
+        body: JSON.stringify({ title, body }),
+      });
       // ...
     }
 
@@ -1510,3 +1562,15 @@
     );
   }
   ```
+
+* 🚨 👮‍Bitte in keinem Fall in eurem Backend die Validierung vergessen!
+
+---
+
+### Formulare mit Action State
+
+- Für Formulare könnt ihr einen "Action State" festlegen.
+- Damit könnt ihr beim Submit auf die vorherigen Formular-Daten zugreifen
+- Die zugehörige Action wiederrum liefert neuen State zurück, der dann in der Komponente zur Verfüng steht
+- Das ist insbesondere für Formulare sinnvoll, wenn diese ohne JavaScript funktionieren sollen.
+- Doku: [useActionState-Hook](https://19.react.dev/reference/react/useActionState)

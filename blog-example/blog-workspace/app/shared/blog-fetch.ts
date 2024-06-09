@@ -87,7 +87,7 @@ export async function fetchComments(
   return comments;
 }
 
-export async function saveNewPost(title: string, body: string) {
+export async function saveNewPostToBackend(title: string, body: string) {
   const response = await blogFetch(
     apiUrl(`/posts`, { slowdown: delaySavePost }),
     {
