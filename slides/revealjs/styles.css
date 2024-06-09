@@ -89,8 +89,14 @@ code span.line-number {
  * 
  * Einschalten mit: <!-- .slide: class="left" -->
  */
-.reveal section.left ul {
+.reveal section.left ul,
+.reveal section.left ol {
   width: 100%;
+}
+
+.reveal section.small li {
+  font-size: 90%;
+  margin-bottom: 10px;
 }
 
 .reveal li {
@@ -109,7 +115,7 @@ code span.line-number {
 
 .reveal ul ul,
 .reveal ul ul ul {
-  list-style-type: circle;
+  list-style-type: disc;
 }
 
 /* Siehe auch config.js fuer no-icon! */
@@ -141,8 +147,8 @@ li > pre.code-wrapper > code {
   height: 650px;
 }
 
-/* "choice-of-horror": for choices where you can only lose all the time: 
-   - show radio buttons selections when hovered/checked as 😱, when not hovered as "?" 
+/* "choice-of-horror": for choices where you can only lose all the time:
+   - show radio buttons selections when hovered/checked as 😱, when not hovered as "?"
 */
 .reveal .choice-of-horror label {
   display: block;
@@ -223,6 +229,29 @@ li.note:before {
   content: "👉 ";
 }
 
-body.exkurs {
+.nextjs-exkurs {
+  background: #e3f3ff url("./nextjs-icon.png") no-repeat right top;
+}
+
+.exkurs {
   background-color: #e3f3ff;
+}
+
+.reveal p.mt-5,
+.mt-5 {
+  margin-top: 5rem;
+}
+
+.reveal-viewport.title .controls-arrow {
+  color: red;
+  font-size: 2rem;
+}
+
+.reveal-viewport.title .reveal .controls {
+  bottom: 11em;
+  right: 9em;
+}
+
+.reveal-viewport.title .reveal .controls .navigate-right.highlight {
+  animation: bounce-right 1s 50 both ease-out;
 }

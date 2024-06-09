@@ -14,6 +14,9 @@ import { z } from "zod";
 // - Für mit 'npm test' die unten stehenden Tests aus.
 //    - Diese sollten "grün" sein, wenn du das Schema korrekt definiert hast
 
+// todo #1: durch zod-Definition ersetzen
+//   (alles hinter dem =-Zeichen ist nur, damit der Code unten compiliert
+//    du kannst die Zeile komplett löschen und neu hinschreiben)
 const UserSchema = z.object({
   username: z.string().min(3),
   fullname: z.string().nullish(),
@@ -21,6 +24,7 @@ const UserSchema = z.object({
   role: z.enum(["ADMIN", "EDITOR"]),
 });
 
+// todo #2: lasse dir den IUserSchema Typen von zod ableiten
 type IUserSchema = z.infer<typeof UserSchema>;
 
 type User = {

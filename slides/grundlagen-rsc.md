@@ -211,7 +211,25 @@
 
 ---
 
+### Übung: Asynchrone Server Komponenten
+
+- **Baue die Komponente für die Blog-Post-Liste (`/posts`)**
+- Du musst deine bestehende Komponente (`/app/posts/page.tsx`) nun erweitern:
+  - sie soll asynchron sein
+  - Die Funktion zum Laden der Blogposts ist schon fertig: `fetchPosts`
+  - Die geladenen Rezepte kannst Du mit der fertigen Komponente `PostList` rendern
+- Baue eine `loading`-Komponente, die angezeigt wird, während die Daten geladen werden
+  - Gib darin einfach "irgendwas" aus oder verwende die fertige Komponente `LoadingIndicator`
+  - Um die Komponente zu testen, kannst Du das Laden der Daten künstlich verzögern:
+    - gehe dazu in `demo-config.ts` und setze `delayPostList` z.B. auf `1600` (Verzögerung von 1,6 Sekunden)
+- Du findest Ausgangsmaterial mit weiteren Hinweisen in `schritte/20_async_rsc/ausgang`
+- Eine Lösung findest Du in `schritte/20_async_rsc/fertig`
+
+---
+
 ## Exkurs: zod
+
+<!-- .slide: data-state="exkurs" -->
 
 - Kennt ihr zod? https://zod.dev/ 🤔
 
@@ -219,15 +237,17 @@
 
 # Zod
 
----
+## <!-- .slide: data-state="exkurs" -->
 
 - "TypeScript-first schema validation with static type inference"
 - https://zod.dev/
+- <!-- .element: class="demo" --> material/zod-user.ts
 
 ---
 
 ### TypeScript vs. JavaScript
 
+<!-- .slide: data-state="exkurs" -->
 <!-- .slide: class="left" -->
 
 - Im folgenden ist mit **TypeScript** das Typsystem von TypeScript gemeint, das nur zur Buildzeit vorhanden ist
@@ -247,6 +267,8 @@
 
 ### Problem: TypeScript-Typen sind zur Laufzeit weg
 
+<!-- .slide: data-state="exkurs" -->
+
 - Wenn man ein Objekt beschrieben hat, kann man das zur **Laufzeit** nicht mit TypeScript überprüfen
   - Hat uns der Server zur Laufzeit wirklich ein Objekt geschickt, das aussieht wie ein `User`?
 - Für "echte" Validierungen sind TypeScript-Typen auch zu ungenau:
@@ -259,6 +281,8 @@
 ---
 
 ### Zod: Typen in JavaScript beschreiben und TS-Typen ableiten
+
+<!-- .slide: data-state="exkurs" -->
 
 - Aus dieser Not macht Zod eine Tugend:
 - Wir beschreiben die Objekte in JavaScript...
@@ -295,6 +319,8 @@
 
 ### Komplexe Regeln
 
+<!-- .slide: data-state="exkurs" -->
+
 - Mit Zod kann man die typischen Datentypen verwenden (Objekte, Arrays, string, number, boolean etc)
 - Auch aus TypeScript bekannte Möglichkeiten wie `unions`, `extends`, `omit` oder `brand-Types` werden unterstützt
 - Darüberhin kann man auch die gültigen Wertemengen und andere Constraints beschreiben
@@ -310,32 +336,39 @@
   ```
 
 - Die `parse`-Funktion gibt dann detailierte Fehler, wenn ein überprüftes Objekt nicht diesen Regeln entspricht.
-- Das funktioniert mittlerweile auch für das Validieren von Formularen in [React Hook Form
-  ](https://react-hook-form.com/) mit dem [zod-Resolver](https://github.com/react-hook-form/resolvers#zod)
+
+---
+
+### Integration von Zod
+
+<!-- .slide: data-state="exkurs" -->
+
+- Es gibt eine Reihe von Integrationen in bestehende Bibliotheken, z.B.:
+  - Validieren von Formularen in [React Hook Form
+    ](https://react-hook-form.com/) mit dem [zod-Resolver](https://github.com/react-hook-form/resolvers#zod)
+  - Validieren von [`FormData`-Objekten](https://developer.mozilla.org/en-US/docs/Web/API/FormData) mit [zod-form-data](https://www.npmjs.com/package/zod-form-data)
+  - Generieren von Zod-Typen aus OpenAPI Spezifikationen mit [typed-openapi](https://github.com/astahmer/typed-openapi)
 
 ---
 
 ### Zod und Next.js
 
-- Ob ihr Zod in eurer Anwendung einsetzt, bleibt natürlich euch überlassen
+<!-- .slide: data-state="exkurs" -->
+
+- Ob bzw. wie ihr Zod in eurer Anwendung einsetzt, bleibt natürlich euch überlassen
 - In der Beispiel-Anwendung wird Zod verwendet, um Daten, die von der Backend API gelesen wurden zu validieren
-<!-- .element: class="todo" -->Übung: Zod
 
 ---
 
-### Übung: Asynchrone Server Komponenten
+### Übung: Zod
 
-- **Baue die Komponente für die Blog-Post-Liste (`/posts`)**
-- Du musst deine bestehende Komponente (`/app/posts/page.tsx`) nun erweitern:
-  - sie soll asynchron sein
-  - Die Funktion zum Laden der Blogposts ist schon fertig: `fetchPosts`
-  - Die geladenen Rezepte kannst Du mit der fertigen Komponente `PostList` rendern
-- Baue eine `loading`-Komponente, die angezeigt wird, während die Daten geladen werden
-  - Gib darin einfach "irgendwas" aus oder verwende die fertige Komponente `LoadingIndicator`
-  - Um die Komponente zu testen, kannst Du das Laden der Daten künstlich verzögern:
-    - gehe dazu in `demo-config.ts` und setze `delayPostList` z.B. auf `1600` (Verzögerung von 1,6 Sekunden)
-- Du findest Ausgangsmaterial mit weiteren Hinweisen in `schritte/20_async_rsc/ausgang`
-- Eine Lösung findest Du in `schritte/20_async_rsc/fertig`
+- **Beschreibe ein Objekt-Schema mit Zod**
+- In `workspace-blog/app/material/zod-user.test.ts` findest Du ein `User`-TypeScript-Objekt
+- Schreibe dafür das Pendant in zod
+- In der Datei findest du TODOs mit Hinweisen
+- In der Datei befinden sich einige Tests. Diese sollten "grün" sein, wenn du das Objekt korrekt beschrieben hast
+- Zum Ausführen der Tests kannst Du `pnpm test` verwenden
+- Mögliche Lösung findest Du in `workspace-blog/schritte/xx_zod/`
 
 ---
 

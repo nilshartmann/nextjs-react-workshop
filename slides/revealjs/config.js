@@ -43,15 +43,18 @@ Reveal.initialize({
     Reveal.configure({ controls: false, fragments: true });
 
     // every 'li' should become a fragment
-    document.querySelectorAll("li").forEach((n) => n.classList.add("fragment"));
+    //    document.querySelectorAll("li").forEach((n) => n.classList.add("fragment"));
+    document
+      .querySelectorAll(".with-fragments li")
+      .forEach((n) => n.classList.add("fragment"));
 
     // ...but not really every (remove all 'fragments' from elements that are marked with 'no-fragment'
     //    and THEIR CHILDREN)
     document
       .querySelectorAll(".no-fragment, .no-fragment *")
       .forEach((n) => n.classList.remove("fragment"));
-
-    // when using code blocks with markdown like this:
+    //
+    //    // when using code blocks with markdown like this:
     //  ```java fragment
     //  the <code> elements gets the "fragment" class, but it needs
     //  to be on its parent <pre> element
