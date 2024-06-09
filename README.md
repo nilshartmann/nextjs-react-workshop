@@ -29,9 +29,11 @@ Die Next.js-Anwendung läuft auf Port `3000`. Dieser Port muss also bei dir frei
 
 Für das "Backend", das eine HTTP API zur Verfügung stellt, muss der Port `7000` frei sein.
 
-## Installation des Frontends
+## Schritt 1: Installation des Backends
 
-### (Optional) Schritt 1: Installation von pnpm
+Das "Backend" ist eine einfache Node.js/Express-Anwendung, die einige HTTP Endpunkte zur Verfügung stellt. Bitte installiere auch hier die Abhängigkeiten:
+
+### (Optional) Schritt 1.1: Installation von pnpm
 
 Grundsätzlich sollte die Installation der npm-Packages mit npm und yarn funktionieren.
 
@@ -39,62 +41,96 @@ Ich habe aber mit [pnpm](https://pnpm.io/) getestet. Falls du noch kein pnpm ins
 
 Dazu führst Du einfach auf der Kommandozeile folgenden Befehl aus (`corepacks` ist Bestandteil von Node.js):
 
-```
+```bash
 corepacks enable
 ```
 
-### Schritt 2: Installation der npm-Packages
+### Schritt 1.2: Installation der npm-Packages
 
-Wir arbeiten im Verzeichnis `workspace`. In diesem Verzeichnis auf der Kommandozeile bitte folgenden Befehl ausführen:
+Das Backend befindet sich Verzeichnis `backend`. In diesem Verzeichnis auf der Kommandozeile bitte folgenden Befehl ausführen:
 
-```
+```bash
+cd backend
+
 pnpm install
 ```
 
 (Alternative npm oder yarn verwenden)
 
-### Schritt 3: Starten der Next.js-Anwendung
+### Schritt 1.3: Starten des Backends
+
+Die Backend-Anwendung kannst du im `backend`-Verzeichnis starten, in dem Du dort das `dev`-Script ausführst:
+
+```bash
+cd backend
+
+pnpm dev
+```
+
+Das Backend läuft nun auf Port 7000. Zum Testen kannst du einmal `http://localhost:7000/posts` aufrufen (per Webbrowser oder curl etc.). Dort sollte eine Antwort im JSON-Format zurückkommen.
+
+## Schritt 2: Installation des Blog-Example-Workspaces
+
+### Schritt 2.1: Installation der npm-Packages
+
+Wir arbeiten im Verzeichnis `blog-example/blog-workspace`. In diesem Verzeichnis auf der Kommandozeile bitte folgenden Befehl ausführen:
+
+```bash
+cd blog-example/blog-workspace
+
+pnpm install
+```
+
+(Alternativ npm oder yarn verwenden)
+
+### Schritt 2.2: Starten der Next.js-Anwendung
+
+Die Next.js-Anwendung kannst Du ebenfalls im `blog-example/blog-workspace`-Verzeichnis starten, in dem Du dort das `dev`-Script ausführst:
+
+```bash
+cd blog-example/blog-workspace
+
+pnpm dev
+```
+
+Die Anwendung startet nun und sollte nach kurzer Zeit auf http://localhost:3000 laufen. Wenn du diese URL in deinem Browser öffnest, müsste dort eine 404-Fehlermeldung erscheinen, da dort noch keine Next.js-Routen vorhanden sind.
+
+## Schritt 3: Installation des workspaces
+
+Diesen Workspace werden wir erst im zweiten Teil verwenden. Es reicht, wenn du die Installation dann machst (ich werde darauf hinweisen)
+
+## Schritt 3.1: Installation der npm-Packages
+
+Wir arbeiten im Verzeichnis `workspace`. In diesem Verzeichnis auf der Kommandozeile bitte folgenden Befehl ausführen:
+
+```bash
+cd workspace
+
+pnpm install
+```
+
+(Alternative npm oder yarn verwenden)
+
+### Schritt 3.2: Starten der Next.js-Anwendung
 
 Die Next.js-Anwendung kannst Du ebenfalls im `workspace`-Verzeichnis starten, in dem Du dort das `dev`-Script ausführst:
 
 ```
+cd workspace
+
 pnpm dev
 ```
 
 Die Anwendung startet nun und sollte nach kurzer Zeit auf http://localhost:3000 laufen. Wenn du diese URL in deinem Browser öffnest, müsste dort die Meldung `Hello React / Next.js Workshop!` erscheinen.
 
-### Hinweise zum Next.js Cache
+## Hinweise zum Next.js Cache
 
 Next.js hat ein sehr aggressives Caching eingebaut. Deswegen kann es manchmal sein, dass Du Änderungen nicht sofort siehst. Deswegen hilft es manchmal:
 
 - Im Browser "hard refresh" machen (Cmd+Shift+R bzw. Ctrl+Shift+R bei Firefox z.B.). Dann verwirft Firefox Dateien im Cache.
-- Das Verzeichnis `workspace/.next` löschen und Next.js neustarten
+- Das Verzeichnis `.next` löschen und Next.js neustarten
 
 Dieses Verhalten wird sich übrigens in [Next.js 15 ändern](https://nextjs.org/blog/next-15-rc#caching-updates), denn dort ist das Caching nicht mehr an allen Stellen per Default eingeschaltet.
-
-## Installation des Backends
-
-Das "Backend" ist eine einfache Node.js/Express-Anwendung, die einige HTTP Endpunkte zur Verfügung stellt. Bitte installiere auch hier die Abhängigkeiten:
-
-### Schritt 1: Installation der npm-Packages
-
-Das Backend befindet sich Verzeichnis `backend`. In diesem Verzeichnis auf der Kommandozeile bitte folgenden Befehl ausführen:
-
-```
-pnpm install
-```
-
-(Alternative npm oder yarn verwenden)
-
-### Schritt 2: Starten des Backends
-
-Die Backend-Anwendung kannst du im `backend`-Verzeichnis starten, in dem Du dort das `dev`-Script ausführst:
-
-```
-pnpm dev
-```
-
-Das Backend läuft nun auf Port 7000. Zum Testen kannst du einmal `http://localhost:7000/posts` aufrufen (per Webbrowser oder curl etc.). Dort sollte eine Antwort im JSON-Format zurückkommen.
 
 ## Fragen, Kommentare, Feedback
 

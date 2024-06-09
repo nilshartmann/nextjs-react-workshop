@@ -240,13 +240,14 @@
 
 ---
 
-### Übung: Vorbereitung #1
+### Übung: Vorbereitung
 
 - **Klonen des Repositories**
 - Bitte klonen: https://github.com/nilshartmann/nextjs-react-workshop
 - In der [README.md-Datei](https://github.com/nilshartmann/nextjs-react-workshop/blob/main/README.md) findet ihr Hinweise zur Installation des Workspaces
-- **Arbeitsverzeichnis**: Wir arbeiten zunächst ausschliesslich im Verzeichnis `workspace-blog`
-- ⚠️ Am besten nur das `workspace-blog`-Verzeichnis in der IDE oder im Editor öffnen
+- Bitte erstmal nur die Schritte 1.x ("Backend") und 2.x (Blog-Example-Workspace) durchführen
+- **Arbeitsverzeichnis**: Wir arbeiten zunächst ausschliesslich im Verzeichnis `blog-example/workspace-blog`
+- ⚠️ Bitte **nur** das `blog-example/workspace-blog`-Verzeichnis in der IDE oder im Editor öffnen
 
 ---
 
