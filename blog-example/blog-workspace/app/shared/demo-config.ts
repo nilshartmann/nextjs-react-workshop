@@ -40,7 +40,7 @@ export const failCommentsPostRequestForId = "";
 /**
  * Verzögern beim Speichern eines neuen Blog-Posts
  */
-export const delaySavePost = 0;
+export const delaySavePost = 2000;
 
 /**
  * Verzögern des "Likens" eines Blog-Posts
