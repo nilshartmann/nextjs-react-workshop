@@ -1,6 +1,7 @@
 import { dateTimeString } from "@/app/components/date-formatter.ts";
 import AppLink from "@/app/components/AppLink.tsx";
 import { IBlogPostSchema } from "@/app/shared/types.ts";
+import { LikeButton } from "@/app/material/postpage/LikeButton.tsx";
 
 function postAbstract({ body }: IBlogPostSchema) {
   return body.length > 150 ? body.substring(0, 150) + "..." : body;
@@ -20,6 +21,7 @@ export default function PostPreview({ post }: PostPreviewProps) {
         <p>{postAbstract(post)}</p>
       </div>
       <NewestComment post={post} />
+      <LikeButton post={post} />
     </article>
   );
 }

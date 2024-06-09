@@ -4,6 +4,8 @@
 
 ### Single-Page-Anwendungen mit React.js
 
+<!-- .slide: class="with-fragments" -->
+
 - React war (ist?) eine Bibliothek zur Entwicklung rein clientseitigen Webanwendungen (Single-Page-Anwendungen)
 - Single-Page-Anwendungen werden in JavaScript geschrieben und laufen vollständig **im Browser**
 
@@ -15,6 +17,8 @@
 
 ### Serverseitiges Rendern mit React (SSR)
 
+<!-- .slide: class="with-fragments" -->
+
 - SSR bedeutet das beim **ersten Zugriff** auf eure Anwendung die abgefragte Seite auf dem Server gerendert und fertig **als HTML** zum Browser geschickt wird.
 - Der Browser kann die Seite also **sofort anzeigen**
 - Dann lädt der Browser aber auch den vollständigen JavaScript-Code euer Anwendung
@@ -24,6 +28,8 @@
 
 ### React und Next.js
 
+<!-- .slide: class="with-fragments" -->
+
 - Seit ca. einem Jahr (Anfang 2023) empfiehlt React nun aber ein "Fullstack-Framework"
 - <img src="/slides/images/fullstack-framework.png" style="width:100%">
 
@@ -31,12 +37,17 @@
 
 ### Fullstack Anwendungen
 
+<!-- .slide: class="with-fragments" -->
+
 - Bei Fullstack-Anwendungen werden Teile der UI-Logik in den Server geschoben
 - Für React-basierte Ansätze bedeutet das:
   - Ihr schreibt weiterhin "eine" Anwendung (mit React/Next.js) in JavaScript
   - Aber: Teile eurer Komponenten werden jetzt **zur Laufzeit** auf dem **Server** gerendert
   - Die Anwendung läuft also nicht mehr vollständig im Browser, man braucht einen JS-fähigen Server
-- Warum sollte man das tun? 🤔 Warum empfiehlt React diesen Ansatz? 🤔 Inwiefern ist eine Fullstack-Anwendung besser als Single-Page-Anwendung? 🤔 Gibt es Nachteile? 🤔
+- Warum sollte man das tun? 🤔
+- Warum empfiehlt React diesen Ansatz? 🤔
+- Inwiefern ist eine Fullstack-Anwendung besser als Single-Page-Anwendung? 🤔
+- Gibt es Nachteile? 🤔
 
 ---
 
@@ -45,6 +56,8 @@
 ---
 
 ## "Fullstack Architektur-Vision"
+
+<!-- .slide: class="with-fragments" -->
 
 - **React Server Components (RSC)**
 
@@ -60,6 +73,10 @@
 
 ---
 
+## Next.js vs React
+
+## <!-- .element: class="todo" --> hierher kopieren !!!!!!!!!!!!!!!!!!
+
 ## Zero-Bundle-Size
 
 # React Server Components
@@ -67,6 +84,8 @@
 ---
 
 ### Arten von Komponenten
+
+<!-- .slide: class="with-fragments" -->
 
 - **Client-Komponenten**
 
@@ -83,6 +102,8 @@
 
 ### Arten von Komponenten
 
+<!-- .slide: class="with-fragments" -->
+
 - **Neu: Server-Komponenten**
 
 - werden auf dem **Server** gerendert
@@ -97,6 +118,8 @@
 
 ---
 
+<!-- .slide: class="with-fragments" -->
+
 ### Arten von Komponenten
 
 - Die Komponenten gemischt werden:
@@ -104,9 +127,166 @@
   - (umgekehrt geht es nicht)
 - Dann wird alles bis zur ersten Client-Komponente gerendert und an den Client gesendet
 
-<!-- .element: class="demo" -->Eine "Message"-Komponente
-<!-- .element: class="demo" -->Eine Server-Komponente (Route), die die Message-Komponente rendert
-<!-- .element: class="demo" -->Eine zweite Route mit einer Client-Komponente, die ebenfalls die Message-Komponente rendert
+- <!-- .element: class="demo" -->Eine "Message"-Komponente
+- <!-- .element: class="demo" -->Eine Server-Komponente (Route), die die Message-Komponente rendert
+- <!-- .element: class="demo" -->Eine zweite Route mit einer Client-Komponente, die ebenfalls die Message-Komponente rendert
+
+---
+
+## Next.js
+
+- Um die "modernen" Fullstack-Features von React nutzen zu können, braucht man ein entsprechendes Framework
+- https://nextjs.org/
+- Features:
+  - Unterstützung für React Server Components
+  - React Client Komponenten
+- Proprietäre Features:
+  - SSR
+  - Static Rendering
+  - Datei-basiertes Routing
+  - Caching und Preloading
+  - API Routen
+
+---
+
+### Der Next.js Router
+
+- [App-Router](https://nextjs.org/docs/app/building-your-application/routing): neuer Router (seit Version 13.4), der RSC unterstützt
+  - (der "alte" `pages`-Router unterstützt keine RSC)
+- File-system-basierter Router, der Code eurer Anwendung liegt unterhalb des Verzeichnisses `app`
+- Unterhalb von `app` ist ein Verzeichnis eine **Route**, wenn darin eine `page.tsx`-Datei liegt
+  - Dann ist dieses Verzeichnis vom Browser aufrufbar (`app/user/profile/page.tsx` -> Pfad im Browser: `/user/profile`)
+  - `page.tsx` vergleichbar mit `index.html` in klassischem Web-Server
+  - Verzeichnisse, die _keine_ `page.tsx`-Datei haben, tauchen zwar in der URL auf, können aber nicht aufgerufen werden
+- Eine **Routen-Datei** muss per `default export` eine React-Komponente exportieren.
+- Diese Komponente wird dargestellt, wenn die Route vom Browser angefordert wird
+- ```tsx
+  // /app/page.tsx
+  export default function LandingPage() {
+    return <h1>Hello World!</h1>;
+  }
+
+  // /app/recipes/page.tsx
+  export default function RecipeListPage() {
+    return <h1>Tasteful recipes 😋</h1>;
+  }
+  ```
+
+---
+
+### Demo: Next.js Router
+
+- <!-- .element: class="demo" --> Landing-Page
+- <!-- .element: class="demo" --> Recipes Page
+- <!-- .element: class="demo" --> Layout
+
+---
+
+### Der Next.js Router
+
+- In einem Route-Verzeichnis kann es weitere Dateien geben, die einen festgelegten Namen haben und jeweils per `default export` eine React-Komponente zurückliefern:
+- `layout.tsx`: Definiert die Layout-Komponente.
+  - Damit kann über mehrere Routen ein einheitliches Layout festgelegt werden, denn wenn eine Seite gerendert wird, werden alle Layout-Komponenten aus den Pfaden darüber verwendet. So kann eine Hierarchie von Layouts gebaut werden.
+- `loading.tsx`: Loading-Spinner o.ä., der dargestellt wird, bis die Seite gerendert werden kann (dazu später mehr)
+- `error.tsx`: Eine Komponente, die als Error Boundary fungiert und gerendert wird, wenn beim Rendern der `page` ein Fehler aufgetreten ist
+- `not-found.tsx`: Kann verwendet werden, um einen Fehler darzustellen, wenn eine Seite `notFound` zurückliefert
+
+---
+
+### Der Next.js Router: Layouts
+
+- Jede Route kann eine Layout-Komponente haben
+- Dieser Komponente wird die darzustellende Seite als `children`-Property übergeben
+- ```tsx
+  type MainLayoutProps = { children: React.ReactNode };
+
+  export default function MainLayout({ children }: MainLayoutProps) {
+    return <main>{children}</main>;
+  }
+  ```
+
+- Layout-Komponenten können verschachtelt sein
+- Wenn eine Route keine Layout-Komponente hat, wird im Baum oberhalb nach der nächstgelegenen Layout-Komponente gesucht
+- Die Layout-Komponente für die Root-Route ist _pflicht_. Hier muss eine ganze HTML-Seite beschrieben werden
+- ```tsx
+  // /app/layout.tsx
+  export default function Layout({children}: {children: ReactNode}) {
+    return <html>
+       <head><title>Enterprise Blogging</title></head>
+       <body>
+         <header>Full-stack, full blog</header>
+         <main>{children}</main>
+       </body>
+      <html>
+  }
+  ```
+
+---
+
+### Navigieren
+
+- Zum Rendern von Links bringt Next.js eine eigene `Link`-Komponente mit
+  - Mit einem entsprechenden Plug-in für TypeScript soll die sogar typsicher sein, so dass man keine Routen-Angaben hinschreiben kann, die es gar nicht gibt
+    - (hat bei mir beim letzten Versuch nur eingeschränkt funktioniert)
+- Verwendung ähnlich wie auch vom React Router (und `a`-Element) gewohnt:
+
+- ```tsx
+  import Link from "next/link";
+
+  function BlogPostLink({ postId }) {
+    return <Link href={`/posts/${postId}`}>Read...</Link>;
+  }
+  ```
+
+---
+
+### Übung: Vorbereitung #1
+
+- **Klonen des Repositories**
+- Bitte klonen: https://github.com/nilshartmann/nextjs-react-workshop
+- In der [README.md-Datei](https://github.com/nilshartmann/nextjs-react-workshop/blob/main/README.md) findet ihr Hinweise zur Installation des Workspaces
+- **Arbeitsverzeichnis**: Wir arbeiten zunächst ausschliesslich im Verzeichnis `workspace-blog`
+- ⚠️ Am besten nur das `workspace-blog`-Verzeichnis in der IDE oder im Editor öffnen
+
+---
+
+### Warnung: Next.js Caching
+
+- Achtung! Next.js hat sehr aggressives Caching eingebaut
+- Wenn ihr "komisches" Verhalten feststellt, könnt ihr probieren:
+  - Im Browser neuen Tab öffnen, oder in den Dev Tools Caching ausschalten oder Inkognito Modus verwenden
+  - "Hard Refresh" im Browser machen
+  - Verzeichnis `workspace/.next` löschen und Next.js neu starten
+
+---
+
+### Übung: Getting started!
+
+<!-- .slide: class="small" -->
+
+1. Installieren: `npm install` und `npm run dev`
+
+1. Baue die "Landing Page" für die Root-Route (`/`) im `app`-Verzeichnis
+
+- Die Seite muss nicht hübsch sein
+- heute gilt: wir machen Bauhaus-Style, "form follows function" 😉
+- Die Komponente soll einen Link auf `/posts` rendern
+
+1. Lege die Komponente für die Route `/posts` an
+
+- Es reicht, wenn diese Komponente erstmal nur "Hello World" ausgibt.
+- In welches Verzeichnis muss die `page.tsx`-Datei für diese Route?
+
+1. Wenn deine neuen Routen funktionieren:
+
+- Füge ein `console.log`-Statement in deine Komponenten hinzu, das beim Rendern die aktuelle Uhrzeit ausgibt
+- wo und wann wird das Log-Statement ausgegeben?
+
+1. Kannst Du eine `layout`-Komponente bauen, die für Routen innerhalb `/posts` gilt, aber nicht für die Root-Route (`/`)
+
+- Du kannst dir selbst ein einfaches Layout ausdenken, oder diese Komponente verwenden: `BlogPageLayout`
+
+- Mögliche Lösung findest Du in `schritte/10_routen_und_links`
 
 ---
 
@@ -136,7 +316,6 @@
 - <!-- .element: class="demo" -->posts/page.tsx anlegen
 
 - <!-- .element: class="demo" -->DB-Zugriff mit `fetchPosts`
-- <!-- .element: class="demo" -->weiterhin eine statische Komponente bislang! Build! console.log!
 
 ---
 
@@ -197,17 +376,6 @@
   - Zusätzlich werden auch die Ergebnisse von `fetch`-Aufrufen gecached
 - Das Caching ist in der [Dokumentation beschrieben](https://nextjs.org/docs/app/building-your-application/caching)
 - Das Caching [ändert sich in Next.js 15](https://nextjs.org/blog/next-15-rc#caching-updates)
-
----
-
-### Rendering Modes in Next.js
-
-<!-- .element: class="demo" -->nach Einzel-Seite
-
-- Routen können **statisch** oder **dynamisch** gerendert werden:
-  - Wenn Next.js alle Informationen zu einer Route schon zur Buildzeit hat, wird es eine **statische** Route.
-  - Dynamische Routen werden bei jedem Request neu erzeugt (z.B. bei variablen Pfad-Segmenten)
-  - Das lässt sich in beiden Fällen (zumindest teilweise) pro Route auch ändern
 
 ---
 
@@ -299,6 +467,15 @@
 
 ---
 
+### Rendering Modes in Next.js
+
+- Routen können **statisch** oder **dynamisch** gerendert werden:
+  - Wenn Next.js alle Informationen zu einer Route schon zur Buildzeit hat, wird es eine **statische** Route.
+  - Dynamische Routen werden bei jedem Request neu erzeugt (z.B. bei variablen Pfad-Segmenten)
+  - Das lässt sich in beiden Fällen (zumindest teilweise) pro Route auch ändern
+
+---
+
 ### Dynamische und statische Routen
 
 - Durch die Verwendung eines Platzhalters wird eine Route zu einer dynamischen Route, d.h. sie wird **nicht** im Build gerendert, sondern **nur** zur Laufzeit
@@ -359,34 +536,36 @@
 - Den `fallback` dafür implementieren wir in der Datei `loading.tsx`, die eine Komponente per `default export` exportieren muss
 - Konzeptionell sieht das so aus:
 
-  - Eure Route:
-  - ```tsx
-    // loading.tsx
-    export default function Spinner() {
-      return "Please Wait";
-    }
-    ```
+- Eure Route:
+- ```tsx
+  // loading.tsx
+  export default function Spinner() {
+    return "Please Wait";
+  }
+  ```
 
+- ```tsx
   // page.tsx
   export default async function PostListPage() {
-  const data = await loadData();
-  return <>...</>;
+    const data = await loadData();
+    return <>...</>;
   }
+  ```
 
-  ````
-
-  - Next.js (dummy code!!!)
-  - ```typescript
+- Next.js (dummy code!!!)
+- ```tsx
   // Next.js (dummy code):
-  import Fallback from "loading.tsx"
+  import Fallback from "loading.tsx";
   import Page from "page.tsx";
 
   function Route() {
-    return <Suspense fallback={Fallback}>
-      <Page />
-    </Supsense>;
+    return (
+      <Suspense fallback={Fallback}>
+        <Page />
+      </Suspense>
+    );
   }
-  ````
+  ```
 
 ---
 
@@ -588,7 +767,7 @@
 ### Übung: Zod
 
 - **Beschreibe ein Objekt-Schema mit Zod**
-- In `workspace-blog/app/material/zod-user.test.ts` findest Du ein `User`-TypeScript-Objekt
+- In `workspace-blog/exkurs/zod/zod-user.test.ts` findest Du ein `User`-TypeScript-Objekt
 - Schreibe dafür das Pendant in zod
 - In der Datei findest du TODOs mit Hinweisen
 - In der Datei befinden sich einige Tests. Diese sollten "grün" sein, wenn du das Objekt korrekt beschrieben hast
@@ -676,8 +855,7 @@
 
 * ```tsx
   type ErrorHandlerProps = {
-    error: Error & // Next.js-Erweiterung des Error-Objektes:
-    { digest: string };
+    error: Error & { digest: string }; // Next.js-Erweiterung des Error-Objektes:
   };
   function ErrorHandler({ error }: ErrorHandlerProps) {
     return (
@@ -796,6 +974,8 @@
 
 ### Übung: Error Boundaries
 
+<!-- .element: class="todo" -->Übung anpassen
+
 - Kopiere `20_error_boundary/00_initial/app` in deine Anwendung
 - Wenn Du `http://localhost:3000/a/b/counter` aufrufst, bekommst du eine Counter-Komponente angezeigt
 - Diese sollst du mit einem Error Boundary umschliessen, so dass nicht die ganze Seite durch eine Fehler-Komponente ersetzt wird
@@ -807,7 +987,7 @@
 
 ### Ausblick: Fehler protokollieren
 
-- <!-- .element: class="demo" --> `20_error_boundary/03_log_error`
+- <!-- .element: class="demo" --> Server Action mit useEffect zur Protokollierung verwenden
 - Ihr könnt die Error Boundaries nutzen, um die Fehler auf dem Server zu protokollieren
 - Zum Zugriff auf dem Server könnt ihr eine Server Action nehmen
   - oder einen eigenen HTTP-Endpunkt (Next.js API Route z.B.)
@@ -943,7 +1123,6 @@
   export default async function PostListPage({
     searchParams,
   }: PostListPageProps) {
-    const page = parseInt(searchParams.page || "0");
     const orderBy = searchParams.orderBy;
 
     const result = fetchPosts(orderBy);
@@ -1000,44 +1179,44 @@
 - Analysier doch mal mit Hilfe von `console.log` bzw. der Ausgabe auf der Konsole des `backend`-Prozesses, wann neu gerendert wird
 - Lösung in `schritte/50_client/fertig`
 
----
-
-### useTransition
-
-- <!-- .element: class="demo" -->: `OrderButton` mit Transition
-- Mit dem `useTransition`-Hook von React (18) können Updates priorisiert werden
-- Dazu wird eine Funktion angegeben, in der eine "Transition" beschrieben ist (z.B. durch das Setzen eines States)
-- Wenn React die Komponente daraufhin neu rendert, **und** eine weitere/andere State-Änderung durchgeführt wird, bricht React das rendern ab (und startes es ggf. später neu)
-- Mit `useTransition` kann also ausgedrückt werden: dieses Rendern ist nicht so "wichtig" (nicht so "dringend")
-- Mit Client-seitigem React kann auf diese Weise zum Beispiel sichergestellt werden, dass Updates, die durch Benutzer-Eingaben entstehen, nicht vom Rendern eines Suchergebnisses unterbrochen werden
-  - Hier wäre das Aktualisieren des Suchergebnisses weniger "dringend", als die Darstellung der aktualisierten Eingabe
-- Der `useTransition`-Hook liefert zwei Parameter zurück:
-  - `const [isPending, startTransition] = useTransition()`
-- Mit `startTransition` kann die Transition gestartet werden (Funktion übergeben)
-- `isPending` liefert zurück, ob die Transition gerade läuft
-
----
-
-### Beispiel: useTransition mit Suspense
-
-- Wenn man einen von einer Seite auf eine andere Seite mit dem Next.js Router durchführt, kann man mit `useTransition` auf der Ursprungsseite bleiben, bis die Ziel-Seite fertig gerendert ist
-  - Die Ziel-Seite wird dann in Hintergrund gerendet, und solange ist `isPending` `true`
-- ```tsx
-  export function OrderButton() {
-    const router = useRouter();
-    const [isPending, startTransition] = useTransition();
-
-    const handleClick = () => {
-      startTransition(() => router.push("/..."));
-    };
-
-    return isPending ? (
-      <button>Sorting...</button>
-    ) : (
-      <button onClick={handleClick}>Order by date</button>
-    );
-  }
-  ```
+[//]: # "---"
+[//]: #
+[//]: # "### useTransition"
+[//]: #
+[//]: # '- <!-- .element: class="demo" -->: `OrderButton` mit Transition'
+[//]: # "- Mit dem `useTransition`-Hook von React (18) können Updates priorisiert werden"
+[//]: # '- Dazu wird eine Funktion angegeben, in der eine "Transition" beschrieben ist (z.B. durch das Setzen eines States)'
+[//]: # "- Wenn React die Komponente daraufhin neu rendert, **und** eine weitere/andere State-Änderung durchgeführt wird, bricht React das rendern ab (und startet es ggf. später neu)"
+[//]: # '- Mit `useTransition` kann also ausgedrückt werden: dieses Rendern ist nicht so "wichtig" (nicht so "dringend")'
+[//]: # "- Mit Client-seitigem React kann auf diese Weise zum Beispiel sichergestellt werden, dass Updates, die durch Benutzer-Eingaben entstehen, nicht vom Rendern eines Suchergebnisses unterbrochen werden"
+[//]: # '  - Hier wäre das Aktualisieren des Suchergebnisses weniger "dringend", als die Darstellung der aktualisierten Eingabe'
+[//]: # "- Der `useTransition`-Hook liefert zwei Parameter zurück:"
+[//]: # "  - `const [isPending, startTransition] = useTransition()`"
+[//]: # "- Mit `startTransition` kann die Transition gestartet werden (Funktion übergeben)"
+[//]: # "- `isPending` liefert zurück, ob die Transition gerade läuft"
+[//]: #
+[//]: # "---"
+[//]: #
+[//]: # "### Beispiel: useTransition mit Suspense"
+[//]: #
+[//]: # "- Wenn man einen von einer Seite auf eine andere Seite mit dem Next.js Router durchführt, kann man mit `useTransition` auf der Ursprungsseite bleiben, bis die Ziel-Seite fertig gerendert ist"
+[//]: # "  - Die Ziel-Seite wird dann in Hintergrund gerendet, und solange ist `isPending` `true`"
+[//]: # "- ```tsx"
+[//]: # "  export function OrderButton() {"
+[//]: # "    const router = useRouter();"
+[//]: # "    const [isPending, startTransition] = useTransition();"
+[//]: #
+[//]: # "    const handleClick = () => {"
+[//]: # '      startTransition(() => router.push("/..."));'
+[//]: # "    };"
+[//]: #
+[//]: # "    return isPending ? ("
+[//]: # "      <button>Sorting...</button>"
+[//]: # "    ) : ("
+[//]: # "      <button onClick={handleClick}>Order by date</button>"
+[//]: # "    );"
+[//]: # "  }"
+[//]: # "  ```"
 
 ---
 
@@ -1047,13 +1226,16 @@
 - Gecached werden z.B. Komponenten, aber auch fetch-Requests
   - Wenn du `fetch` in deinem Code verwendest, werden die GET-Requests von Next.js gecached!
 - Das kann man alles ausschalten, aber es ist am Anfang gewöhnungsbedürftig
-  - Deswegen auch das `dev:clean`-Script in der `package.json`
-- **Mit Next.js Version 15 [ändert sich das Caching-Verhalten](https://nextjs.org/blog/next-15-rc#caching-updates)**
-  - Eventuell wird es dadurch besser verständlich, da man es an mehr Stellen explizit einschalten muss
 
-* Meiner Erfahrung nach ist das nicht trivial zu verstehen und scheint auch noch Bugs zu haben
-* Es gibt eine [ausführlichen Dokumentation](https://nextjs.org/docs/app/building-your-application/caching), welche Caches es gibt und wie die jeweils funktionieren
-  - Darin enthalten ist auch eine [Matrix](https://nextjs.org/docs/app/building-your-application/caching#apis), aus der hervorgeht, welche Next.js Funktionen Auswirkungen auf den Cache haben
+  - Deswegen auch das `dev:clean`-Script in der `package.json`
+
+- Meiner Erfahrung nach ist das nicht trivial zu verstehen und scheint auch noch Bugs zu haben
+- Es gibt eine [ausführlichen Dokumentation](https://nextjs.org/docs/app/building-your-application/caching), welche Caches es gibt und wie die jeweils funktionieren
+
+- Darin enthalten ist auch eine [Matrix](https://nextjs.org/docs/app/building-your-application/caching#apis), aus der hervorgeht, welche Next.js Funktionen Auswirkungen auf den Cache haben
+- **Mit Next.js Version 15 [ändert sich das Caching-Verhalten](https://nextjs.org/blog/next-15-rc#caching-updates)**
+
+  - Eventuell wird es dadurch besser verständlich, da man es an mehr Stellen explizit einschalten muss
 
 ---
 
@@ -1073,7 +1255,7 @@
 - ```typescript
   const r = await fetch(`http://localhost:7000/posts`, {
     next: {
-      tags: ["recipes"],
+      tags: ["posts"],
     },
   });
   ```
@@ -1081,7 +1263,7 @@
   // Invalidieren des Caches:
   import { revalidateTag } from "next/cache";
 
-  revalidateTag("recipes");
+  revalidateTag("posts");
   ```
 
 - Alternativ geht das auch mit Pfaden (`revalidatePath`), da könnt ihr einen Pfad angeben
@@ -1120,7 +1302,7 @@
 
 ### Server Actions
 
-- <!-- .element: class="demo" -->Like Action!
+- <!-- .element: class="demo" -->Likes-Button Action!
 - **Server Actions** sind Funktionen, die auf dem Server laufen und aus einer Client-Komponente aufgerufen werden können
 
   - Eine Art remote-procedure Call
@@ -1133,10 +1315,10 @@
 - ```typescript
   "use server";
 
-  export async function addLike(recipeId: string) {
-    const result = await addLikeToRecipe(receipdId);
+  export async function addLike(postId: string) {
+    const result = await saveLikeToBackend(postId);
 
-    return { newLikes: result.newLikes };
+    return result.newLikes;
   }
   ```
 
@@ -1146,16 +1328,16 @@
 
 - Der Aufruf einer Server-Action-Funktion erfolgt aus der Komponente wie bei einer normalen Funktion
 - ```tsx
-  function LikesWidget({ recipe }) {
-    const [likes, setLikes] = useState(recipe.likes);
+  function LikeButton({ post }) {
+    const [likes, setLikes] = useState(post.likes);
 
     const onSaveClick = async () => {
       // SERVER REQUEST !
-      const newLikes = await addLike(recipe.id);
+      const newLikes = await addLike(post.id);
       setLikes(newLikes);
     };
 
-    return <div onClick={handleLikeClick}>{recipe.likes}</div>;
+    return <div onClick={handleLikeClick}>{likes}</div>;
   }
   ```
 
@@ -1171,26 +1353,26 @@
 - ```tsx
   "use server";
 
-  export async function addLike(recipeId: string) {
-    const result = await addLikeToRecipe(receipdId);
+  export async function addLike(postId: string) {
+    const result = await saveLikeToBackend(postId);
 
-    revalidateTag("recipes"); // Liste mit den Rezepten
-    revalidateTag(`recipes/${recipeId}`); // Einzeldarstellung
+    revalidateTag("posts"); // Liste mit den BlogPosts
+    revalidateTag(`posts/${postId}`); // Einzeldarstellung
 
-    return { newLikes: result.newLikes };
+    return result.newLikes;
   }
   ```
 
 - Das funktioniert in unserem Beispiel deswegen, weil die `fetch`-Aufrufe die für die Liste- bzw. Einzeldarstellung entprechende Tags gesetzt haben:
 
 * ```typescript
-  async function fetchRecipes() {
-    fetch("...", { next: { tags: ["recipes"] } });
+  async function fetchPosts() {
+    fetch("...", { next: { tags: ["posts"] } });
     // ...
   }
 
-  async function fetchRecipe(recipeId: string) {
-    fetch("...", { next: { tags: [`recipes/${recipeId}`] } });
+  async function fetchPost(postId: string) {
+    fetch("...", { next: { tags: [`posts/${postId}`] } });
     // ...
   }
   ```
@@ -1202,30 +1384,79 @@
 - Server Actions können mit einer Transition umschlossen werden
 - Dann kannst Du prüfen, ob die Action noch läuft und ggf. einen Hinweis rendern
 - ```tsx
-  export function LikesWidget() {
+  export function LikesWidget({post}) {
     const [likes, setLikes] = useState(recipe.likes);
     const [isPending, startTransition] = useTransition();
 
     const onSaveClick = () => {
        startTransition( async () => {
-         const newLikes = await addLike(recipe.id);
+         const newLikes = await addLike(post.id);
          setLikes(newLikes);
        })
      };
 
-     return isPending ? <div>Like is updating!<div> : <div onClick={handleLikeClick}>{recipe.likes}</div>;
+     return isPending ?
+       <div>Like is updating!<div> :
+       <div onClick={handleLikeClick}>{likes}</div>
   }
   ```
 
 ---
 
-### Server Actions
+### Optimistische Aktualisierungen
 
-Schöne neue Welt? 🤔
+- Mit React 19 gibt es einen neuen Hook: [useOptimistic](https://19.react.dev/reference/react/useOptimistic)
+- Dieser stellt einer Komponente einen "optimistischen" Zustand zur Verfügung, solange eine async Action läuft
+  - Das geht in Client Komponenten (auch ohne Framework) und in Server Components
+- Damit kannst Du das erwartete Ergebnis einer Action bereits in der UI visualisieren
+- Benutzer bekommen so ein schnelleres Feedback:
+  - während die Action läuft das "optimistische" Ergebnis
+  - danach das neue Ergebnis (oder altes im Fehlerfall)
 
-<img src="slides/images/server-actions.png" style="height: 900px">
+---
 
-## https://twitter.com/AdamRackis/status/1717607565260124613
+### Der useOptimistic-Hook
+
+<!-- .element: class="left" -->
+
+- `useOptimistic` erwartet zwei Parameter:
+  - den aktuellen "echten" Zustand (ohne Action)
+  - eine (Reducer) Update-Funktion, die auf Basis des aktuellen Zustands und einer Action den optimistischen Zustand berechnet
+- Der Hook liefert ein Array mit zwei Werten zurück:
+  - den berechneten optimistischen Zustand (oder den echten, falls keine Action läuft)
+  - eine Dispatch-Funktion, die die Update-Funktion auslöst, um einen optimistischen Zustand zu berechnen
+- Wenn man die `updateFn` nicht angibt, kann mit der Dispatch-Funktion direkt der optimistische Wert gesetz werden
+  - Das steht so nicht in der React-Doku, funktioniert aber (im [React Source-Code](https://github.com/facebook/react/blob/main/packages/react/src/ReactHooks.js#L206) ist der Paramter auch optional )
+
+---
+
+### Der useOptimistic-Hook
+
+<!-- .element: class="left" -->
+
+- ```tsx
+  function LikesWidget({ post }) {
+    const [likes, setLikes] = useState(0);
+    const [optimisticLikes, changeLikes] = useOptimistic(
+      likes,
+      (currentLikes, action) => {
+        // action kann beliebiges Objekt sein, wie in einer Reducer-Funktion
+        // hier soll es der Wert sein, um den currentLikes erhöht/gesenkt werden soll
+        return currentLikes + action;
+      },
+    );
+
+    const handleIncreaseLikes = () => {
+      startTransition(async () => {
+        setOptimisticLikes(+1);
+        const result = await increaseLikes(post.id);
+        setLikes(newLikes);
+      });
+    };
+
+    return <button>{optimisticLikes}</button>;
+  }
+  ```
 
 ---
 
@@ -1278,11 +1509,3 @@ Schöne neue Welt? 🤔
     );
   }
   ```
-
-```
-
-```
-
-```
-
-```

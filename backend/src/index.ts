@@ -146,7 +146,7 @@ app.get("/posts/:postId/comments", (req: Request, res: Response) => {
   return res.json({ data: commentsForPost, meta: res.locals.meta });
 });
 
-app.post("/posts/:postId/like", (req, res) => {
+app.patch("/posts/:postId/likes", (req, res) => {
   const postId = req.params["postId"];
 
   const post = posts.find((p) => p.id === postId);
@@ -195,6 +195,7 @@ app.get("/posts", (req, res) => {
       title: p.title,
       newestComment: findNewestCommentForPost(p.id),
       teaser: p.teaser,
+      likes: p.likes,
     }));
   } else {
     result = posts.map((p) => ({
@@ -202,6 +203,7 @@ app.get("/posts", (req, res) => {
       date: p.date,
       title: p.title,
       body: p.body,
+      likes: p.likes,
     }));
   }
 
@@ -315,7 +317,8 @@ app.listen(port, () => {
     👉    Try http://localhost:${port}/posts?teaser
     👉    Try http://localhost:${port}/posts?teaser&filter=redux
     👉    Try http://localhost:${port}/users/U1
-    👉    Try "http POST http://localhost:7002/posts title=hallo body=welt"
-    👉    Try "http POST http://localhost:7002/posts/P1/comments comment=moin"
+    👉    Try "http POST http://localhost:${port}/posts title=hallo body=welt"
+    👉    Try "http POST http://localhost:${port}/posts/P1/comments comment=moin"
+    👉    Try "http PATCH http://localhost:${port}/posts/P1/likes"
     😴    Simulate slowness: http://localhost:${port}/posts?slowDown=2400`);
 });

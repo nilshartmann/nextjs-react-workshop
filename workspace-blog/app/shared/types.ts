@@ -34,6 +34,7 @@ const BlogPostSchema = z.object({
   tags: z.string().nullish(),
   date: z.string(),
   body: z.string(),
+  likes: z.number(),
 
   newestComment: CommentSchema.nullish(),
 });
@@ -58,3 +59,17 @@ export const GetCommentsResponse = z.object({
   data: CommentSchema.array(),
 });
 export type IGetCommentsResponse = z.infer<typeof GetCommentsResponse>;
+
+export const NewLike = z.object({
+  postId: z.string(),
+  likes: z.number(),
+});
+
+export type INewLike = z.infer<typeof NewLike>;
+
+export const PatchLikeResponse = z.object({
+  meta: ResponseMetaData,
+  data: NewLike,
+});
+
+export type IPatchLikeResponse = z.infer<typeof PatchLikeResponse>;

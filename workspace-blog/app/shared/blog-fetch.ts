@@ -6,10 +6,13 @@ import {
   IGetCommentsResponse,
   IGetPostResponse,
   IGetPostsResponse,
+  INewLike,
   OrderBy,
+  PatchLikeResponse,
 } from "@/app/shared/types.ts";
 import { apiUrl } from "@/app/shared/api-url.ts";
 import {
+  delayLikePost,
   delayPostComments,
   delayPostList,
   delayPostPage,
@@ -105,6 +108,35 @@ export async function saveNewPost(title: string, body: string) {
   return { error: responseBody.error ?? "Could not save post" };
 }
 
+export async function saveLikeToBackend(postId: string): Promise<INewLike> {
+  const response = await blogFetch(
+    apiUrl(`/posts/${postId}/likes`, { slowdown: delayLikePost }),
+    {
+      method: "PATCH",
+      headers: {
+        "content-type": "application/json",
+      },
+    },
+  );
+
+  if (!response.ok) {
+    let body = "";
+    try {
+      body = await response.text();
+    } catch (e) {
+      console.warn("Could not read body from response - ignoring");
+    }
+    console.error("Liking failed", response.status, body);
+    throw new Error("Liking failed! " + response.status);
+  }
+
+  const responseBody = await response.json();
+
+  const likeResponse = PatchLikeResponse.parse(responseBody);
+
+  return likeResponse.data;
+}
+
 /**
  * simple wrapper around fetch, just for logging
  */
@@ -112,9 +144,8 @@ async function blogFetch(
   input: RequestInfo | URL,
   init?: RequestInit,
 ): Promise<Response> {
-  componentLog("blogFetch", "Request start to", { input });
-
-  // for demo purposes disable fetch cache at all
+  const method = init?.method || "GET";
+  componentLog("blogFetch", `${method} Request start to`, { input });
 
   const response = fetch(input, init);
 
