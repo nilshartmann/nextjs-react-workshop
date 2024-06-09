@@ -3,7 +3,7 @@ import { Suspense } from "react";
 import Post from "@/app/material/Post.tsx";
 import PostComments from "@/app/material/postpage/PostComments.tsx";
 import { fetchComments, fetchPost } from "@/app/shared/blog-fetch.ts";
-import PostPageContent from "@/app/posts/[postId]/PostPageContent.tsx";
+import PostPageContent from "@/app/material/postpage/PostPageContent.tsx";
 import { notFound } from "next/navigation";
 
 type PostPageParams = {

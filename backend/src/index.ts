@@ -99,13 +99,23 @@ app.get("/tags", (req: Request, res: Response) => {
 app.get("/posts/:postId", (req: Request, res: Response) => {
   const postId = req.params["postId"];
 
-  const post = posts.find((p) => p.id === postId);
+  let post = posts.find((p) => p.id === postId);
 
   if (!post) {
     return res.status(404).json({
       error: `Post with id '${postId}' not found`,
       meta: res.locals.meta,
     });
+  }
+
+  if (req.query.fail === "true") {
+    console.log(`    🧨 Make request failing for post id ${post.id}`);
+
+    post = {
+      ...post,
+      // @ts-ignore
+      title: null,
+    };
   }
 
   return res.status(200).json({ data: post, meta: res.locals.meta });
@@ -120,7 +130,19 @@ app.get("/posts/:postId/comments", (req: Request, res: Response) => {
     });
   }
 
-  const commentsForPost = comments.filter((c) => c.postId === postId);
+  let commentsForPost = comments.filter((c) => c.postId === postId);
+
+  if (req.query.fail === "true") {
+    console.log(
+      `    🧨 Make request failing for comments with post id ${postId}`,
+    );
+    // @ts-ignore
+    commentsForPost = commentsForPost.map((c) => ({
+      ...c,
+      comment: null,
+    }));
+  }
+
   return res.json({ data: commentsForPost, meta: res.locals.meta });
 });
 

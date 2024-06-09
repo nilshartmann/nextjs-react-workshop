@@ -4,6 +4,8 @@ import { Suspense } from "react";
 import LoadingIndicator from "@/app/components/LoadingIndicator.tsx";
 import PostComments from "@/app/material/postpage/PostComments.tsx";
 import { fetchComments } from "@/app/shared/blog-fetch.ts";
+import { ErrorBoundary } from "react-error-boundary";
+import CommentsErrorBoundary from "@/app/material/postpage/CommentsErrorBoundary.tsx";
 
 type PostPageContentProps = {
   post: IGetPostResponse;
@@ -15,11 +17,13 @@ export default function PostPageContent({ post }: PostPageContentProps) {
     <>
       <Post post={post.data} />
 
-      <Suspense
-        fallback={<LoadingIndicator>Loading Comments...</LoadingIndicator>}
-      >
-        <PostComments commentsPromise={commentsPromise} />
-      </Suspense>
+      <ErrorBoundary FallbackComponent={CommentsErrorBoundary}>
+        <Suspense
+          fallback={<LoadingIndicator>Loading Comments...</LoadingIndicator>}
+        >
+          <PostComments commentsPromise={commentsPromise} />
+        </Suspense>
+      </ErrorBoundary>
     </>
   );
 }

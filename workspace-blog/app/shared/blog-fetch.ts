@@ -14,12 +14,13 @@ import {
   delayPostList,
   delayPostPage,
   delaySavePost,
-  failPostRequest,
+  failCommentsPostRequestForId,
+  failPostRequestForId,
 } from "@/app/shared/demo-config.ts";
 
 export async function fetchPost(postId: string): Promise<IGetPostResponse> {
-  const shouldFail = failPostRequest
-    ? postId === failPostRequest
+  const shouldFail = failPostRequestForId
+    ? postId === failPostRequestForId
       ? true
       : undefined
     : undefined;
@@ -60,8 +61,17 @@ export async function fetchPosts(
 export async function fetchComments(
   postId: string,
 ): Promise<IGetCommentsResponse> {
+  const shouldFail = failCommentsPostRequestForId
+    ? postId === failCommentsPostRequestForId
+      ? true
+      : undefined
+    : undefined;
+
   const response = await blogFetch(
-    apiUrl(`/posts/${postId}/comments`, { slowdown: delayPostComments }),
+    apiUrl(`/posts/${postId}/comments`, {
+      slowdown: delayPostComments,
+      fail: shouldFail,
+    }),
     {
       next: {
         tags: [`/posts/${postId}/comments`],

@@ -227,151 +227,6 @@
 
 ---
 
-## Exkurs: zod
-
-<!-- .slide: data-state="exkurs" -->
-
-- Kennt ihr zod? https://zod.dev/ 🤔
-
----
-
-# Zod
-
-## <!-- .slide: data-state="exkurs" -->
-
-- "TypeScript-first schema validation with static type inference"
-- https://zod.dev/
-- <!-- .element: class="demo" --> material/zod-user.ts
-
----
-
-### TypeScript vs. JavaScript
-
-<!-- .slide: data-state="exkurs" -->
-<!-- .slide: class="left" -->
-
-- Im folgenden ist mit **TypeScript** das Typsystem von TypeScript gemeint, das nur zur Buildzeit vorhanden ist
-- Mit **JavaScript** ist der Code gemeint, den wir in JavaScript oder TypeScript schreiben, und der dann auch im Browser (als JavaScript) ausgeführt wird
-
-* ```typescript
-  // "TypeScript": zur Laufzeit weg
-  type User = { lastname: string; firstname?: string };
-
-  // "JavaScript"
-  function login() {
-    return { lastname: "Meier", firstname: null };
-  }
-  ```
-
----
-
-### Problem: TypeScript-Typen sind zur Laufzeit weg
-
-<!-- .slide: data-state="exkurs" -->
-
-- Wenn man ein Objekt beschrieben hat, kann man das zur **Laufzeit** nicht mit TypeScript überprüfen
-  - Hat uns der Server zur Laufzeit wirklich ein Objekt geschickt, das aussieht wie ein `User`?
-- Für "echte" Validierungen sind TypeScript-Typen auch zu ungenau:
-  - keine Wertebegrenzungen (bzw. nur sehr eingeschränkt)
-  - Längen-Begrenzungen gibt es nicht
-- Wenn man Validierung zur Laufzeit benötigt, kommt man um (JavaScript-)Code, der zur Laufzeit ausgeführt wird, nicht drumherum
-- Also müssen die Validierungsregeln in JavaScript beschrieben werden.
-- Dann sind diese aber redundant: in TypeScript (statische Typbeschreibung), in JavaScript zur Validierung während der Laufzeit
-
----
-
-### Zod: Typen in JavaScript beschreiben und TS-Typen ableiten
-
-<!-- .slide: data-state="exkurs" -->
-
-- Aus dieser Not macht Zod eine Tugend:
-- Wir beschreiben die Objekte in JavaScript...
-- ...und können von der Beschreibung TypeScript Typen ableiten lassen
-- ```typescript
-  import { z } from "zod";
-
-  const User = z.object({
-    firstName: z.string(),
-    lastName: z.string().nullish(),
-  });
-
-  type IUser = z.infer<typeof User>;
-  ```
-
-- Mit dem `User`-Objekt von zod können wir nun zur Laufzeit ein Objekt validieren
-- Wenn das Objekt dem User-Schema entspricht, ist alles gut, sonst gibt es einen Fehler
-- ```typescript
-  const mayOrMayNotBeAUser = readUserFromServer();
-
-  const user = User.parse(mayOrMayNotBeAUser);
-  ```
-
-- Die `parse`-Funktion fungiert gleichzeit als **Type Predicate Function**, so dass TypeScript
-  danach auch weiß, wie `user` aussieht, unabhängig davon, was in `parse` übergeben wurde
-- ```typescript
-  declare function readUserFromServer(): unknown;
-
-  const user = User.parse(readUserFromServer());
-  //     ^? --> IUser
-  ```
-
----
-
-### Komplexe Regeln
-
-<!-- .slide: data-state="exkurs" -->
-
-- Mit Zod kann man die typischen Datentypen verwenden (Objekte, Arrays, string, number, boolean etc)
-- Auch aus TypeScript bekannte Möglichkeiten wie `unions`, `extends`, `omit` oder `brand-Types` werden unterstützt
-- Darüberhin kann man auch die gültigen Wertemengen und andere Constraints beschreiben
-- ```typescript
-  import { z } from "zod";
-
-  const User = z.object({
-    login: z.string().min(5),
-    email: z.string().email(),
-    status: z.string().emoji(), // 😊
-    age: z.number().min(18).max(123),
-  });
-  ```
-
-- Die `parse`-Funktion gibt dann detailierte Fehler, wenn ein überprüftes Objekt nicht diesen Regeln entspricht.
-
----
-
-### Integration von Zod
-
-<!-- .slide: data-state="exkurs" -->
-
-- Es gibt eine Reihe von Integrationen in bestehende Bibliotheken, z.B.:
-  - Validieren von Formularen in [React Hook Form
-    ](https://react-hook-form.com/) mit dem [zod-Resolver](https://github.com/react-hook-form/resolvers#zod)
-  - Validieren von [`FormData`-Objekten](https://developer.mozilla.org/en-US/docs/Web/API/FormData) mit [zod-form-data](https://www.npmjs.com/package/zod-form-data)
-  - Generieren von Zod-Typen aus OpenAPI Spezifikationen mit [typed-openapi](https://github.com/astahmer/typed-openapi)
-
----
-
-### Zod und Next.js
-
-<!-- .slide: data-state="exkurs" -->
-
-- Ob bzw. wie ihr Zod in eurer Anwendung einsetzt, bleibt natürlich euch überlassen
-- In der Beispiel-Anwendung wird Zod verwendet, um Daten, die von der Backend API gelesen wurden zu validieren
-
----
-
-### Übung: Zod
-
-- **Beschreibe ein Objekt-Schema mit Zod**
-- In `workspace-blog/app/material/zod-user.test.ts` findest Du ein `User`-TypeScript-Objekt
-- Schreibe dafür das Pendant in zod
-- In der Datei findest du TODOs mit Hinweisen
-- In der Datei befinden sich einige Tests. Diese sollten "grün" sein, wenn du das Objekt korrekt beschrieben hast
-- Zum Ausführen der Tests kannst Du `pnpm test` verwenden
-- Mögliche Lösung findest Du in `workspace-blog/schritte/xx_zod/`
-
----
-
 ### Mehr zu Next.js Routen
 
 - Neben den "klassischen" Verzeichnisnamen, die URL-Segementen entsprechen, gibt es noch weitere Konventionen:
@@ -594,6 +449,373 @@
   - Du kannst die beiden Requests künstlich langsam machen, in dem Du in `demo-config.ts` bei `delayPostPage` und `delayPostComments` einen Timeout (in ms) einstellst.
 - Falls du bei der vorherigen Übung nicht fertig geworden bist, kopiere die fertigen Dateien aus `30_dynamic_segments` in deinen Workspace-Ordner.
 - Lösung in `schritte/40_suspense`
+
+---
+
+## Exkurs: zod
+
+<!-- .slide: data-state="exkurs" -->
+
+- Kennt ihr zod? https://zod.dev/ 🤔
+
+---
+
+# Zod
+
+## <!-- .slide: data-state="exkurs" -->
+
+- "TypeScript-first schema validation with static type inference"
+- https://zod.dev/
+- <!-- .element: class="demo" --> material/zod-user.ts
+
+---
+
+### TypeScript vs. JavaScript
+
+<!-- .slide: data-state="exkurs" -->
+<!-- .slide: class="left" -->
+
+- Im folgenden ist mit **TypeScript** das Typsystem von TypeScript gemeint, das nur zur Buildzeit vorhanden ist
+- Mit **JavaScript** ist der Code gemeint, den wir in JavaScript oder TypeScript schreiben, und der dann auch im Browser (als JavaScript) ausgeführt wird
+
+* ```typescript
+  // "TypeScript": zur Laufzeit weg
+  type User = { lastname: string; firstname?: string };
+
+  // "JavaScript"
+  function login() {
+    return { lastname: "Meier", firstname: null };
+  }
+  ```
+
+---
+
+### Problem: TypeScript-Typen sind zur Laufzeit weg
+
+<!-- .slide: data-state="exkurs" -->
+
+- Wenn man ein Objekt beschrieben hat, kann man das zur **Laufzeit** nicht mit TypeScript überprüfen
+  - Hat uns der Server zur Laufzeit wirklich ein Objekt geschickt, das aussieht wie ein `User`?
+- Für "echte" Validierungen sind TypeScript-Typen auch zu ungenau:
+  - keine Wertebegrenzungen (bzw. nur sehr eingeschränkt)
+  - Längen-Begrenzungen gibt es nicht
+- Wenn man Validierung zur Laufzeit benötigt, kommt man um (JavaScript-)Code, der zur Laufzeit ausgeführt wird, nicht drumherum
+- Also müssen die Validierungsregeln in JavaScript beschrieben werden.
+- Dann sind diese aber redundant: in TypeScript (statische Typbeschreibung), in JavaScript zur Validierung während der Laufzeit
+
+---
+
+### Zod: Typen in JavaScript beschreiben und TS-Typen ableiten
+
+<!-- .slide: data-state="exkurs" -->
+
+- Aus dieser Not macht Zod eine Tugend:
+- Wir beschreiben die Objekte in JavaScript...
+- ...und können von der Beschreibung TypeScript Typen ableiten lassen
+- ```typescript
+  import { z } from "zod";
+
+  const User = z.object({
+    firstName: z.string(),
+    lastName: z.string().nullish(),
+  });
+
+  type IUser = z.infer<typeof User>;
+  ```
+
+- Mit dem `User`-Objekt von zod können wir nun zur Laufzeit ein Objekt validieren
+- Wenn das Objekt dem User-Schema entspricht, ist alles gut, sonst gibt es einen Fehler
+- ```typescript
+  const mayOrMayNotBeAUser = readUserFromServer();
+
+  const user = User.parse(mayOrMayNotBeAUser);
+  ```
+
+- Die `parse`-Funktion fungiert gleichzeit als **Type Predicate Function**, so dass TypeScript
+  danach auch weiß, wie `user` aussieht, unabhängig davon, was in `parse` übergeben wurde
+- ```typescript
+  declare function readUserFromServer(): unknown;
+
+  const user = User.parse(readUserFromServer());
+  //     ^? --> IUser
+  ```
+
+---
+
+### Komplexe Regeln
+
+<!-- .slide: data-state="exkurs" -->
+
+- Mit Zod kann man die typischen Datentypen verwenden (Objekte, Arrays, string, number, boolean etc)
+- Auch aus TypeScript bekannte Möglichkeiten wie `unions`, `extends`, `omit` oder `brand-Types` werden unterstützt
+- Darüberhin kann man auch die gültigen Wertemengen und andere Constraints beschreiben
+- ```typescript
+  import { z } from "zod";
+
+  const User = z.object({
+    login: z.string().min(5),
+    email: z.string().email(),
+    status: z.string().emoji(), // 😊
+    age: z.number().min(18).max(123),
+  });
+  ```
+
+- Die `parse`-Funktion gibt dann detailierte Fehler, wenn ein überprüftes Objekt nicht diesen Regeln entspricht.
+
+---
+
+### Integration von Zod
+
+<!-- .slide: data-state="exkurs" -->
+
+- Es gibt eine Reihe von Integrationen in bestehende Bibliotheken, z.B.:
+  - Validieren von Formularen in [React Hook Form
+    ](https://react-hook-form.com/) mit dem [zod-Resolver](https://github.com/react-hook-form/resolvers#zod)
+  - Validieren von [`FormData`-Objekten](https://developer.mozilla.org/en-US/docs/Web/API/FormData) mit [zod-form-data](https://www.npmjs.com/package/zod-form-data)
+  - Generieren von Zod-Typen aus OpenAPI Spezifikationen mit [typed-openapi](https://github.com/astahmer/typed-openapi)
+
+---
+
+### Zod und Next.js
+
+<!-- .slide: data-state="exkurs" -->
+
+- Ob bzw. wie ihr Zod in eurer Anwendung einsetzt, bleibt natürlich euch überlassen
+- In der Beispiel-Anwendung wird Zod verwendet, um Daten, die von der Backend API gelesen wurden zu validieren
+
+---
+
+### Übung: Zod
+
+- **Beschreibe ein Objekt-Schema mit Zod**
+- In `workspace-blog/app/material/zod-user.test.ts` findest Du ein `User`-TypeScript-Objekt
+- Schreibe dafür das Pendant in zod
+- In der Datei findest du TODOs mit Hinweisen
+- In der Datei befinden sich einige Tests. Diese sollten "grün" sein, wenn du das Objekt korrekt beschrieben hast
+- Zum Ausführen der Tests kannst Du `pnpm test` verwenden
+- Mögliche Lösung findest Du in `workspace-blog/schritte/xx_zod/`
+
+---
+
+### Error Handling in React und Next.js
+
+---
+
+## Error Boundaries
+
+<!-- .slide: id="t-error-boundaries" -->
+
+- 🤔Was passiert, wenn in unserer App ein Fehler auftrett 🤔
+- <!-- .element: class="demo" -->demo_config failPostRequestForId setzen
+- <!-- .element: class="demo" -->Error Boundary (Next.js): error.tsx
+- <!-- .element: class="demo" -->Error Boundary (React): Error Boundary um Kommentare
+
+---
+
+## Error Boundaries
+
+- Wenn beim **Rendern** etwas schiefgeht, verwirft React "zur Sicherheit" den ganzen Komponenten-Tree
+  - (damit nicht z.B. inkonsistente oder fehlerhafte Daten angezeigt werden)
+- Das ist nicht besonders benutzerfreundlich
+- In einem Event-Handler haben wir dieses Problem nicht: dort können wir z.B. mit try/catch arbeiten
+  - oder der Event-Handler wird einfach abgebrochen und die "alte" UI bleibt weiterhin sichtbar
+- Beim Rendern können wir aber kein try/catch drumherum legen
+- Deswegen gibt es "spezielle" Komponenten: **Error Boundaries**
+
+---
+
+### Error Boundaries
+
+- Error Boundary-Komponenten kann man überall in seiner Komponenten-Hierarchie einziehen
+- Render-Fehler, die unterhalb auftreten, werden dann der Error Boundary-Komponente übergeben
+  - Diese kann dann z.B. eine Fehler-Komponente darstellen
+  - Dieses Verhalten ähnelt try-catch.
+  - Auch try-catch-Blöcke in "normalem" Code könnt ihr ja auf jeder Ebene des Call-Stacks einziehen
+- Ein Beispiel:
+- ```typescript
+  function MyApp() {
+    return (
+      <Layout>
+        <Header />
+        <MyErrorBoundary>
+            <Main>
+              <BlogPost />
+            </Main>
+            <NewsletterForm />
+        </MyErrorBoundary>
+      </Layout>
+    )
+  }
+  ```
+- Wenn es hier zum Fehler **während des Renderns** kommt:
+  - innerhalb von `Layout` oder `Header`: weiße Seite, Fehlermeldung auf der Console
+  - innerhalb von `Main`, `BlogPost` oder `NewsletterForm`: Error Boundary wird angezeigt, `Layout` und `Header`-Komponente bleiben unverändert (gerendert)
+
+---
+
+### Fehlerbehandlung in Next.js
+
+- In Next.js könnt ihr Fehler auf Routen-Ebene mit einer [`error.tsx` Datei behandeln](https://nextjs.org/docs/app/building-your-application/routing/error-handling)
+- Diese Datei muss eine **Client Komponente** exportieren
+- Die Komponente wird von Next.js als Error Boundary-Komponente um eure komplette Route gelegt
+- Die Komponente bekommt zwei Properties übergeben: `error` und `reset`
+  - `error` ist das `Error`-Objekt, das den Fehler ausgelöst hat
+  - `reset` ist eine Callback-Funktion, die ihr verwenden könnt, um den Fehler zu verwerfen
+- Wenn eine Route _keine_ `error.tsx`-Datei hat, sucht Next.js in den oberen Verzeichnissen, bis eine Komponente gefunden wird
+  - sonst wird Default-Fehler angezeigt
+
+---
+
+### Serverseitige Fehler in Next.js
+
+- <!-- .element: class="demo" -->pnpm build:clean und Fehlerseite aufrufen
+- Wenn in einer React **Server** Komponent ein Fehler auftritt, wird ebenfalls die nächste `error.tsx`-Komponente gerenert
+- Aus Sicherheitsgründen entfernt [Next.js hier aber die Fehlerinformationen](https://nextjs.org/docs/app/building-your-application/routing/error-handling#handling-server-errors)
+- Damit ihr den Fehler identifizieren könnt, gibt euch Next.js einen `digest` im `error`-Objekt
+- Diesen findet ihr in den Konsolen-Logs von Next.js
+
+* ```tsx
+  type ErrorHandlerProps = {
+    error: Error & // Next.js-Erweiterung des Error-Objektes:
+    { digest: string };
+  };
+  function ErrorHandler({ error }: ErrorHandlerProps) {
+    return (
+      <div>
+        <h1>Etwas ist schiefgelaufen!</h1>
+        <p>
+          Bitte nennen Sie folgenden Code an unseren Support: {error.digest}
+        </p>
+      </div>
+    );
+  }
+  ```
+
+---
+
+### Error Boundaries
+
+- Behandlung der Fehler auf Routen-Ebene ist möglicherweise zu grob granular
+- Ihr könnt auch einzelne Komponenten mit eigenen Error Boundaries umschliessen
+- Eine Error Boundary-Komponente ist eine Art `catch`-Block für die Renderphase von Komponente
+- Technisch handelt es sich dabei um eine fast "normale" React-Komponente
+- Diese muss allerdings noch mit der (alten) React JavaScript Klassen API gebaut werden
+- Diese Klasse muss dann die [getDerivedStateFromError](https://react.dev/reference/react/Component#static-getderivedstatefromerror) Callback-Funktion implementieren
+- Einfacher ist es, eine fertige Error Boundary-Komponente zu verwenden: [react-error-boundary](https://github.com/bvaughn/react-error-boundary)
+
+---
+
+### Error Boundary mit `react-error-boundary`
+
+- Die Error Boundary-Komponente aus der Bibliothek heißt - Überraschung! - `ErrorBoundary`
+- Die ist sehr flexibel zu konfigurieren
+- Man muss ihr mit dem Property [FallbackComponent eine Komponente übergeben](https://github.com/bvaughn/react-error-boundary?tab=readme-ov-file#errorboundary-with-fallbackcomponent-prop), die im Falle eines Fehlers gerendert werden soll
+  - (das ist euer "try-Block")
+- Diese Komponente bekommt dann als Property u.a. den Fehler übergeben:
+- ```typescript
+  import { FallbackProps } from "react-error-boundary";
+
+  function AppErrorMessage( { error }: FallbackProps) {
+
+    console.error("Something bad happend:", error);
+    return <h1>Something bad happend !</h1>;
+  }
+  ```
+
+- ```typescript
+  import { ErrorBoundary } from "react-error-boundary";
+  function MyApp() {
+    return (
+      <Layout>
+        <Header />
+        <ErrorBoundary fallback={AppErrorMessage}>
+            <Main>
+              <BlogPost />
+            </Main>
+            <NewsletterForm />
+        </ErrorBoundary>
+      </Layout>
+    )
+  }
+
+  ```
+
+---
+
+### react-error-boundary
+
+- Der `FallbackComponent`-Komponente wird überdies eine Funktion `resetErrorBoundary` übergeben
+- Die könnt ihr aufrufen, dann wird erneut versucht, den Komponenten-Tree unterhalb der `ErrorBoundary`-Komponente zu rendern
+- Das macht Sinn wenn es Grund zur Annahme gibt, der Fehler verschwinde später (z.B. Netzwerkverbindung ist wieder in Ordnung)
+- ```typescript
+  import { FallbackProps } from "react-error-boundary";
+
+  function AppErrorMessage( { error, resetErrorBoundary }: FallbackProps) {
+
+    console.error("Something bad happend:", error);
+    return (
+      <div>
+        <h1>Something bad happend !</h1>
+        <button onClick={ () => resetErrorBoundary() }>Try again!</button>
+      </div>
+    );
+  }
+  ```
+
+- Wenn ihr eine Möglichkeit habt, einen fehlerhaften Zustand zu reparieren, könnt ihr an der `ErrorBoundary`-Komponente eine `onReset`-Funktion angeben
+- Diese wird dann aufgerufen, wenn ihr `resetErrorBoundary` in der Fallback-Komponente aufruft
+
+---
+
+### react-error-boundary
+
+- Normalerweise werden Error Boundary-Komponenten von React nur dargestellt, wenn ein Fehler **beim Rendern** auftritt
+- Die `ErrorBoundary`-Komponente von `react-error-boundary` könnt ihr aber auch manuell rendern lassen, wenn z.B. in einem Event ein Fehler auftritt.
+  - So könnt ihr eure Fehlerbehandlung dann auf alle Arten von Fehlern in eurer Anwendung anwenden
+- Um die `ErrorBoundary`-Komponente anzuzeigen, verwendet ihr den `useErrorBoundary`-Hook:
+- ```typescript
+  import { useErrorBoundary } from "react-error-boundary";
+
+  function PostEditor() {
+    const { showBoundary } = useErrorBoundary();
+
+    async function saveBlogPost() {
+      try {
+        await fetch("...");
+      } catch (e) {
+        showBoundary("Could not save blog post");
+      }
+    }
+    return ...;
+  }
+  ```
+
+- Genau wie bei Error Boundaries, die beim Rendern aktiv werden, wir hier auch die nächsthöhere `ErrorBoundary`-Komponente angezeigt
+
+---
+
+### Übung: Error Boundaries
+
+- Kopiere `20_error_boundary/00_initial/app` in deine Anwendung
+- Wenn Du `http://localhost:3000/a/b/counter` aufrufst, bekommst du eine Counter-Komponente angezeigt
+- Diese sollst du mit einem Error Boundary umschliessen, so dass nicht die ganze Seite durch eine Fehler-Komponente ersetzt wird
+- Siehe dazu TODOs in `counter/Counter.tsx`
+- Mögliche Lösung: `20_error_boundary/02_error_boundary`
+- Wenn Du fertig bist, bitte die Hand in Zoom heben ✋
+
+---
+
+### Ausblick: Fehler protokollieren
+
+- <!-- .element: class="demo" --> `20_error_boundary/03_log_error`
+- Ihr könnt die Error Boundaries nutzen, um die Fehler auf dem Server zu protokollieren
+- Zum Zugriff auf dem Server könnt ihr eine Server Action nehmen
+  - oder einen eigenen HTTP-Endpunkt (Next.js API Route z.B.)
+- Das ist in jedem Fall ein Seiteneffekt, d.h. mit `useEffect` ummanteln!
+- Achtung! Dabei sicherstellen, dass es bei Fehlern beim Protokollieren nicht zu Folge-Fehlern kommt...
+- Aufpassen, welche Informationen ihr an das Backend schickt (nicht, dass da z.B. ein Passwort im Fehlertext vorkommt)
+  - (Das gilt auch für Fehler, die das Backend an den Client schickt!)
+  - Immer nur so wenig wie möglich Informationen über die Leitung schicken
 
 ---
 
