@@ -2,7 +2,7 @@
 
 import { IBlogPostSchema } from "@/app/shared/types.ts";
 import { useOptimistic, useState, useTransition } from "react";
-import { increaseLikes } from "@/app/material/postpage/like-action.ts";
+import { increaseLikes } from "@/app/shared/material/postpage/like-action.ts";
 
 type LikeButtonProps = {
   post: IBlogPostSchema;

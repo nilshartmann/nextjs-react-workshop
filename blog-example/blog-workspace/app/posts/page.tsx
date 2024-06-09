@@ -1,10 +1,10 @@
-import PageHeader from "@/app/components/PageHeader";
-import ButtonBar from "@/app/components/ButtonBar";
-import PostList from "@/app/material/postlistpage/PostList.tsx";
-import OrderByButton from "@/app/material/postlistpage/OrderByButton.tsx";
+import PageHeader from "@/app/shared/components/PageHeader";
+import ButtonBar from "@/app/shared/components/ButtonBar";
+import PostList from "@/app/shared/material/postlistpage/PostList.tsx";
+import OrderByButton from "@/app/shared/material/postlistpage/OrderByButton.tsx";
 import { OrderBy } from "@/app/shared/types.ts";
 import { componentLog } from "@/app/shared/component-log.ts";
-import PostListOrderButtons from "@/app/material/postlistpage/PostListOrderButtons.tsx";
+import PostListOrderButtons from "@/app/shared/material/postlistpage/PostListOrderButtons.tsx";
 import { fetchPosts } from "@/app/shared/blog-fetch.ts";
 type PostListPageProps = {
   searchParams: {

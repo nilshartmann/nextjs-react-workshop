@@ -1,7 +1,7 @@
 "use client";
 
 import { usePathname, useRouter } from "next/navigation";
-import AppLink from "@/app/components/AppLink.tsx";
+import AppLink from "@/app/shared/components/AppLink.tsx";
 
 export default function PageHeaderButton() {
   const pathname = usePathname();

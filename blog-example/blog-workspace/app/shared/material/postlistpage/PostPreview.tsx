@@ -1,7 +1,7 @@
-import { dateTimeString } from "@/app/components/date-formatter.ts";
-import AppLink from "@/app/components/AppLink.tsx";
+import { dateTimeString } from "@/app/shared/components/date-formatter.ts";
+import AppLink from "@/app/shared/components/AppLink.tsx";
 import { IBlogPostSchema } from "@/app/shared/types.ts";
-import { LikeButton } from "@/app/material/postpage/LikeButton.tsx";
+import { LikeButton } from "@/app/shared/material/postpage/LikeButton.tsx";
 
 function postAbstract({ body }: IBlogPostSchema) {
   return body.length > 150 ? body.substring(0, 150) + "..." : body;

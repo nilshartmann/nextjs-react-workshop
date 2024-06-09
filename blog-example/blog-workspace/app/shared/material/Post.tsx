@@ -1,8 +1,8 @@
 import { marked } from "marked"; // 36 K (gzipped: 11 K)
 
 import { IBlogPostSchema, INewBlogPost } from "@/app/shared/types.ts";
-import { dateTimeString } from "@/app/components/date-formatter.ts";
-import { LikeButton } from "@/app/material/postpage/LikeButton.tsx";
+import { dateTimeString } from "@/app/shared/components/date-formatter.ts";
+import { LikeButton } from "@/app/shared/material/postpage/LikeButton.tsx";
 
 // type IBlogPost = {
 //   id: string;

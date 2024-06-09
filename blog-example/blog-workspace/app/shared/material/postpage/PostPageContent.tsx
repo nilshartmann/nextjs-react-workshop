@@ -1,11 +1,11 @@
 import { IBlogPostSchema, IGetPostResponse } from "@/app/shared/types.ts";
-import Post from "@/app/material/Post.tsx";
+import Post from "@/app/shared/material/Post.tsx";
 import { Suspense } from "react";
-import LoadingIndicator from "@/app/components/LoadingIndicator.tsx";
-import PostComments from "@/app/material/postpage/PostComments.tsx";
+import LoadingIndicator from "@/app/shared/components/LoadingIndicator.tsx";
+import PostComments from "@/app/shared/material/postpage/PostComments.tsx";
 import { fetchComments } from "@/app/shared/blog-fetch.ts";
 import { ErrorBoundary } from "react-error-boundary";
-import CommentsErrorBoundary from "@/app/material/postpage/CommentsErrorBoundary.tsx";
+import CommentsErrorBoundary from "@/app/shared/material/postpage/CommentsErrorBoundary.tsx";
 
 type PostPageContentProps = {
   post: IGetPostResponse;

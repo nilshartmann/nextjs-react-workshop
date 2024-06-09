@@ -1,4 +1,4 @@
-import AppLink from "@/app/components/AppLink.tsx";
+import AppLink from "@/app/shared/components/AppLink.tsx";
 
 export default function LandingPage() {
   return (

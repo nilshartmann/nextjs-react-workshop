@@ -1,9 +1,9 @@
-import LoadingIndicator from "@/app/components/LoadingIndicator.tsx";
+import LoadingIndicator from "@/app/shared/components/LoadingIndicator.tsx";
 import { Suspense } from "react";
-import Post from "@/app/material/Post.tsx";
-import PostComments from "@/app/material/postpage/PostComments.tsx";
+import Post from "@/app/shared/material/Post.tsx";
+import PostComments from "@/app/shared/material/postpage/PostComments.tsx";
 import { fetchComments, fetchPost } from "@/app/shared/blog-fetch.ts";
-import PostPageContent from "@/app/material/postpage/PostPageContent.tsx";
+import PostPageContent from "@/app/shared/material/postpage/PostPageContent.tsx";
 import { notFound } from "next/navigation";
 
 type PostPageParams = {

@@ -1,5 +1,5 @@
 import { ReactNode } from "react";
-import BlogPageLayout from "@/app/material/BlogPageLayout.tsx";
+import BlogPageLayout from "@/app/shared/material/BlogPageLayout.tsx";
 
 type BlogLayoutProps = {
   children: ReactNode;

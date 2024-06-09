@@ -1,7 +1,7 @@
 import { IGetPostsResponse, OrderBy } from "@/app/shared/types.ts";
-import PostPreview from "@/app/material/postlistpage/PostPreview.tsx";
+import PostPreview from "@/app/shared/material/postlistpage/PostPreview.tsx";
 import { fetchPosts } from "@/app/shared/blog-fetch.ts";
-import { LikeButton } from "@/app/material/postpage/LikeButton.tsx";
+import { LikeButton } from "@/app/shared/material/postpage/LikeButton.tsx";
 
 type PostListProps = {
   postsPromise: Promise<IGetPostsResponse>;

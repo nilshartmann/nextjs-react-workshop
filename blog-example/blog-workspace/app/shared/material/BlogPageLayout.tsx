@@ -1,7 +1,7 @@
 import { ReactNode } from "react";
-import PageHeader from "@/app/components/PageHeader.tsx";
-import PageHeaderButton from "@/app/material/PageHeaderButton.tsx";
-import AppLink from "@/app/components/AppLink.tsx";
+import PageHeader from "@/app/shared/components/PageHeader.tsx";
+import PageHeaderButton from "@/app/shared/material/PageHeaderButton.tsx";
+import AppLink from "@/app/shared/components/AppLink.tsx";
 
 type BlogPageLayoutProps = {
   children: ReactNode;

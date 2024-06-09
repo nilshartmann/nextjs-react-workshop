@@ -1,4 +1,4 @@
-import PostEditor from "@/app/material/add/PostEditor.tsx";
+import PostEditor from "@/app/shared/material/add/PostEditor.tsx";
 
 export default function PostEditorPage() {
   return <PostEditor />;

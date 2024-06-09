@@ -1,13 +1,13 @@
 "use client";
 
-import PageHeader from "@/app/components/PageHeader.tsx";
-import Message from "@/app/components/Message.tsx";
-import Post from "@/app/material/Post.tsx";
+import PageHeader from "@/app/shared/components/PageHeader.tsx";
+import Message from "@/app/shared/components/Message.tsx";
+import Post from "@/app/shared/material/Post.tsx";
 import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { INewBlogPost } from "@/app/shared/types.ts";
-import LoadingIndicator from "@/app/components/LoadingIndicator.tsx";
-import { savePost } from "@/app/material/add/editor-actions.ts";
+import LoadingIndicator from "@/app/shared/components/LoadingIndicator.tsx";
+import { savePost } from "@/app/shared/material/add/editor-actions.ts";
 
 export default function PostEditor() {
   const router = useRouter();
