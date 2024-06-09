@@ -1,0 +1,385 @@
+:root {
+  --color-main: black;
+  --color-primary: #ff4400;
+  --color-white: #fffdfc;
+  --grey-1: #f5f3f2;
+  --grey-2: #ebe7e6;
+  --grey-3: #595756;
+}
+* {
+  box-sizing: border-box;
+  font-family:
+    Nunito Sans,
+    -apple-system,
+    BlinkMacSystemFont,
+    avenir next,
+    avenir,
+    helvetica,
+    helvetica neue,
+    ubuntu,
+    roboto,
+    noto,
+    segoe ui,
+    arial,
+    sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  height: 100vh;
+  background: var(--off-white);
+  font-size: 20px;
+}
+
+body {
+  -moz-osx-font-smoothing: grayscale;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+a {
+  color: var(--color-main);
+}
+
+a {
+  text-decoration: none;
+}
+
+h1,
+h2 {
+  margin-bottom: 0.5rem;
+}
+
+h2 {
+  color: var(--grey-3);
+}
+
+p {
+  line-height: 1.4;
+  margin: 1em 0px;
+}
+
+button,
+input,
+textarea,
+.Button {
+  font-size: 1rem;
+  padding: 0.5rem;
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+input,
+textarea {
+  width: 100%;
+  background: var(--grey-2);
+  border-radius: 0.25rem;
+  border: 0;
+}
+
+input:hover,
+input:active,
+input:focus,
+textarea:active,
+textarea:focus {
+  background-color: var(--color-white);
+  box-shadow: var(--color-primary) 0px 0px 0px 2px inset;
+}
+
+button,
+.Button {
+  background-color: var(--color-white);
+  color: var(--color-main);
+  border: none;
+  border-radius: 0.25rem;
+  box-shadow: var(--color-main) 0px 0px 0px 2px inset;
+
+  cursor: pointer;
+
+  padding: 0.5rem 1rem;
+  margin-right: 0.5rem;
+}
+
+button:hover,
+.Button:hover {
+  background-color: var(--color-primary);
+  box-shadow: var(--color-primary) 0px 0px 0px 2px inset;
+  color: var(--color-white);
+}
+
+.Button-disabled,
+.Button-disabled:hover,
+button:disabled,
+button:hover:disabled {
+  color: var(--grey-2);
+  background-color: var(--color-white);
+  box-shadow: var(--grey-2) 0px 0px 0px 2px inset;
+  cursor: default;
+}
+
+.Button-active,
+.Button-active:hover {
+  box-shadow: var(--color-primary) 0px 0px 0px 2px inset;
+  background-color: var(--color-white);
+  cursor: default;
+  color: var(--color-main);
+}
+
+.PendingButton:disabled {
+  color: var(--color-main);
+  background-color: var(--color-white);
+  box-shadow: var(--color-main) 0px 0px 0px 2px inset;
+}
+
+.ButtonBar {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 1.5rem;
+}
+
+.ButtonBar button {
+  font-size: 0.8rem;
+  margin-top: 0;
+  margin-bottom: 0;
+  padding: 0.3rem 0.8rem;
+}
+
+.ButtonBar button:last-child {
+  margin-right: 0;
+}
+
+label {
+  margin-bottom: 1rem;
+  color: var(--color-main);
+  font-size: 1rem;
+  display: block;
+}
+
+.Root {
+  margin: 0 auto;
+  width: 100%;
+  max-width: 1200px;
+
+  padding: 14px;
+}
+
+.App > header,
+.PageHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  padding-bottom: 1rem;
+
+  color: var(--grey-3);
+
+  box-shadow: inset 0 -4px 0 var(--grey-1);
+}
+
+.App > header h1,
+.PageHeader h1,
+.PageHeaderLink {
+  color: var(--grey-3);
+  margin: 0;
+  padding: 0;
+}
+
+.Date {
+  margin: 0 0 0 0;
+}
+
+.Container {
+  background-color: var(--grey-1);
+  margin-top: 2rem;
+  padding: 1rem 1rem;
+}
+
+.Container:first-child {
+  margin-top: 1.5rem;
+}
+
+.Container h1 {
+  font-size: 1.8rem;
+  color: var(--color-primary);
+}
+
+article h1 {
+  margin-top: 0;
+  width: 100%;
+  border-bottom: 1px solid var(--color-main);
+}
+
+.PreviewAbstract {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.PreviewAbstract button {
+  white-space: nowrap;
+  margin: 1rem 0 0 1rem;
+}
+
+.Page {
+  display: flex;
+  align-items: flex-start;
+}
+
+.Main {
+  flex-grow: 0;
+  flex-shrink: 0;
+  flex-basis: 75%;
+
+  margin-right: 1rem;
+}
+
+.PostEditorPreview {
+  margin-top: 1.5rem;
+}
+
+.Sidebar {
+  width: 100%;
+  margin-top: 1.5rem;
+  padding: 0.5rem;
+  background-color: var(--grey-1);
+  margin-left: 1rem;
+  max-height: 100%;
+}
+
+.Sidebar .Spinner {
+  padding: 0 0.5rem 0.5rem 0.5rem;
+  font-size: 50%;
+}
+
+.TagCloud {
+  text-align: center;
+}
+.TagCloud > * {
+  background-color: var(--grey-2);
+  display: inline-block;
+  border-radius: 10%;
+}
+
+.TagCloud > .TagCloud--tag-3 {
+  padding: 0.5rem;
+  margin: 0.5rem;
+  font-size: 1.1rem;
+}
+
+.TagCloud > .TagCloud--tag-2 {
+  padding: 0.5rem;
+  margin: 0.4rem;
+  font-size: 1rem;
+}
+
+.TagCloud > .TagCloud--tag-1 {
+  padding: 0.4rem;
+  margin: 0.3rem;
+  font-size: 0.8rem;
+}
+
+.TagCloud > .TagCloud--tag-0 {
+  padding: 0.3rem;
+  margin: 0.2rem;
+  font-size: 0.7rem;
+}
+
+/* Spinner CSS taken from: http://tobiasahlin.com/spinkit/ */
+.Spinner {
+  margin: auto 0;
+  width: 100%;
+  text-align: center;
+  padding: 0 2rem 1rem 2rem;
+}
+
+.Spinner.secondary {
+  padding: 0;
+}
+
+.Spinner h1 {
+  font-size: 1.5rem;
+}
+
+.Spinner > .bounce {
+  width: 1.2em;
+  height: 1.2em;
+  margin-right: 1.2em;
+  background-color: var(--color-primary);
+
+  border-radius: 100%;
+  display: inline-block;
+  -webkit-animation: sk-bouncedelay 1.4s infinite ease-in-out both;
+  animation: sk-bouncedelay 1.4s infinite ease-in-out both;
+}
+
+.Spinner.secondary > .bounce {
+  width: 1rem;
+  height: 1rem;
+  background-color: var(--color-primary);
+}
+
+.Spinner .bounce1 {
+  -webkit-animation-delay: -0.32s;
+  animation-delay: -0.32s;
+}
+
+.Spinner .bounce2 {
+  -webkit-animation-delay: -0.16s;
+  animation-delay: -0.16s;
+}
+
+.Spinner.secondary .bounce3 {
+  margin-right: 0;
+}
+
+@-webkit-keyframes sk-bouncedelay {
+  0%,
+  80%,
+  100% {
+    -webkit-transform: scale(0);
+  }
+
+  40% {
+    -webkit-transform: scale(1);
+  }
+}
+
+@keyframes sk-bouncedelay {
+  0%,
+  80%,
+  100% {
+    -webkit-transform: scale(0);
+    transform: scale(0);
+  }
+
+  40% {
+    -webkit-transform: scale(1);
+    transform: scale(1);
+  }
+}
+
+.MetaFetchData {
+  margin-top: 0.5rem;
+  border: 1px dashed darkgray;
+  padding: 0.5rem 0.5rem;
+  border-radius: 0.25rem;
+  color: #595756;
+}
+
+.MetaFetchData code {
+  font-family: "Courier New", "Couier", "monospace", "sans-serif";
+}
+
+.LandingPage {
+  max-width: 100%;
+  margin: 5rem auto;
+  text-align: center;
+}
+
+.LandingPage * {
+  margin-bottom: 2rem;
+}
