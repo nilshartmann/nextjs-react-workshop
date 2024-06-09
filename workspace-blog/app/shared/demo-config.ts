@@ -15,6 +15,13 @@ export const delayPostList = 0;
 export const delayPostPage = 0;
 
 /**
+ * Eine Id (z.B. P1) setzen, dann liefert der Request fuer den BlogPost
+ * eine ungültige Antwort (nur bei Einzel-Post-Darstellung)
+ */
+
+export const failPostRequest = "P1";
+
+/**
  * Verzögern des Ladens der Kommentare auf der Einzel-Post-Darstellung
  */
 export const delayPostComments = 0;

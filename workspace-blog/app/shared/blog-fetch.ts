@@ -14,11 +14,18 @@ import {
   delayPostList,
   delayPostPage,
   delaySavePost,
+  failPostRequest,
 } from "@/app/shared/demo-config.ts";
 
 export async function fetchPost(postId: string): Promise<IGetPostResponse> {
+  const shouldFail = failPostRequest
+    ? postId === failPostRequest
+      ? true
+      : undefined
+    : undefined;
+
   const response = await blogFetch(
-    apiUrl(`/posts/${postId}`, { slow: delayPostPage }),
+    apiUrl(`/posts/${postId}`, { slowdown: delayPostPage, fail: shouldFail }),
     {
       next: {
         tags: [`/posts/${postId}`],
@@ -36,7 +43,7 @@ export async function fetchPosts(
   orderBy?: OrderBy,
 ): Promise<IGetPostsResponse> {
   const response = await blogFetch(
-    apiUrl("/posts", { order_by: orderBy, slow: delayPostList }),
+    apiUrl("/posts", { order_by: orderBy, slowdown: delayPostList }),
     {
       next: {
         tags: ["/posts"],
@@ -54,7 +61,7 @@ export async function fetchComments(
   postId: string,
 ): Promise<IGetCommentsResponse> {
   const response = await blogFetch(
-    apiUrl(`/posts/${postId}/comments`, { slow: delayPostComments }),
+    apiUrl(`/posts/${postId}/comments`, { slowdown: delayPostComments }),
     {
       next: {
         tags: [`/posts/${postId}/comments`],
@@ -68,13 +75,16 @@ export async function fetchComments(
 }
 
 export async function saveNewPost(title: string, body: string) {
-  const response = await blogFetch(apiUrl(`/posts`, { slow: delaySavePost }), {
-    method: "POST",
-    headers: {
-      "content-type": "application/json",
+  const response = await blogFetch(
+    apiUrl(`/posts`, { slowdown: delaySavePost }),
+    {
+      method: "POST",
+      headers: {
+        "content-type": "application/json",
+      },
+      body: JSON.stringify({ body, title }),
     },
-    body: JSON.stringify({ body, title }),
-  });
+  );
 
   if (response.ok) {
     return {};
