@@ -248,12 +248,15 @@
 
 ### Der Workspace
 
-- `blog-worksace`: Next.js-Anwendung, in der wir Übungen machen
+- `blog-workspace`: Next.js-Anwendung, in der wir Übungen machen
 - `blog-schritte`: Hier findet ihr die Lösungen zu den Übungen
 - `blog-app`: die fertige Anwendung
 - ⚠️ Die Ordnerstruktur in `app` folgt nicht Best-Practices!
   - Die Struktur ist "optimiert" für unseren Workshop mit Übungen
   - Faustregel: alles was unter `material` ist, wäre in einer echten Anwendungen eher direkt unter `app/posts/...`
+- ⚠️ Wir verwenden eine Vorab-Version von [Next.js 15](https://nextjs.org/blog/next-15-rc), die eine Vorab-Version von [React 19](https://react.dev/blog/2024/04/25/react-19) enthält
+  - Die meisten Dinge, die wir uns anschauen, sind aber auch schon mit Next.js 14 und React 18 gültig
+  - Features, die neu in Next.js 15 / React 19 sind, werde ich explizit erwähnen
 
 ---
 
