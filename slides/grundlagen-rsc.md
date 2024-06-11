@@ -274,7 +274,9 @@
 
 <!-- .slide: class="small" -->
 
-1. Installieren: `npm install` und `npm run dev`
+1. **blog-example/blog-workspace** in IntelliJ öffnen
+1. Installieren: **backend**-Verzeichnis: `npm install` und `npm run dev`
+1. Installieren **blog-example/blog-workspace**-Verzeichnis: `npm install --force` und `npm run dev`
 
 1. Baue die "Landing Page" für die Root-Route (`/`) im `app`-Verzeichnis
 
@@ -297,6 +299,8 @@
    - Du kannst dir selbst ein einfaches Layout ausdenken, oder diese Komponente verwenden: `BlogPageLayout`
 
    - Mögliche Lösung findest Du in `schritte/10_routen_und_links`
+
+1. Wenn du fertig bist, bitte Hand in Zooom heben ✋
 
 ---
 
@@ -394,17 +398,19 @@
 ### Übung: Asynchrone Server Komponenten
 
 - **Baue die Komponente für die Blog-Post-Liste (`/posts`)**
+- Kopiere bitte `blog-example/blog-material/00_initial/app/shared/material/postlistpage/Post.List.tsx` nach `blog-example/blog-workspace/app/shared/material/postlistpage` (bestehende `PostList.tsx`-Datei dort ersetzen)
 - Du musst deine bestehende Komponente (`/app/posts/page.tsx`) nun erweitern:
   - (Falls du in der vorherigen Übung nicht fertig geworden bist, kopiere dir `schritte/10_routen_und_links` in dein Workspace)
 - Die Funktion zum Laden der Blogposts ist schon fertig: `fetchPosts`
-- Die geladenen Rezepte kannst Du mit der fast fertigen Komponente `PostList` rendern
+- Die geladenen Blogposts kannst Du mit der fast fertigen Komponente `PostList` rendern
 - Du kannst entweder in `page.tsx` oder `PostList` auf das Promise "warten"
   - Welche Komponente nimmst du? Warum?
 - Baue eine `loading`-Komponente, die angezeigt wird, während die Daten geladen werden
   - Gib darin einfach "irgendwas" aus oder verwende die fertige Komponente `LoadingIndicator`
-  - Um die Komponente zu testen, kannst Du das Laden der Daten künstlich verzögern:
+  - Um die Komponente zu testen, kannst du das Laden der Daten künstlich verzögern:
     - gehe dazu in `demo-config.ts` und setze `delayPostList` z.B. auf `1600` (Verzögerung von 1,6 Sekunden)
-- Eine Lösung findest Du in `schritte/20_async_rsc/fertig`
+- Eine Lösung findest du in `schritte/20_async_rsc/fertig`
+- Wenn du fertig bist, bitte die Hand in Zoom heben ✋
 
 ---
 
@@ -511,6 +517,7 @@
   - Wenn diese Funktion einen Post zurückliefert, kannst du das an die fertige `PostPageContent`-Komponente übergeben
 - Was passiert, wenn ein Post nicht gefunden wurde? Testen kannst du das, in dem Du z.B. `/posts/123` aufrufst
 - Eine Lösung findest Du in `schritte/30_dynamic_segments`
+- Wenn du fertig bist, bitte die Hand in Zoom heben ✋
 - **Optional**: baue eine `not-found`-Komponente, die einen Fehler anzeigt, wenn ein Post nicht gefunden wurde
 
 ---
