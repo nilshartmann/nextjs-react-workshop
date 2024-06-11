@@ -1,13 +1,14 @@
-import AppLink from "@/app/shared/components/AppLink.tsx";
+import HelloMessage from "@/app/HelloMessage.tsx";
+import Link from "next/link";
 
 export default function LandingPage() {
   return (
-    <div className={"LandingPage"}>
-      <h1>Welcome to our Blog!</h1>
+    <div>
+      <h1>Hallo Next.js</h1>
 
-      <AppLink className={"Button"} href={"/posts"}>
-        Let's start reading!
-      </AppLink>
+      <Link href={"/posts"} prefetch={false}>
+        Open Blog Posts
+      </Link>
     </div>
   );
 }

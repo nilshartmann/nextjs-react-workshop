@@ -9,6 +9,7 @@ type PostListProps = {
 
 export default async function PostList({ postsPromise }: PostListProps) {
   const response = await postsPromise;
+
   return (
     <div>
       <div className={"PostList"}>

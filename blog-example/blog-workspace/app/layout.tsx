@@ -1,4 +1,11 @@
 import "./globals.css";
+import Timer from "@/app/Timer.tsx";
+import Uhrzeit from "@/app/Uhrzeit.tsx";
+import AppLink from "@/app/shared/components/AppLink.tsx";
+import NavBar from "@/app/NavBar.tsx";
+import BlogPageLayout from "@/app/shared/material/BlogPageLayout.tsx";
+import CounterContextProvider from "@/app/context/CounterContext.tsx";
+import React from "react";
 
 export const metadata = {
   title: "Blog Example!",
@@ -14,7 +21,15 @@ export default function RootLayout({
     <html lang="en">
       <body>
         <div className={"Root"}>
-          <div className={"App"}>{children}</div>
+          {/*<NavBar />*/}
+          {/*<Uhrzeit />*/}
+          <CounterContextProvider initialValue={100}>
+            <BlogPageLayout>
+              <div className={"App"}>{children}</div>
+            </BlogPageLayout>
+          </CounterContextProvider>
+
+          {/*<div>/!*<Timer />*!/</div>*/}
         </div>
       </body>
     </html>

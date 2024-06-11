@@ -1,17 +1,16 @@
-"use client";
 import { componentLog } from "@/app/shared/component-log.ts";
 import { IGetCommentsResponse } from "@/app/shared/types.ts";
-import { use } from "react";
 
 type PostCommentsProps = {
   commentsPromise: Promise<IGetCommentsResponse>;
 };
 
-export default function PostComments({ commentsPromise }: PostCommentsProps) {
-  componentLog("PostComments Rendering started");
-  const { data: comments } = use(commentsPromise);
+export default async function PostComments({
+  commentsPromise,
+}: PostCommentsProps) {
+  componentLog("PostComments");
 
-  componentLog("PostComments - Daten", comments);
+  const { data: comments } = await commentsPromise;
 
   return (
     <div className={"Container"}>
