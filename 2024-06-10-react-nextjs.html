@@ -149,6 +149,9 @@
   * Arbeiten mit Daten (APIs, asynchroner Code)
   * Fehlerhandling
   * Server Actions und Formulare (mit React 19)
+* **Immutable Daten**
+  * [Mit JavaScript Bordmitteln](#/t-immutability)
+  * [Mit der immer-Bibliothek](#/t-immer)
 * **React Vertiefung**
   * [Seiteneffekte mit useEffect](#/t-use-effect)
   * [Context API](#/t-context)
@@ -183,6 +186,392 @@
         </section>
 
         <section data-markdown="slides/grundlagen-rsc.md"></section>
+
+        <section data-markdown>
+          <textarea data-template>
+<!-- .slide: id="t-immutability" -->
+## Arbeiten mit unveränderlichen (immutable) Datenstrukturen
+          </textarea>
+        </section>
+        <section data-markdown>
+          <textarea data-template>
+### Arbeiten mit unveränderlichen (immutable) Datenstrukturen
+* Wenn wir wissen wollen, ob sich Daten verändert haben:
+* **Ohne Immutability:**
+  * Es müssen alle Eigenschaften des Objektes bzw. des Arrays *rekursiv* verglichen werden
+  * Ist das effizient?
+* **Mit Immutability**
+  * Die Anwendung muss nur einen Referenz-Vergleich durchführen
+  * z.B. `altesObjekt === neuesObjekt` oder `Object.is(altesObjekt, neuesObjekt)`
+  * Das geht sehr schnell!
+* Die Annahme ist, dass Objekte/Arrays sehr viel häufiger *verglichen* werden müssen, als dass sie *verändert* werden
+  * Deswegen nimmt man beim Ändern potentiell teurere Operationen in Kauf und kopiert die zu ändernden Objekte
+  * ...und dann verändert man die Kopie
+---
+### Native JavaScript-Möglichkeiten für Immutability
+          </textarea>
+        </section>
+
+        <!-- ============================================================================= -->
+        <section>
+          <h3>Object Spread Operator</h3>
+
+          <p>
+            Mit dem
+            <a
+              href="https://developer.mozilla.org/de/docs/Web/JavaScript/Reference/Operators/Spread_syntax"
+              >Spread Operator</a
+            >
+            können alle Felder eines Objektes an eine andere Stelle kopiert
+            werden
+          </p>
+
+          <pre class="fragment"><code class="javascript">
+            const person = { firstname: "Susi", age: 32 }
+          </code></pre>
+          <pre class="fragment"><code class="javascript">
+            // Kopie erzeugen (herkömmlich)
+            const copy = { firstname: person.firstname, age: person.age }
+
+            // copy: { firstname: "Susi", age: 32}
+          </code></pre>
+          <pre class="fragment"><code class="javascript">
+            // Kopie erzeugen (Spread operator)
+            const copy = { ...person };
+
+            // copy: { firstname: "Susi", age: 32}
+
+            copy.age = 33;
+
+            person.age; // 32
+          </code></pre>
+
+          <pre class="fragment"><code class="javascript">
+            const person = { firstname: "Susi", age: 32 }
+
+            const employee = { ...person, salary: 695000 }
+            // employee: { firstname: "Susi", age: 32, salary: 695000 }
+          </code></pre>
+        </section>
+        <section>
+          <h3 class="fragment">
+            Achtung! Object-Spread-Operator kopiert nur "flach"
+          </h3>
+          <p class="fragment">Beispiel mit Verschachtelung:</p>
+          <pre
+            class="fragment"
+          ><code class="typescript line-numbers" contenteditable data-trim>
+
+const oldPerson = {
+  name: "Klaus",
+
+  address: {
+    city: "Berlin", country: "Germany"
+  }
+}
+ </code></pre>
+          <p class="fragment">
+            Was müssen wir tun, wenn Klaus von Berlin nach Hamburg zieht?
+          </p>
+          <pre
+            class="fragment"
+          ><code class="typescript line-numbers" contenteditable data-trim>
+const newPerson = {
+  ...oldPerson, // altes Objekt hier "einfügen"
+
+  // address muss nun auch kopiert werden:
+  address: {
+    ...oldPerson.address,
+    city: "Hamburg"
+  }
+}
+            </code></pre>
+        </section>
+
+        <!-- ============================================================================= -->
+        <section>
+          <h3>Arbeiten mit immutable Arrays (ES6)</h3>
+
+          <p class="fragment">
+            Zum Hinzufügen von Einträgen zu einem Array immer <b>concat</b> oder
+            <b>Spread-Operator</b> benutzen
+          </p>
+          <p class="fragment">
+            <b>push</b> verändert das bestehende Array, deswegen nicht
+            verwenden!
+          </p>
+
+          <pre class="fragment"><code class="javascript">
+const myArray = [ "a", "b" ];
+const extendedArray = myArray.concat( "c", "d" );
+
+             </code></pre>
+          <pre class="fragment"><code class="javascript">
+        // Spread-Operator bei Arrays
+
+        const oldArray = [ "b", "c" ];
+
+        // Anfügen eines Elementes
+        const newArray = [
+          "a",  // vorne anfügen
+          ...oldArray, // hier altes Array reinkopieren
+          "c" // hinten anfügen
+        ]
+
+      </code></pre>
+        </section>
+
+        <section>
+          <h3>Arbeiten mit immutable Arrays (ES6)</h3>
+          <p>
+            <code>Array.map</code> bildet alle Einträge aus einem Array auf ein
+            neues Array ab
+          </p>
+
+          <pre class="fragment"><code class="javascript">
+const persons = [
+  { lastname: "Mueller", firstname: "Klaus", age: 32 },
+  { lastname: "Meier", firstname: "Susi", age: 33 }
+]
+
+const olderPersons = persons.map( p => {
+  return { ...p, age: p.age + 1 }
+})
+          </code></pre>
+        </section>
+        <section>
+          <h3>Arbeiten mit immutable Arrays (ES6)</h3>
+          <p class="fragment">Einträge aus Arrays <b>entfernen</b></p>
+
+          <pre class="fragment"><code class="javascript">
+        const newArray = oldArray.filter(oldEntry => oldEntry.id === idToBeRemoved);
+
+        // newArray ist eine Kopie ohne die rausgefilterten Eintraege
+
+      </code></pre>
+
+          <h3 class="fragment">Weitere Methoden</h3>
+          <p class="fragment">
+            Auch die Methode
+            <a
+              href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/slice"
+              >slice</a
+            >
+            verändert das Array nicht, sondern liefert eine Kopie zurück.
+          </p>
+          <p class="fragment">
+            Es gibt eine Reihe neuer Methoden am Array, die ebenfalls immutable
+            sind. (Browser-Support prüfen!)
+          </p>
+          <p class="fragment">
+            Zum Beispiel:
+            <a
+              href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/toReversed"
+              >toReversed</a
+            >,
+            <a
+              href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/toSorted"
+              >toSorted</a
+            >
+            und
+            <a
+              href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/toSpliced"
+              >toSpliced</a
+            >
+          </p>
+        </section>
+
+        <section>
+          <h3>Arbeiten mit immutable Arrays (ES6)</h3>
+
+          <p class="fragment">Verändern von Objekten in Arrays</p>
+
+          <pre class="fragment"><code class="javascript">
+        // Verändern von Arrays:
+
+        function changeName(userId, newName) {
+          const newArray = oldArray.map(oldEntry => {
+            if (oldEntry.id === userId) { // dieses Element soll verändert werden
+              return { ...oldEntry, name: newName }
+            }
+            return oldEntry; // unverändert
+          });
+
+          // newArray ist eine Kopie, mit ggf. veränderten Einträgen
+          return newArray;
+      }
+      </code></pre>
+          <p class="fragment">
+            Welche Schwäche hat die oben gezeigte
+            <code>changeName</code> Funktion?
+          </p>
+        </section>
+        <section data-markdown="">
+          <textarea data-template>
+### Arbeiten mit immutable Arrays (ES6)
+* Diese Funktion liefert **immer** ein neues Array zurück auch, wenn gar keine Updates durchgeführt werden (weil `userId` nicht in der Liste
+            vorhanden ist, oder der Namen nicht aktualisiert werden muss):
+* ```typescript
+  const persons = [ id: "U1", name: "Susi", id: "U2", name: "Klaus" ];
+  ```
+* ```typescript
+  const newPersons = changeName("U1", "Susi Müller"); // OK
+  ```
+* ```typescript
+  const newPersons = changeName("U3", "Sandra"); // hmmm...
+  ```
+* ```typescript
+  const newPersons = changeName("U2", "Klaus"); // hmmm hmmm...
+  ```
+* Die Funktion müsste also vorher prüfen, ob das Array überhaupt angepasst werden muss
+  * Kannst Du dir vorstellen, wie das bei verschachtelten Strukturen aussieht?
+---
+### Übung: Immutability mit plain JavaScript
+* Im Verzeichnis `exkurs/immutability/20_es6` findest Du die Datei `updateShoppingCart.ts`
+* Diese Datei enthält eine Funktion, die aber noch nicht implementiert ist 😢...
+* Die Datei enthält aber Anforderungen an die Funktion 🫣
+* ...die Du mit JavaScript- bzw. TypeScript-Mitteln umsetzen musst! 😱
+* Um zu Überprüfen, ob deine Implementierung korrekt ist, kannst Du die Tests in `exkurs/immutability/20_es6/updateShoppingCart.test.ts` ausführen
+  * Zum Beispiel: `npm run test:es6`
+* Bei Problemen oder Fragen melde dich jederzeit!
+* Eine mögliche Lösung findest Du in `20_es6/solution`
+* Wenn Du fertig bist, bitte Hand heben ✋
+          </textarea>
+        </section>
+
+        <section data-markdown>
+          <textarea data-template>
+<!-- .slide: id="t-immer" -->
+## Immutability mit Immer
+* Für einfache Operationen stehen eine Reihe guter JavaScript Bordmittel zur Entwicklung von immutable Code zur Verfügung
+* Aber bei komplexen Änderungen ist die Arbeit mit nativen JavaScript Mitteln sehr aufwendig und fehleranfällig
+* Dafür gibt es eine populäre Bibliothek: ImmerJs!
+---
+
+## Immer für Arbeiten mit unveränderlichen Datenstrukturen
+
+<img src="slides/images/immer.png" />
+
+* [ImmerJs](https://immerjs.github.io/immer/docs/introduction): _Create the next immutable state tree by simply modifying the current tree_
+* Konzept: altes Objekt wird in eine Funktion gesteckt, die daraus ein _Draft_ erzeugt
+* Das _Draft_ wird mit regulären JavaScript APIs verändert, als wenn es mutable wäre
+* Immer zeichnet die Änderungen auf
+* Zum Schluss werden die Änderungen auf eine Kopie des alten Objektes angewendet
+
+        </textarea
+          >
+        </section>
+
+        <!-- ============================================================================= -->
+        <section>
+          <h3>Immer: produce-Funktion</h3>
+
+          <p>
+            Die <b>produce</b>-Funktion bekommt ein Objekt übergeben, sowie eine
+            zweite Funktion, die von immer mit einem Draft aufgerufen wird.
+          </p>
+          <p>
+            Dieses Draft kann verändert werden. Ihr könnt dort
+            <b>alle</b> JavaScript-Funktionen verwenden
+          </p>
+
+          <p>
+            Der Rückgabe-Typ der produce-Funktion ist dann eine Kopie des alten
+            Objektes mit den Änderungen, die auf dem Draft vorgenommen wurden.
+          </p>
+
+          <pre class="fragment"><code class="javascript">
+import produce from "immer";
+
+function changeName(userId, newName) {
+
+  const newArray = produce(oldArray, draft => {
+    const oldPerson = draft.find(p => p.id === userId);
+
+    if (oldPerson) {
+      oldPerson.name = newName;
+    }
+  });
+
+  // newArray ist eine Kopie!
+  return newArray;
+}
+            </code></pre>
+          <p class="fragment">
+            Achtet bitte darauf, dass ihr die Änderungen am Draft vornehmt und
+            nicht versehentlich am Original-Objekt!
+          </p>
+        </section>
+
+        <!-- ============================================================================= -->
+        <section>
+          <h3>Beispiele: Immer</h3>
+
+          <pre class="fragment"><code class="javascript">
+          function handleLastNameChange(newLastName: string) {
+              const newUser = produce(user, draft => {
+                // draft kann verändert werden, als ob es ein mutable Objekt sei
+                draft.lastName = newLastName;
+              })
+            );
+            setUser(newUser);
+          }
+        </code></pre>
+
+          <pre class="fragment"><code class="javascript">
+          function handleContactTypeChange(contactId: string, newType: string) {
+            setUser(
+              produce(user, draft => {
+                const ix = draft.contacts.findIndex(contact => contact.id === contactId);
+                draft.contacts[ix].type = newType;
+              })
+            );
+          }
+        </code></pre>
+        </section>
+
+        <section data-markdown="">
+          <textarea data-template>
+### Immer mit React
+* Immer ist eine React-unabhängige Bibliothek
+* Ihr könnt sie aber überall in React verwenden, wo ihr mit Daten zu tun habt
+  * Bei einfachen Operationen ist es manchmal einfacher, "nur" JavaScript zu Verwenden
+  * Ich würde empfehlen, von Fall zu Fall zu entscheiden, was besser geeignet ist
+* Für React `useState` gibt es den [useImmer](https://immerjs.github.io/immer/example-setstate#usestate--immer) Hook
+* Dieser hat dieselbe Signatur wie `useState`
+* Aber in der **updater**-Funktion wird der aktuelle State als **Draft** übergeben
+  * Ihr braucht also die `produce`-Funktion nicht verwenden
+* ```typescript
+  function PersonList() {
+    const [persons, setPersons] = useImmer([ { id: "U1", name: "Klaus" } ]);
+
+    function changeName() {
+      setPersons(personsDraft => personsDraft[0].name = "Klaus Müller");
+    }
+
+    return ...;
+  }
+  ```
+  * Auch hier gilt: von Fall zu Fall entscheiden, ob das sinnvoll ist
+  </textarea
+          >
+        </section>
+        <section data-markdown="">
+          <textarea data-template>
+### Übung: Immer
+* In der vorherigen Übung haben wir `updateShoppingCart` nur mit JavaScript gebaut.
+* Baue nun dieselbe Funktion, aber mit nun mit Immer.
+* Du kannst hier beginnen: `exkurs/immutability/25_immer/updateShoppingCartImmer.ts`
+* Auch hier gibt es Tests zur Kontrolle: `exkurs/immutability/25_immer/updateShoppingCartImmer.test.ts`
+  * Ausführen mit: `npm run test:immer`
+  * Da die Fachlichkeit der beiden Implementierung identisch sein soll, sind auch die Tests identisch
+* Bei Problemen und Fragen, melde dich.
+* Eine Lösung findest Du in `exkurs/immutability/25_immer/solution`
+* Wenn Du fertig bist, bitte Hand heben ✋
+  </textarea
+          >
+        </section>
+
         <section>
           <h1>React Details</h1>
         </section>
