@@ -22,12 +22,16 @@ export default function RootLayout({
       <body>
         <div className={"Root"}>
           {/*<NavBar />*/}
-          {/*<Uhrzeit />*/}
-          <CounterContextProvider initialValue={100}>
-            <BlogPageLayout>
-              <div className={"App"}>{children}</div>
-            </BlogPageLayout>
-          </CounterContextProvider>
+          {/*<Timer />*/}
+          <BlogPageLayout>
+            <div className={"App"}>{children}</div>
+          </BlogPageLayout>
+
+          {/*<CounterContextProvider initialValue={100}>*/}
+          {/*  <BlogPageLayout>*/}
+          {/*    <div className={"App"}>{children}</div>*/}
+          {/*  </BlogPageLayout>*/}
+          {/*</CounterContextProvider>*/}
 
           {/*<div>/!*<Timer />*!/</div>*/}
         </div>

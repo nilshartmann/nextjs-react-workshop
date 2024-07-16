@@ -14,8 +14,6 @@ type PostPageContentProps = {
 };
 
 export default function PostPageContent({ post }: PostPageContentProps) {
-  const commentsPromise = fetchComments(post.data.id);
-
   // if (true) {
   //   throw new Error("Schade, kaputt!");
   // }

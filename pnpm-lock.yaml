@@ -8,6 +8,9 @@ importers:
 
   .:
     dependencies:
+      immer:
+        specifier: ^10.1.1
+        version: 10.1.1
       prettier:
         specifier: ^3.2.5
         version: 3.3.0
@@ -17,6 +20,9 @@ importers:
         version: 0.6.1(prettier@3.3.0)
 
 packages:
+
+  immer@10.1.1:
+    resolution: {integrity: sha512-s2MPrmjovJcoMaHtx6K11Ra7oD05NT97w1IC5zpMkT6Atjr7H8LjaDd81iIxUYpMKSRRNMJE703M1Fhr/TctHw==}
 
   prettier-plugin-tailwindcss@0.6.1:
     resolution: {integrity: sha512-AnbeYZu0WGj+QgKciUgdMnRxrqcxltleZPgdwfA5104BHM3siBLONN/HLW1yS2HvzSNkzpQ/JAj+LN0jcJO+0w==}
@@ -76,6 +82,8 @@ packages:
     hasBin: true
 
 snapshots:
+
+  immer@10.1.1: {}
 
   prettier-plugin-tailwindcss@0.6.1(prettier@3.3.0):
     dependencies:

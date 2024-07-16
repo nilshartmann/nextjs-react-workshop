@@ -14,9 +14,9 @@ export default function BlogPageLayout({ children }: BlogPageLayoutProps) {
           Next.JS Blog Example
         </AppLink>
 
-        <AppLink className={"PageHeaderLink"} href={"/context"}>
-          Zum Context!
-        </AppLink>
+        {/*<AppLink className={"PageHeaderLink"} href={"/context"}>*/}
+        {/*  Zum Context!*/}
+        {/*</AppLink>*/}
       </PageHeader>
 
       <div className={"Main"}>{children}</div>
